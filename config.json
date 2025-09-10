@@ -1,0 +1,13 @@
+{
+  "proxy": {
+    "enabled": true,
+    "http_proxy": "http://127.0.0.1:7890",
+    "https_proxy": "http://127.0.0.1:7890",
+    "socks5": "127.0.0.1:7890"
+  },
+  "logging": {
+    "enabled": true,
+    "logLevel": "Info",
+    "maxFileSize": 10485760
+  }
+}

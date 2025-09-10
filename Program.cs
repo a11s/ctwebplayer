@@ -1,3 +1,6 @@
+
+using System.Net;
+
 namespace ctwebplayer
 {
     internal static class Program
@@ -8,6 +11,14 @@ namespace ctwebplayer
         [STAThread]
         static void Main()
         {
+            // Configure Flurl to use proxy example
+            /*
+             IHttpRequest request = new HttpRequest(url)
+{
+    Proxy = new Uri("http://example.org:3128")
+};
+             */
+
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
