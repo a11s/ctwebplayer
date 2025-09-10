@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTWebPlayer 资源缓存</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CTWebPlayer 资源缓存</h1>
+            <div class="version">v1.0.0</div>
+        </header>
+
+        <main>
+            <!-- 缓存统计 -->
+            <section class="stats-section">
+                <h2>缓存统计</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">缓存项目</div>
+                        <div class="stat-value" id="cache-count">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">缓存大小</div>
+                        <div class="stat-value" id="cache-size">0 MB</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">命中率</div>
+                        <div class="stat-value" id="hit-rate">0%</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">节省流量</div>
+                        <div class="stat-value" id="saved-bandwidth">0 MB</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 连接状态 -->
+            <section class="status-section">
+                <h2>连接状态</h2>
+                <div class="status-item">
+                    <span class="status-label">CTWebPlayer 连接：</span>
+                    <span class="status-value" id="native-status">
+                        <span class="status-indicator" data-status="disconnected"></span>
+                        <span>未连接</span>
+                    </span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">缓存服务：</span>
+                    <span class="status-value" id="cache-status">
+                        <span class="status-indicator" data-status="active"></span>
+                        <span>运行中</span>
+                    </span>
+                </div>
+            </section>
+
+            <!-- 缓存管理 -->
+            <section class="cache-section">
+                <h2>缓存管理</h2>
+                <div class="cache-controls">
+                    <button id="clear-cache" class="btn btn-danger">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
+                        </svg>
+                        清除缓存
+                    </button>
+                    <button id="export-cache" class="btn btn-secondary">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M14,2L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2H14M18,20V9H13V4H6V20H18M12,19L8,15H10.5V12H13.5V15H16L12,19Z"/>
+                        </svg>
+                        导出统计
+                    </button>
+                </div>
+            </section>
+
+            <!-- 缓存规则 -->
+            <section class="rules-section">
+                <h2>缓存规则</h2>
+                <div class="rules-list">
+                    <div class="rule-item">
+                        <input type="checkbox" id="cache-images" checked>
+                        <label for="cache-images">图片资源 (jpg, png, webp)</label>
+                    </div>
+                    <div class="rule-item">
+                        <input type="checkbox" id="cache-scripts" checked>
+                        <label for="cache-scripts">脚本文件 (js, css)</label>
+                    </div>
+                    <div class="rule-item">
+                        <input type="checkbox" id="cache-fonts" checked>
+                        <label for="cache-fonts">字体文件 (woff, ttf)</label>
+                    </div>
+                    <div class="rule-item">
+                        <input type="checkbox" id="cache-media" checked>
+                        <label for="cache-media">媒体文件 (mp4, mp3)</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 快捷键提示 -->
+            <section class="shortcuts-section">
+                <h2>快捷键</h2>
+                <div class="shortcuts-list">
+                    <div class="shortcut-item">
+                        <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>
+                        <span>显示/隐藏性能统计</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>
+                        <span>清除缓存</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <a href="#" id="open-options">设置</a>
+            <span class="separator">|</span>
+            <a href="#" id="open-help">帮助</a>
+            <span class="separator">|</span>
+            <a href="https://github.com/ctwebplayer/extension" target="_blank">GitHub</a>
+        </footer>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

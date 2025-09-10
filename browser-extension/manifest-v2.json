@@ -1,0 +1,41 @@
+{
+  "manifest_version": 2,
+  "name": "CTWebPlayer Resource Cache",
+  "version": "1.0.0",
+  "description": "云游戏资源缓存插件",
+  
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "storage",
+    "unlimitedStorage",
+    "tabs",
+    "nativeMessaging",
+    "cookies",
+    "<all_urls>",
+    "https://*.cloudgame.com/*",
+    "https://*.cdn-cloudgame.com/*",
+    "https://patch-ct-labs.ecchi.xxx/*",
+    "https://hefc.hrbzqy.com/*"
+  ],
+  
+  "background": {
+    "scripts": ["background-v2.js"],
+    "persistent": true
+  },
+  
+  "content_scripts": [{
+    "matches": ["https://*.cloudgame.com/*"],
+    "js": ["content.js"],
+    "run_at": "document_start"
+  }],
+  
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  }
+}

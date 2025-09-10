@@ -20,8 +20,9 @@ namespace ctwebplayer
         // 需要缓存的文件扩展名
         private readonly string[] _cacheableExtensions = new[]
         {
-            ".js", ".css", ".jpg", ".jpeg", ".png", ".gif", ".webp", 
-            ".svg", ".ico", ".woff", ".woff2", ".ttf", ".eot", ".otf"
+            ".js", ".css", ".jpg", ".jpeg", ".png", ".gif", ".webp",
+            ".svg", ".ico", ".woff", ".woff2", ".ttf", ".eot", ".otf",
+            ".data", ".wasm"
         };
 
         public CacheManager(string cacheRootPath = "./cache")
@@ -50,6 +51,13 @@ namespace ctwebplayer
                 if (path.Contains("/api/") || path.Contains("/v2/") || path.Contains("/v1/"))
                 {
                     return false;
+                }
+                
+                // 检查路径是否包含 /patch/files - 优先级高于扩展名检查
+                if (path.Contains("/patch/files"))
+                {
+                    LogManager.Instance.Debug($"路径匹配缓存规则：{url} (包含 /patch/files)");
+                    return true;
                 }
                 
                 // 检查文件扩展名
@@ -258,6 +266,8 @@ namespace ctwebplayer
                 ".otf" => "font/otf",
                 ".json" => "application/json",
                 ".xml" => "application/xml",
+                ".wasm" => "application/wasm",
+                ".data" => "application/octet-stream",
                 _ => "application/octet-stream"
             };
         }
