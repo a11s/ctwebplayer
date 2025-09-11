@@ -130,7 +130,12 @@ namespace ctwebplayer
                     LogLevel = "Info",
                     MaxFileSize = 10485760 // 10MB
                 },
-                EnableAutoIframeNavigation = true // 默认启用
+                EnableAutoIframeNavigation = true, // 默认启用
+                Ui = new UIConfig
+                {
+                    WindowWidth = 1136,
+                    WindowHeight = 640
+                }
             };
         }
 
@@ -140,6 +145,15 @@ namespace ctwebplayer
         public async Task UpdateProxyConfigAsync(ProxyConfig proxyConfig)
         {
             _config.Proxy = proxyConfig;
+            await SaveConfigAsync();
+        }
+        
+        /// <summary>
+        /// 更新UI配置
+        /// </summary>
+        public async Task UpdateUIConfigAsync(UIConfig uiConfig)
+        {
+            _config.Ui = uiConfig;
             await SaveConfigAsync();
         }
 
@@ -220,6 +234,11 @@ namespace ctwebplayer
         /// 是否启用自动导航到 iframe 内容
         /// </summary>
         public bool EnableAutoIframeNavigation { get; set; }
+        
+        /// <summary>
+        /// UI配置
+        /// </summary>
+        public UIConfig Ui { get; set; }
     }
 
     /// <summary>
@@ -269,5 +288,21 @@ namespace ctwebplayer
         /// 日志文件最大大小（字节）
         /// </summary>
         public long MaxFileSize { get; set; }
+    }
+    
+    /// <summary>
+    /// UI配置
+    /// </summary>
+    public class UIConfig
+    {
+        /// <summary>
+        /// 窗口宽度
+        /// </summary>
+        public int WindowWidth { get; set; }
+        
+        /// <summary>
+        /// 窗口高度
+        /// </summary>
+        public int WindowHeight { get; set; }
     }
 }

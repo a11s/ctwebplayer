@@ -10,5 +10,9 @@
     "logLevel": "Info",
     "maxFileSize": 10485760
   },
-  "enableAutoIframeNavigation": true
+  "enableAutoIframeNavigation": true,
+  "ui": {
+    "windowWidth": 1136,
+    "windowHeight": 640
+  }
 }

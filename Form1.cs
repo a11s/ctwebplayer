@@ -24,7 +24,31 @@ namespace ctwebplayer
         public Form1()
         {
             InitializeComponent();
+            
+            // 初始化配置管理器
+            _configManager = new ConfigManager();
+            
+            // 应用窗口大小设置
+            ApplyWindowSize();
+            
             InitializeWebView();
+        }
+        
+        /// <summary>
+        /// 应用窗口大小设置
+        /// </summary>
+        private void ApplyWindowSize()
+        {
+            if (_configManager?.Config?.Ui != null)
+            {
+                this.Width = _configManager.Config.Ui.WindowWidth;
+                this.Height = _configManager.Config.Ui.WindowHeight;
+                
+                // 居中显示窗口
+                this.StartPosition = FormStartPosition.CenterScreen;
+                
+                LogManager.Instance.Info($"应用窗口大小设置：{this.Width} x {this.Height}");
+            }
         }
 
         /// <summary>
@@ -40,16 +64,12 @@ namespace ctwebplayer
                 // 设置状态
                 statusLabel.Text = "正在初始化浏览器...";
                 
-                // 初始化配置管理器
-                _configManager = new ConfigManager();
+                // 配置管理器已在构造函数中初始化
                 LogManager.Instance.Info("配置管理器已初始化");
                 
                 // 初始化缓存管理器
                 _cacheManager = new CacheManager();
                 LogManager.Instance.Info("缓存管理器已初始化");
-                
-                // 初始化自动导航复选框状态
-                chkAutoIframeNav.Checked = _configManager.Config.EnableAutoIframeNavigation;
                 
                 // 构建浏览器参数
                 var browserArgs = new List<string>
@@ -814,26 +834,16 @@ namespace ctwebplayer
         /// </summary>
         private void btnSettings_Click(object? sender, EventArgs e)
         {
-            // 这里可以打开设置对话框
-            // 目前只显示一个提示
-            // 创建设置菜单
-            var contextMenu = new ContextMenuStrip();
-            
-            // 缓存管理选项
-            var cacheMenuItem = new ToolStripMenuItem("缓存管理");
-            cacheMenuItem.DropDownItems.Add("查看缓存信息", null, (s, args) => ShowCacheInfo());
-            cacheMenuItem.DropDownItems.Add("清理缓存", null, async (s, args) => await ClearCache());
-            contextMenu.Items.Add(cacheMenuItem);
-            
-            // 其他设置选项
-            contextMenu.Items.Add(new ToolStripSeparator());
-            contextMenu.Items.Add("代理设置", null, (s, args) => ShowProxySettings());
-            contextMenu.Items.Add("查看日志", null, (s, args) => ShowLogViewer());
-            
-            // 显示菜单 - 获取按钮在屏幕上的位置
-            var buttonBounds = btnSettings.Bounds;
-            var screenPoint = toolStrip1.PointToScreen(new Point(buttonBounds.Left, buttonBounds.Bottom));
-            contextMenu.Show(screenPoint);
+            // 打开综合设置窗口
+            using (var settingsForm = new SettingsForm(_configManager))
+            {
+                if (settingsForm.ShowDialog(this) == DialogResult.OK)
+                {
+                    // 更新状态栏显示
+                    UpdateCacheStatus();
+                    LogManager.Instance.Info("设置已更新");
+                }
+            }
         }
 
         /// <summary>
@@ -915,37 +925,6 @@ namespace ctwebplayer
             }
         }
 
-        /// <summary>
-        /// 自动导航到iframe内容复选框状态改变事件
-        /// </summary>
-        private async void chkAutoIframeNav_CheckedChanged(object? sender, EventArgs e)
-        {
-            try
-            {
-                // 更新配置
-                _configManager.Config.EnableAutoIframeNavigation = chkAutoIframeNav.Checked;
-                
-                // 保存配置
-                await _configManager.SaveConfigAsync();
-                
-                LogManager.Instance.Info($"自动导航到iframe功能已{(chkAutoIframeNav.Checked ? "启用" : "禁用")}");
-                
-                // 如果当前页面是目标页面且刚刚启用了功能，立即尝试导航
-                if (chkAutoIframeNav.Checked)
-                {
-                    var currentUrl = webView2.Source?.ToString() ?? "";
-                    if (currentUrl.StartsWith("https://game.ero-labs.live/cn/cloud_game.html"))
-                    {
-                        await CheckAndNavigateToIframe();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                LogManager.Instance.Error("更新自动导航设置时出错", ex);
-                MessageBox.Show($"保存设置时出错：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
 
         /// <summary>
         /// 窗体关闭时清理资源

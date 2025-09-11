@@ -359,5 +359,54 @@ namespace ctwebplayer
                 _semaphore.Release();
             }
         }
+        
+        /// <summary>
+        /// 清理所有日志文件（包括归档的）
+        /// </summary>
+        public async Task ClearLogsAsync()
+        {
+            await _semaphore.WaitAsync();
+            try
+            {
+                // 清空队列
+                while (_logQueue.TryDequeue(out _)) { }
+                
+                // 获取日志目录
+                var directory = Path.GetDirectoryName(_logFilePath) ?? ".";
+                var logFileName = Path.GetFileName(_logFilePath);
+                
+                // 删除主日志文件
+                if (File.Exists(_logFilePath))
+                {
+                    await Task.Run(() => File.Delete(_logFilePath));
+                }
+                
+                // 删除所有归档的日志文件
+                var pattern = $"{logFileName}.*";
+                var archiveFiles = await Task.Run(() => Directory.GetFiles(directory, pattern));
+                
+                foreach (var file in archiveFiles)
+                {
+                    try
+                    {
+                        await Task.Run(() => File.Delete(file));
+                    }
+                    catch
+                    {
+                        // 忽略删除失败的文件
+                    }
+                }
+                
+                Info("所有日志文件已清理");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"LogManager ClearLogsAsync error: {ex.Message}");
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
+        }
     }
 }

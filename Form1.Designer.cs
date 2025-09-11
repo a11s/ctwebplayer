@@ -37,8 +37,6 @@
             this.txtAddress = new System.Windows.Forms.ToolStripTextBox();
             this.btnGo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.chkAutoIframeNav = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.btnSettings = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -59,8 +57,6 @@
             this.txtAddress,
             this.btnGo,
             this.toolStripSeparator2,
-            this.chkAutoIframeNav,
-            this.toolStripSeparator3,
             this.btnSettings});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -116,20 +112,6 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            //
-            // chkAutoIframeNav
-            //
-            this.chkAutoIframeNav.CheckOnClick = true;
-            this.chkAutoIframeNav.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.chkAutoIframeNav.Name = "chkAutoIframeNav";
-            this.chkAutoIframeNav.Size = new System.Drawing.Size(116, 22);
-            this.chkAutoIframeNav.Text = "自动导航到iframe内容";
-            this.chkAutoIframeNav.CheckedChanged += new System.EventHandler(this.chkAutoIframeNav_CheckedChanged);
-            //
-            // toolStripSeparator3
-            //
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             //
             // btnSettings
             // 
@@ -206,8 +188,6 @@
         private System.Windows.Forms.ToolStripTextBox txtAddress;
         private System.Windows.Forms.ToolStripButton btnGo;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton chkAutoIframeNav;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton btnSettings;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
