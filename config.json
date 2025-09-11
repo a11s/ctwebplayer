@@ -9,5 +9,6 @@
     "enabled": true,
     "logLevel": "Info",
     "maxFileSize": 10485760
-  }
+  },
+  "enableAutoIframeNavigation": true
 }

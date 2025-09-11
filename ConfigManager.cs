@@ -129,7 +129,8 @@ namespace ctwebplayer
                     Enabled = true,
                     LogLevel = "Info",
                     MaxFileSize = 10485760 // 10MB
-                }
+                },
+                EnableAutoIframeNavigation = true // 默认启用
             };
         }
 
@@ -214,6 +215,11 @@ namespace ctwebplayer
         /// 日志配置
         /// </summary>
         public LoggingConfig Logging { get; set; }
+
+        /// <summary>
+        /// 是否启用自动导航到 iframe 内容
+        /// </summary>
+        public bool EnableAutoIframeNavigation { get; set; }
     }
 
     /// <summary>
