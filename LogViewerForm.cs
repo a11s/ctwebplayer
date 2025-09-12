@@ -13,14 +13,6 @@ namespace ctwebplayer
     /// </summary>
     public partial class LogViewerForm : Form
     {
-        private TextBox txtLogContent;
-        private ComboBox cmbLogLevel;
-        private CheckBox chkAutoRefresh;
-        private Button btnRefresh;
-        private Button btnClear;
-        private Button btnClose;
-        private Label lblLogLevel;
-        private Label lblFileInfo;
         private System.Timers.Timer refreshTimer;
         private long lastFilePosition = 0;
         private LogLevel selectedLogLevel = LogLevel.Debug;
@@ -33,124 +25,6 @@ namespace ctwebplayer
             InitializeComponent();
             LoadLogContent();
             SetupRefreshTimer();
-        }
-
-        /// <summary>
-        /// 初始化组件
-        /// </summary>
-        private void InitializeComponent()
-        {
-            this.Text = "日志查看器";
-            this.Size = new Size(800, 600);
-            this.StartPosition = FormStartPosition.CenterParent;
-            this.MinimumSize = new Size(600, 400);
-
-            // 创建顶部面板
-            var topPanel = new Panel
-            {
-                Dock = DockStyle.Top,
-                Height = 50,
-                Padding = new Padding(10, 10, 10, 5)
-            };
-
-            // 日志级别标签
-            lblLogLevel = new Label
-            {
-                Text = "日志级别过滤:",
-                Location = new Point(10, 15),
-                Size = new Size(90, 25),
-                TextAlign = ContentAlignment.MiddleRight
-            };
-            topPanel.Controls.Add(lblLogLevel);
-
-            // 日志级别下拉框
-            cmbLogLevel = new ComboBox
-            {
-                Location = new Point(105, 12),
-                Size = new Size(100, 25),
-                DropDownStyle = ComboBoxStyle.DropDownList
-            };
-            cmbLogLevel.Items.AddRange(new object[] { "Debug", "Info", "Warning", "Error" });
-            cmbLogLevel.SelectedIndex = 0;
-            cmbLogLevel.SelectedIndexChanged += CmbLogLevel_SelectedIndexChanged;
-            topPanel.Controls.Add(cmbLogLevel);
-
-            // 自动刷新复选框
-            chkAutoRefresh = new CheckBox
-            {
-                Text = "自动刷新",
-                Location = new Point(220, 15),
-                Size = new Size(80, 25),
-                Checked = true
-            };
-            chkAutoRefresh.CheckedChanged += ChkAutoRefresh_CheckedChanged;
-            topPanel.Controls.Add(chkAutoRefresh);
-
-            // 刷新按钮
-            btnRefresh = new Button
-            {
-                Text = "刷新",
-                Location = new Point(310, 10),
-                Size = new Size(70, 28)
-            };
-            btnRefresh.Click += BtnRefresh_Click;
-            topPanel.Controls.Add(btnRefresh);
-
-            // 清空日志按钮
-            btnClear = new Button
-            {
-                Text = "清空日志",
-                Location = new Point(390, 10),
-                Size = new Size(80, 28)
-            };
-            btnClear.Click += BtnClear_Click;
-            topPanel.Controls.Add(btnClear);
-
-            // 文件信息标签
-            lblFileInfo = new Label
-            {
-                Text = "",
-                Location = new Point(480, 15),
-                Size = new Size(300, 25),
-                TextAlign = ContentAlignment.MiddleLeft,
-                ForeColor = Color.Gray
-            };
-            topPanel.Controls.Add(lblFileInfo);
-
-            // 创建日志内容文本框
-            txtLogContent = new TextBox
-            {
-                Multiline = true,
-                ScrollBars = ScrollBars.Both,
-                ReadOnly = true,
-                Font = new Font("Consolas", 9),
-                BackColor = Color.FromArgb(30, 30, 30),
-                ForeColor = Color.LightGray,
-                Dock = DockStyle.Fill
-            };
-
-            // 创建底部面板
-            var bottomPanel = new Panel
-            {
-                Dock = DockStyle.Bottom,
-                Height = 40,
-                Padding = new Padding(10, 5, 10, 10)
-            };
-
-            // 关闭按钮
-            btnClose = new Button
-            {
-                Text = "关闭",
-                Size = new Size(80, 28),
-                Dock = DockStyle.Right,
-                DialogResult = DialogResult.OK
-            };
-            bottomPanel.Controls.Add(btnClose);
-
-            // 添加控件到窗体
-            this.Controls.Add(txtLogContent);
-            this.Controls.Add(topPanel);
-            this.Controls.Add(bottomPanel);
         }
 
         /// <summary>
