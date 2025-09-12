@@ -14,5 +14,6 @@
   "ui": {
     "windowWidth": 1136,
     "windowHeight": 640
-  }
+  },
+  "debugMode": true
 }

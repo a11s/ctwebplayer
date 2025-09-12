@@ -28,154 +28,145 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.btnBack = new System.Windows.Forms.ToolStripButton();
-            this.btnForward = new System.Windows.Forms.ToolStripButton();
-            this.btnRefresh = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.txtAddress = new System.Windows.Forms.ToolStripTextBox();
-            this.btnGo = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnSettings = new System.Windows.Forms.ToolStripButton();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.webView2 = new Microsoft.Web.WebView2.WinForms.WebView2();
-            this.toolStrip1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.webView2)).BeginInit();
-            this.SuspendLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            toolStrip1 = new ToolStrip();
+            btnBack = new ToolStripButton();
+            btnForward = new ToolStripButton();
+            btnRefresh = new ToolStripButton();
+            toolStripSeparator1 = new ToolStripSeparator();
+            txtAddress = new ToolStripTextBox();
+            btnGo = new ToolStripButton();
+            toolStripSeparator2 = new ToolStripSeparator();
+            btnSettings = new ToolStripButton();
+            statusStrip1 = new StatusStrip();
+            statusLabel = new ToolStripStatusLabel();
+            progressBar = new ToolStripProgressBar();
+            webView2 = new Microsoft.Web.WebView2.WinForms.WebView2();
+            toolStrip1.SuspendLayout();
+            statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)webView2).BeginInit();
+            SuspendLayout();
             // 
             // toolStrip1
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnBack,
-            this.btnForward,
-            this.btnRefresh,
-            this.toolStripSeparator1,
-            this.txtAddress,
-            this.btnGo,
-            this.toolStripSeparator2,
-            this.btnSettings});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1024, 25);
-            this.toolStrip1.TabIndex = 0;
-            this.toolStrip1.Text = "toolStrip1";
+            toolStrip1.Items.AddRange(new ToolStripItem[] { btnBack, btnForward, btnRefresh, toolStripSeparator1, txtAddress, btnGo, toolStripSeparator2, btnSettings });
+            toolStrip1.Location = new Point(0, 0);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new Size(1374, 25);
+            toolStrip1.TabIndex = 0;
+            toolStrip1.Text = "toolStrip1";
             // 
             // btnBack
             // 
-            this.btnBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(32, 22);
-            this.btnBack.Text = "后退";
-            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            btnBack.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnBack.Name = "btnBack";
+            btnBack.Size = new Size(36, 22);
+            btnBack.Text = "后退";
+            btnBack.Click += btnBack_Click;
             // 
             // btnForward
             // 
-            this.btnForward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnForward.Name = "btnForward";
-            this.btnForward.Size = new System.Drawing.Size(32, 22);
-            this.btnForward.Text = "前进";
-            this.btnForward.Click += new System.EventHandler(this.btnForward_Click);
+            btnForward.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnForward.Name = "btnForward";
+            btnForward.Size = new Size(36, 22);
+            btnForward.Text = "前进";
+            btnForward.Click += btnForward_Click;
             // 
             // btnRefresh
             // 
-            this.btnRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(32, 22);
-            this.btnRefresh.Text = "刷新";
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            btnRefresh.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(36, 22);
+            btnRefresh.Text = "刷新";
+            btnRefresh.Click += btnRefresh_Click;
             // 
             // toolStripSeparator1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(6, 25);
             // 
             // txtAddress
             // 
-            this.txtAddress.AutoSize = false;
-            this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(600, 25);
-            this.txtAddress.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAddress_KeyDown);
+            txtAddress.AutoSize = false;
+            txtAddress.Name = "txtAddress";
+            txtAddress.Size = new Size(600, 25);
+            txtAddress.KeyDown += txtAddress_KeyDown;
             // 
             // btnGo
             // 
-            this.btnGo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnGo.Name = "btnGo";
-            this.btnGo.Size = new System.Drawing.Size(32, 22);
-            this.btnGo.Text = "转到";
-            this.btnGo.Click += new System.EventHandler(this.btnGo_Click);
+            btnGo.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnGo.Name = "btnGo";
+            btnGo.Size = new Size(36, 22);
+            btnGo.Text = "转到";
+            btnGo.Click += btnGo_Click;
             // 
             // toolStripSeparator2
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            //
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(6, 25);
+            // 
             // btnSettings
             // 
-            this.btnSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(32, 22);
-            this.btnSettings.Text = "设置";
-            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            btnSettings.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnSettings.Name = "btnSettings";
+            btnSettings.Size = new Size(36, 22);
+            btnSettings.Text = "设置";
+            btnSettings.Click += btnSettings_Click;
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel,
-            this.progressBar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 746);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1024, 22);
-            this.statusStrip1.TabIndex = 1;
-            this.statusStrip1.Text = "statusStrip1";
+            statusStrip1.Items.AddRange(new ToolStripItem[] { statusLabel, progressBar });
+            statusStrip1.Location = new Point(0, 842);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Size = new Size(1374, 22);
+            statusStrip1.TabIndex = 1;
+            statusStrip1.Text = "statusStrip1";
             // 
             // statusLabel
             // 
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(909, 17);
-            this.statusLabel.Spring = true;
-            this.statusLabel.Text = "就绪";
-            this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            statusLabel.Name = "statusLabel";
+            statusLabel.Size = new Size(1009, 17);
+            statusLabel.Spring = true;
+            statusLabel.Text = "就绪";
+            statusLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // progressBar
             // 
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(100, 16);
-            this.progressBar.Visible = false;
+            progressBar.Name = "progressBar";
+            progressBar.Size = new Size(100, 18);
+            progressBar.Visible = false;
             // 
             // webView2
             // 
-            this.webView2.AllowExternalDrop = true;
-            this.webView2.CreationProperties = null;
-            this.webView2.DefaultBackgroundColor = System.Drawing.Color.White;
-            this.webView2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webView2.Location = new System.Drawing.Point(0, 25);
-            this.webView2.Name = "webView2";
-            this.webView2.Size = new System.Drawing.Size(1024, 721);
-            this.webView2.TabIndex = 2;
-            this.webView2.ZoomFactor = 1D;
+            webView2.AllowExternalDrop = true;
+            webView2.CreationProperties = null;
+            webView2.DefaultBackgroundColor = Color.White;
+            webView2.Dock = DockStyle.Fill;
+            webView2.Location = new Point(0, 25);
+            webView2.Name = "webView2";
+            webView2.Size = new Size(1374, 817);
+            webView2.TabIndex = 2;
+            webView2.ZoomFactor = 1D;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1024, 768);
-            this.Controls.Add(this.webView2);
-            this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.toolStrip1);
-            this.Name = "Form1";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Unity3D WebPlayer 专属浏览器";
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.webView2)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1374, 864);
+            Controls.Add(webView2);
+            Controls.Add(statusStrip1);
+            Controls.Add(toolStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            Name = "Form1";
+            StartPosition = FormStartPosition.Manual;
+            Text = "Unity3D WebPlayer 专属浏览器";
+            toolStrip1.ResumeLayout(false);
+            toolStrip1.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)webView2).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

@@ -28,6 +28,7 @@ namespace ctwebplayer
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabNetwork = new System.Windows.Forms.TabPage();
             this.chkAutoIframeNav = new System.Windows.Forms.CheckBox();
@@ -41,6 +42,7 @@ namespace ctwebplayer
             this.txtHttpProxy = new System.Windows.Forms.TextBox();
             this.lblHttpProxy = new System.Windows.Forms.Label();
             this.tabLogging = new System.Windows.Forms.TabPage();
+            this.chkDebugMode = new System.Windows.Forms.CheckBox();
             this.btnClearLogs = new System.Windows.Forms.Button();
             this.btnViewLogs = new System.Windows.Forms.Button();
             this.lblMB = new System.Windows.Forms.Label();
@@ -63,6 +65,7 @@ namespace ctwebplayer
             this.btnSave = new System.Windows.Forms.Button();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl.SuspendLayout();
             this.tabNetwork.SuspendLayout();
             this.grpProxySettings.SuspendLayout();
@@ -200,6 +203,7 @@ namespace ctwebplayer
             // 
             // tabLogging
             // 
+            this.tabLogging.Controls.Add(this.chkDebugMode);
             this.tabLogging.Controls.Add(this.btnClearLogs);
             this.tabLogging.Controls.Add(this.btnViewLogs);
             this.tabLogging.Controls.Add(this.lblMB);
@@ -216,8 +220,18 @@ namespace ctwebplayer
             this.tabLogging.Text = "日志";
             this.tabLogging.UseVisualStyleBackColor = true;
             // 
+            // chkDebugMode
+            //
+            this.chkDebugMode.AutoSize = true;
+            this.chkDebugMode.Location = new System.Drawing.Point(20, 190);
+            this.chkDebugMode.Name = "chkDebugMode";
+            this.chkDebugMode.Size = new System.Drawing.Size(150, 25);
+            this.chkDebugMode.TabIndex = 8;
+            this.chkDebugMode.Text = "Debug模式";
+            this.chkDebugMode.UseVisualStyleBackColor = true;
+            this.toolTip1.SetToolTip(this.chkDebugMode, "开启后将记录所有HTTP请求及缓存状态到request.log文件");
             // btnClearLogs
-            // 
+            //
             this.btnClearLogs.Location = new System.Drawing.Point(130, 150);
             this.btnClearLogs.Name = "btnClearLogs";
             this.btnClearLogs.Size = new System.Drawing.Size(100, 30);
@@ -530,6 +544,7 @@ namespace ctwebplayer
         private System.Windows.Forms.TextBox txtHttpProxy;
         private System.Windows.Forms.Label lblHttpProxy;
         private System.Windows.Forms.TabPage tabLogging;
+        private System.Windows.Forms.CheckBox chkDebugMode;
         private System.Windows.Forms.Button btnClearLogs;
         private System.Windows.Forms.Button btnViewLogs;
         private System.Windows.Forms.Label lblMB;
@@ -552,5 +567,6 @@ namespace ctwebplayer
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

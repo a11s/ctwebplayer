@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebView2 Data Test</title>
+</head>
+<body>
+    <h1>WebView2 数据存储测试</h1>
+    <button onclick="setCookie()">设置 Cookie</button>
+    <button onclick="setIndexedDB()">存储 IndexedDB 数据</button>
+    <button onclick="displayData()">显示 Cookie 和 IndexedDB 数据</button>
+    <div id="output"></div>
+
+    <script>
+        function setCookie() {
+            document.cookie = "testCookie=value123; path=/; max-age=3600";
+            alert("Cookie 已设置: testCookie=value123");
+        }
+
+        function setIndexedDB() {
+            const request = indexedDB.open("TestDB", 1);
+            request.onerror = function(event) {
+                alert("IndexedDB 创建失败: " + event.target.errorCode);
+            };
+            request.onsuccess = function(event) {
+                const db = event.target.result;
+                const transaction = db.transaction(["testStore"], "readwrite");
+                const store = transaction.objectStore("testStore");
+                store.put({id: 1, data: "IndexedDB test data"});
+                alert("IndexedDB 数据已存储");
+            };
+            request.onupgradeneeded = function(event) {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains("testStore")) {
+                    db.createObjectStore("testStore", {keyPath: "id"});
+                }
+            };
+        }
+
+        function displayData() {
+            const output = document.getElementById("output");
+            let cookieOutput = "Cookie: " + document.cookie + "<br>";
+            
+            const request = indexedDB.open("TestDB", 1);
+            request.onsuccess = function(event) {
+                const db = event.target.result;
+                const transaction = db.transaction(["testStore"], "readonly");
+                const store = transaction.objectStore("testStore");
+                const getRequest = store.get(1);
+                getRequest.onsuccess = function(event) {
+                    const data = event.target.result ? event.target.result.data : "No data";
+                    cookieOutput += "IndexedDB 数据: " + data;
+                    output.innerHTML = cookieOutput;
+                };
+            };
+        }
+    </script>
+</body>
+</html>

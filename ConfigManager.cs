@@ -135,7 +135,8 @@ namespace ctwebplayer
                 {
                     WindowWidth = 1136,
                     WindowHeight = 640
-                }
+                },
+                DebugMode = false
             };
         }
 
@@ -239,6 +240,8 @@ namespace ctwebplayer
         /// UI配置
         /// </summary>
         public UIConfig Ui { get; set; }
+
+        public bool DebugMode { get; set; } = false;
     }
 
     /// <summary>

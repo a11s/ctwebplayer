@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Microsoft.Web.WebView2.Core;
 using System.IO;
@@ -106,6 +107,14 @@ namespace ctwebplayer
                     LogManager.Instance.Info($"已应用代理设置：{proxyString}");
                 }
                 
+                // 创建用户数据目录
+                string userDataFolder = Path.Combine(Application.StartupPath, "data");
+                if (!Directory.Exists(userDataFolder))
+                {
+                    Directory.CreateDirectory(userDataFolder);
+                    LogManager.Instance.Info($"创建用户数据目录：{userDataFolder}");
+                }
+                
                 // 创建WebView2环境选项
                 var options = new CoreWebView2EnvironmentOptions
                 {
@@ -114,10 +123,11 @@ namespace ctwebplayer
                 
                 LogManager.Instance.Info("WebView2初始化参数：" + options.AdditionalBrowserArguments);
                 
-                // 初始化WebView2
-                var environment = await CoreWebView2Environment.CreateAsync(null, null, options);
+                // 初始化WebView2，使用自定义用户数据文件夹
+                // CreateAsync 参数顺序：(browserExecutableFolder, userDataFolder, options)
+                var environment = await CoreWebView2Environment.CreateAsync(null, userDataFolder, options);
                 await webView2.EnsureCoreWebView2Async(environment);
-                LogManager.Instance.Info("WebView2初始化成功");
+                LogManager.Instance.Info($"WebView2初始化成功，用户数据文件夹：{userDataFolder}");
                 
                 // 配置WebView2设置
                 ConfigureWebView2Settings();
@@ -201,6 +211,7 @@ namespace ctwebplayer
             // 检查是否应该缓存此资源
             if (!_cacheManager.ShouldCache(uri))
             {
+                RequestLogger.Instance.WriteRequestLog(uri, "NOT_CACHEABLE");
                 return; // 不缓存，让WebView2正常处理
             }
 
@@ -220,18 +231,30 @@ namespace ctwebplayer
                         _cacheHits++;
                         UpdateCacheStatus();
                         LogManager.Instance.Debug($"缓存命中：{uri}");
+                        RequestLogger.Instance.WriteRequestLog(uri, "HIT", result.Data.LongLength, $"Cache file: {result.FilePath}");
                     }
                 }
                 
                 // 如果缓存中没有，则下载并缓存
                 if (result == null || !result.Success)
                 {
+                    // 记录开始下载
+                    RequestLogger.Instance.WriteRequestLog(uri, "DOWNLOADING");
+                    
+                    var stopwatch = Stopwatch.StartNew();
                     result = await _cacheManager.DownloadAndCacheAsync(uri);
+                    stopwatch.Stop();
+                    
                     if (result.Success)
                     {
                         _cacheMisses++;
                         UpdateCacheStatus();
                         LogManager.Instance.Debug($"缓存未命中，已下载并缓存：{uri}");
+                        RequestLogger.Instance.WriteRequestLog(uri, "MISS", result.Data.LongLength, $"Download time: {stopwatch.ElapsedMilliseconds}ms, Cache file: {result.FilePath}");
+                    }
+                    else
+                    {
+                        RequestLogger.Instance.WriteRequestLog(uri, "ERROR", null, "Download failed");
                     }
                 }
                 
@@ -263,6 +286,7 @@ namespace ctwebplayer
             catch (Exception ex)
             {
                 LogManager.Instance.Error($"处理资源请求时出错：{uri}", ex);
+                RequestLogger.Instance.WriteRequestLog(uri, "ERROR", null, ex.Message);
             }
             finally
             {

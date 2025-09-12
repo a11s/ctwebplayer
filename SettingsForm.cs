@@ -49,6 +49,9 @@ namespace ctwebplayer
                 numMaxFileSize.Value = (decimal)(loggingConfig.MaxFileSize / 1048576); // 转换为MB
             }
             
+            // 加载Debug模式设置
+            chkDebugMode.Checked = _configManager.Config.DebugMode;
+            
             // 加载界面设置
             if (_configManager.Config.Ui != null)
             {
@@ -245,6 +248,9 @@ namespace ctwebplayer
                     LogLevel = cmbLogLevel.SelectedItem?.ToString() ?? "Info",
                     MaxFileSize = (long)numMaxFileSize.Value * 1048576 // 转换为字节
                 };
+                
+                // Debug模式设置
+                _configManager.Config.DebugMode = chkDebugMode.Checked;
                 
                 // 界面设置
                 await _configManager.UpdateUIConfigAsync(new UIConfig

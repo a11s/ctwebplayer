@@ -6,7 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>c001_01_Icon_Texture.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="c001_01_Icon_Texture.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Flurl" Version="4.0.0" />
