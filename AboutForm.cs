@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CTWebPlayer;
 
 namespace ctwebplayer
 {
@@ -20,6 +21,12 @@ namespace ctwebplayer
 
         private void AboutForm_Load(object sender, EventArgs e)
         {
+            // 设置版本信息
+            lblVersion.Text = $"{CTWebPlayer.Version.Description} v{CTWebPlayer.Version.FullVersion}";
+            
+            // 设置窗口标题
+            this.Text = $"关于 CTWebPlayer {CTWebPlayer.Version.FullVersion}";
+            
             // 加载许可证文本
             try
             {

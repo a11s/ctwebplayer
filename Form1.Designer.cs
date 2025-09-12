@@ -42,6 +42,8 @@
             toggleFullScreenMenuItem = new ToolStripMenuItem();
             toggleMuteMenuItem = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
+            checkUpdateMenuItem = new ToolStripMenuItem();
+            toolStripSeparator4 = new ToolStripSeparator();
             aboutMenuItem = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             statusLabel = new ToolStripStatusLabel();
@@ -121,7 +123,7 @@
             // btnUtilities
             //
             btnUtilities.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            btnUtilities.DropDownItems.AddRange(new ToolStripItem[] { toggleFullScreenMenuItem, toggleMuteMenuItem, toolStripSeparator3, aboutMenuItem });
+            btnUtilities.DropDownItems.AddRange(new ToolStripItem[] { toggleFullScreenMenuItem, toggleMuteMenuItem, toolStripSeparator3, checkUpdateMenuItem, toolStripSeparator4, aboutMenuItem });
             btnUtilities.Name = "btnUtilities";
             btnUtilities.Size = new Size(69, 22);
             btnUtilities.Text = "实用工具";
@@ -146,6 +148,18 @@
             //
             toolStripSeparator3.Name = "toolStripSeparator3";
             toolStripSeparator3.Size = new Size(168, 6);
+            //
+            // checkUpdateMenuItem
+            //
+            checkUpdateMenuItem.Name = "checkUpdateMenuItem";
+            checkUpdateMenuItem.Size = new Size(171, 22);
+            checkUpdateMenuItem.Text = "检查更新";
+            checkUpdateMenuItem.Click += checkUpdateMenuItem_Click;
+            //
+            // toolStripSeparator4
+            //
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(168, 6);
             //
             // aboutMenuItem
             //
@@ -226,6 +240,8 @@
         private System.Windows.Forms.ToolStripMenuItem toggleFullScreenMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toggleMuteMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem checkUpdateMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem aboutMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;

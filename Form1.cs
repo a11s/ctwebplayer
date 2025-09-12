@@ -1103,6 +1103,38 @@ namespace ctwebplayer
         }
 
         /// <summary>
+        /// 检查更新菜单项点击事件
+        /// </summary>
+        private async void checkUpdateMenuItem_Click(object? sender, EventArgs e)
+        {
+            try
+            {
+                statusLabel.Text = "正在检查更新...";
+                
+                var updateManager = new UpdateManager();
+                var updateInfo = await updateManager.CheckForUpdatesAsync();
+                
+                if (updateInfo != null && updateInfo.IsUpdateRequired())
+                {
+                    // 显示更新窗口
+                    using (var updateForm = new UpdateForm(updateInfo))
+                    {
+                        updateForm.ShowDialog(this);
+                    }
+                }
+                
+                statusLabel.Text = "就绪";
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("检查更新时出错", ex);
+                MessageBox.Show($"检查更新时出错：{ex.Message}", "错误",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                statusLabel.Text = "检查更新失败";
+            }
+        }
+
+        /// <summary>
         /// 关于菜单项点击事件
         /// </summary>
         private void aboutMenuItem_Click(object? sender, EventArgs e)

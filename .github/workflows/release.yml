@@ -1,0 +1,141 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # 触发条件：推送以 v 开头的标签，如 v1.0.0
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: windows-latest
+    
+    steps:
+    # 检出代码
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # 获取完整的 git 历史，用于生成更新日志
+    
+    # 设置 .NET SDK
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    
+    # 获取版本号（从标签获取）
+    - name: Get version from tag
+      id: get_version
+      shell: pwsh
+      run: |
+        $version = "${{ github.ref_name }}".TrimStart('v')
+        echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+        echo "Version: $version"
+    
+    # 运行构建脚本
+    - name: Build
+      shell: pwsh
+      run: |
+        .\scripts\build.ps1 -Configuration Release -Runtime win-x64
+    
+    # 运行打包脚本
+    - name: Package
+      shell: pwsh
+      run: |
+        .\scripts\package.ps1 -Version ${{ steps.get_version.outputs.VERSION }}
+    
+    # 计算文件哈希值（用于发布说明）
+    - name: Calculate SHA256
+      id: calculate_sha
+      shell: pwsh
+      run: |
+        $zipFile = Get-ChildItem -Path "release" -Filter "*.zip" | Select-Object -First 1
+        $hash = (Get-FileHash -Path $zipFile.FullName -Algorithm SHA256).Hash
+        echo "SHA256=$hash" >> $env:GITHUB_OUTPUT
+        echo "ZIP_FILE=$($zipFile.Name)" >> $env:GITHUB_OUTPUT
+        
+        # 显示所有发布文件
+        Write-Host "Release files:"
+        Get-ChildItem -Path "release" | ForEach-Object {
+          Write-Host "  - $($_.Name)"
+        }
+    
+    # 生成更新日志
+    - name: Generate changelog
+      id: changelog
+      shell: pwsh
+      run: |
+        # 获取上一个标签
+        $tags = git tag --sort=-version:refname | Where-Object { $_ -match '^v\d+\.\d+\.\d+$' }
+        $currentTag = "${{ github.ref_name }}"
+        $previousTag = $tags | Where-Object { $_ -ne $currentTag } | Select-Object -First 1
+        
+        if ($previousTag) {
+          Write-Host "Generating changelog from $previousTag to $currentTag"
+          $commits = git log "$previousTag..$currentTag" --pretty=format:"- %s" --no-merges
+        } else {
+          Write-Host "This is the first release"
+          $commits = git log --pretty=format:"- %s" --no-merges
+        }
+        
+        # 保存到文件（GitHub Actions 多行输出）
+        $commits | Out-File -FilePath "changelog.txt" -Encoding utf8
+    
+    # 获取当前日期（用于发布说明）
+    - name: Get current date
+      id: get_date
+      shell: pwsh
+      run: |
+        $date = Get-Date -Format "yyyy-MM-dd"
+        echo "DATE=$date" >> $env:GITHUB_OUTPUT
+    
+    # 准备发布说明
+    - name: Prepare release notes
+      id: release_notes
+      shell: pwsh
+      run: |
+        # 读取模板文件
+        $template = Get-Content ".github/release-template.md" -Raw
+        
+        # 获取文件大小
+        $zipFile = Get-ChildItem -Path "release" -Filter "*.zip" | Select-Object -First 1
+        $sizeInMB = [math]::Round($zipFile.Length / 1MB, 2)
+        
+        # 获取上一个标签
+        $tags = git tag --sort=-version:refname | Where-Object { $_ -match '^v\d+\.\d+\.\d+$' }
+        $currentTag = "${{ github.ref_name }}"
+        $previousTag = $tags | Where-Object { $_ -ne $currentTag } | Select-Object -First 1
+        
+        if (-not $previousTag) {
+          $previousTag = "v0.0.0"
+        }
+        
+        # 替换模板变量
+        $releaseNotes = $template `
+          -replace '\{\{VERSION\}\}', "v${{ steps.get_version.outputs.VERSION }}" `
+          -replace '\{\{TAG\}\}', "${{ github.ref_name }}" `
+          -replace '\{\{DATE\}\}', "${{ steps.get_date.outputs.DATE }}" `
+          -replace '\{\{SIZE\}\}', "$sizeInMB MB" `
+          -replace '\{\{SHA256\}\}', "${{ steps.calculate_sha.outputs.SHA256 }}" `
+          -replace '\{\{PREVIOUS_TAG\}\}', "$previousTag"
+        
+        # 保存到文件
+        $releaseNotes | Out-File -FilePath "release-notes.md" -Encoding utf8
+        Write-Host "Release notes prepared"
+    
+    # 创建 GitHub Release
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ github.ref_name }}
+        name: CTWebPlayer ${{ github.ref_name }}
+        body_path: release-notes.md
+        draft: false
+        prerelease: false
+        files: |
+          ./release/CTWebPlayer-v${{ steps.get_version.outputs.VERSION }}-win-x64.zip
+          ./release/CTWebPlayer-v${{ steps.get_version.outputs.VERSION }}-checksums.txt
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    

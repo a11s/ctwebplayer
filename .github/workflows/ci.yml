@@ -1,0 +1,193 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.gitignore'
+      - 'LICENSE'
+  pull_request:
+    branches: [ main, master, develop ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.gitignore'
+      - 'LICENSE'
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: windows-latest
+    
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+    
+    steps:
+    # 检出代码
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    # 设置 .NET SDK
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    
+    # 显示 .NET 信息
+    - name: Display .NET info
+      run: |
+        dotnet --info
+    
+    # 还原依赖
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    # 构建项目
+    - name: Build
+      run: dotnet build --configuration ${{ matrix.configuration }} --no-restore
+    
+    # 运行测试（如果有测试项目）
+    - name: Test
+      run: |
+        if (Test-Path "*.Tests.csproj" -Recurse) {
+          dotnet test --configuration ${{ matrix.configuration }} --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+        } else {
+          Write-Host "No test projects found, skipping tests"
+        }
+      shell: pwsh
+    
+    # 代码分析（可选）
+    - name: Code Analysis
+      if: matrix.configuration == 'Release'
+      run: |
+        # 运行代码分析
+        dotnet build --configuration Release /p:RunAnalyzers=true /p:AnalysisMode=AllEnabledByDefault
+    
+    # 检查代码格式（可选）
+    - name: Check code format
+      if: matrix.configuration == 'Release'
+      continue-on-error: true  # 格式问题不应阻止构建
+      run: |
+        # 安装 dotnet-format
+        dotnet tool install -g dotnet-format || dotnet tool update -g dotnet-format
+        # 检查格式
+        dotnet format --verify-no-changes --verbosity diagnostic
+    
+    # 发布构建（仅在 Release 模式下）
+    - name: Publish
+      if: matrix.configuration == 'Release'
+      run: |
+        dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
+    
+    # 验证发布输出
+    - name: Verify publish output
+      if: matrix.configuration == 'Release'
+      shell: pwsh
+      run: |
+        $exePath = "./publish/ctwebplayer.exe"
+        if (Test-Path $exePath) {
+          $fileInfo = Get-Item $exePath
+          Write-Host "✅ Build successful!"
+          Write-Host "   File: $($fileInfo.Name)"
+          Write-Host "   Size: $([math]::Round($fileInfo.Length / 1MB, 2)) MB"
+          
+          # 获取版本信息
+          $versionInfo = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($exePath)
+          if ($versionInfo.FileVersion) {
+            Write-Host "   Version: $($versionInfo.FileVersion)"
+          }
+        } else {
+          Write-Host "❌ Build failed: ctwebplayer.exe not found"
+          exit 1
+        }
+    
+    # 上传构建产物（可选，用于调试）
+    - name: Upload build artifacts
+      if: matrix.configuration == 'Release' && github.event_name == 'pull_request'
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-output-${{ matrix.configuration }}
+        path: ./publish/
+        retention-days: 7
+    
+    # 上传测试结果（如果有）
+    - name: Upload test results
+      if: always() && matrix.configuration == 'Release'
+      uses: actions/upload-artifact@v4
+      continue-on-error: true
+      with:
+        name: test-results-${{ matrix.configuration }}
+        path: '**/*.trx'
+        retention-days: 30
+
+  code-quality:
+    name: Code Quality Check
+    runs-on: windows-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # 完整历史，用于比较
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    
+    # 安全扫描
+    - name: Security Scan
+      continue-on-error: true
+      run: |
+        # 安装安全扫描工具
+        dotnet tool install -g security-scan || dotnet tool update -g security-scan
+        # 运行扫描
+        dotnet security-scan
+    
+    # 检查第三方许可证
+    - name: Check third-party licenses
+      shell: pwsh
+      run: |
+        # 检查 THIRD_PARTY_LICENSES.txt 是否存在
+        if (Test-Path "THIRD_PARTY_LICENSES.txt") {
+          Write-Host "✅ Third-party licenses file found"
+          
+          # 获取所有 NuGet 包
+          $packages = dotnet list package --include-transitive
+          Write-Host "`nInstalled packages:"
+          Write-Host $packages
+        } else {
+          Write-Host "⚠️ Warning: THIRD_PARTY_LICENSES.txt not found"
+          Write-Host "Please ensure all third-party licenses are properly documented"
+        }
+    
+    # 检查敏感信息
+    - name: Check for secrets
+      shell: pwsh
+      run: |
+        # 简单的敏感信息检查
+        $patterns = @(
+          'password\s*=',
+          'apikey\s*=',
+          'secret\s*=',
+          'token\s*='
+        )
+        
+        $found = $false
+        foreach ($pattern in $patterns) {
+          $matches = Get-ChildItem -Recurse -Include *.cs,*.json,*.config -File | 
+                     Select-String -Pattern $pattern -CaseSensitive
+          if ($matches) {
+            Write-Host "⚠️ Potential sensitive information found:"
+            $matches | ForEach-Object { Write-Host "  $($_.Path):$($_.LineNumber)" }
+            $found = $true
+          }
+        }
+        
+        if (-not $found) {
+          Write-Host "✅ No obvious sensitive information found"
+        }
