@@ -38,6 +38,11 @@
             btnGo = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
             btnSettings = new ToolStripButton();
+            btnUtilities = new ToolStripDropDownButton();
+            toggleFullScreenMenuItem = new ToolStripMenuItem();
+            toggleMuteMenuItem = new ToolStripMenuItem();
+            toolStripSeparator3 = new ToolStripSeparator();
+            aboutMenuItem = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             statusLabel = new ToolStripStatusLabel();
             progressBar = new ToolStripProgressBar();
@@ -46,10 +51,10 @@
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)webView2).BeginInit();
             SuspendLayout();
-            // 
+            //
             // toolStrip1
-            // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { btnBack, btnForward, btnRefresh, toolStripSeparator1, txtAddress, btnGo, toolStripSeparator2, btnSettings });
+            //
+            toolStrip1.Items.AddRange(new ToolStripItem[] { btnBack, btnForward, btnRefresh, toolStripSeparator1, txtAddress, btnGo, toolStripSeparator2, btnSettings, btnUtilities });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(1374, 25);
@@ -112,7 +117,43 @@
             btnSettings.Size = new Size(36, 22);
             btnSettings.Text = "设置";
             btnSettings.Click += btnSettings_Click;
-            // 
+            //
+            // btnUtilities
+            //
+            btnUtilities.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnUtilities.DropDownItems.AddRange(new ToolStripItem[] { toggleFullScreenMenuItem, toggleMuteMenuItem, toolStripSeparator3, aboutMenuItem });
+            btnUtilities.Name = "btnUtilities";
+            btnUtilities.Size = new Size(69, 22);
+            btnUtilities.Text = "实用工具";
+            //
+            // toggleFullScreenMenuItem
+            //
+            toggleFullScreenMenuItem.Name = "toggleFullScreenMenuItem";
+            toggleFullScreenMenuItem.ShortcutKeys = Keys.F11;
+            toggleFullScreenMenuItem.Size = new Size(171, 22);
+            toggleFullScreenMenuItem.Text = "全屏切换 (F11)";
+            toggleFullScreenMenuItem.Click += toggleFullScreenMenuItem_Click;
+            //
+            // toggleMuteMenuItem
+            //
+            toggleMuteMenuItem.Name = "toggleMuteMenuItem";
+            toggleMuteMenuItem.ShortcutKeys = Keys.F4;
+            toggleMuteMenuItem.Size = new Size(171, 22);
+            toggleMuteMenuItem.Text = "静音切换 (F4)";
+            toggleMuteMenuItem.Click += toggleMuteMenuItem_Click;
+            //
+            // toolStripSeparator3
+            //
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(168, 6);
+            //
+            // aboutMenuItem
+            //
+            aboutMenuItem.Name = "aboutMenuItem";
+            aboutMenuItem.Size = new Size(171, 22);
+            aboutMenuItem.Text = "关于";
+            aboutMenuItem.Click += aboutMenuItem_Click;
+            //
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { statusLabel, progressBar });
@@ -125,7 +166,7 @@
             // statusLabel
             // 
             statusLabel.Name = "statusLabel";
-            statusLabel.Size = new Size(1009, 17);
+            statusLabel.Size = new Size(1359, 17);
             statusLabel.Spring = true;
             statusLabel.Text = "就绪";
             statusLabel.TextAlign = ContentAlignment.MiddleLeft;
@@ -135,9 +176,9 @@
             progressBar.Name = "progressBar";
             progressBar.Size = new Size(100, 18);
             progressBar.Visible = false;
-            // 
+            //
             // webView2
-            // 
+            //
             webView2.AllowExternalDrop = true;
             webView2.CreationProperties = null;
             webView2.DefaultBackgroundColor = Color.White;
@@ -147,9 +188,9 @@
             webView2.Size = new Size(1374, 817);
             webView2.TabIndex = 2;
             webView2.ZoomFactor = 1D;
-            // 
+            //
             // Form1
-            // 
+            //
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1374, 864);
@@ -157,6 +198,7 @@
             Controls.Add(statusStrip1);
             Controls.Add(toolStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            KeyPreview = true;
             Name = "Form1";
             StartPosition = FormStartPosition.Manual;
             Text = "Unity3D WebPlayer 专属浏览器";
@@ -180,6 +222,11 @@
         private System.Windows.Forms.ToolStripButton btnGo;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton btnSettings;
+        private System.Windows.Forms.ToolStripDropDownButton btnUtilities;
+        private System.Windows.Forms.ToolStripMenuItem toggleFullScreenMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toggleMuteMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem aboutMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
         private System.Windows.Forms.ToolStripProgressBar progressBar;

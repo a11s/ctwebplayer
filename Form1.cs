@@ -4,11 +4,40 @@ using System.Windows.Forms;
 using Microsoft.Web.WebView2.Core;
 using System.IO;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace ctwebplayer
 {
     public partial class Form1 : Form
     {
+        #region Win32 API声明
+        // Win32 API函数声明
+        [DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+        
+        [DllImport("user32.dll")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        
+        // Win32常量定义
+        private const int WM_HOTKEY = 0x0312;
+        
+        // 修饰键常量
+        private const uint MOD_NONE = 0x0000;
+        private const uint MOD_ALT = 0x0001;
+        private const uint MOD_CONTROL = 0x0002;
+        private const uint MOD_SHIFT = 0x0004;
+        private const uint MOD_WIN = 0x0008;
+        private const uint MOD_NOREPEAT = 0x4000; // Windows 7及以上版本，防止重复触发
+        
+        // 热键ID定义
+        private const int HOTKEY_ID_F11 = 1; // F11全屏切换
+        private const int HOTKEY_ID_F4 = 2;  // F4静音切换
+        
+        // 虚拟键码
+        private const uint VK_F4 = 0x73;
+        private const uint VK_F11 = 0x7A;
+        #endregion
+        
         // 默认加载的URL
         private const string DEFAULT_URL = "https://game.ero-labs.live/cn/cloud_game.html?id=27&connect_type=1&connection_id=20";
         
@@ -22,6 +51,17 @@ namespace ctwebplayer
         private int _cacheHits = 0;
         private int _cacheMisses = 0;
 
+        // 全屏相关字段
+        private bool _isFullScreen = false;
+        private FormWindowState _previousWindowState;
+        private FormBorderStyle _previousBorderStyle;
+        private Rectangle _previousBounds;
+        private bool _previousToolStripVisible;
+        private bool _previousStatusStripVisible;
+        
+        // 静音相关字段
+        private bool _isMuted = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -33,6 +73,13 @@ namespace ctwebplayer
             ApplyWindowSize();
             
             InitializeWebView();
+
+            // 不再订阅键盘事件，改用全局热键
+            // this.KeyDown += Form1_KeyDown;
+            
+            // 添加调试日志
+            LogManager.Instance.Info($"Form1构造函数：KeyPreview = {this.KeyPreview}");
+            LogManager.Instance.Info("Form1构造函数：准备使用全局热键");
         }
         
         /// <summary>
@@ -143,6 +190,13 @@ namespace ctwebplayer
                 webView2.CoreWebView2.DownloadStarting += CoreWebView2_DownloadStarting;
                 webView2.CoreWebView2.PermissionRequested += CoreWebView2_PermissionRequested;
                 
+                // 不再订阅WebView2的键盘事件，改用全局热键
+                // webView2.PreviewKeyDown += WebView2_PreviewKeyDown;
+                webView2.CoreWebView2.WindowCloseRequested += CoreWebView2_WindowCloseRequested;
+                
+                // 注册全局热键
+                RegisterGlobalHotkeys();
+                
                 // 导航到默认URL
                 webView2.CoreWebView2.Navigate(DEFAULT_URL);
                 txtAddress.Text = DEFAULT_URL;
@@ -153,6 +207,66 @@ namespace ctwebplayer
                 MessageBox.Show($"WebView2初始化失败: {ex.Message}\n\n请确保已安装WebView2运行时。",
                     "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 statusLabel.Text = "浏览器初始化失败";
+            }
+        }
+
+        /// <summary>
+        /// 注册全局热键
+        /// </summary>
+        private void RegisterGlobalHotkeys()
+        {
+            try
+            {
+                // 注册F11热键（全屏切换）
+                bool f11Registered = RegisterHotKey(this.Handle, HOTKEY_ID_F11, MOD_NOREPEAT, VK_F11);
+                if (f11Registered)
+                {
+                    LogManager.Instance.Info("已成功注册F11全局热键");
+                }
+                else
+                {
+                    LogManager.Instance.Warning("F11全局热键注册失败，可能被其他程序占用");
+                }
+
+                // 注册F4热键（静音切换）
+                bool f4Registered = RegisterHotKey(this.Handle, HOTKEY_ID_F4, MOD_NOREPEAT, VK_F4);
+                if (f4Registered)
+                {
+                    LogManager.Instance.Info("已成功注册F4全局热键");
+                }
+                else
+                {
+                    LogManager.Instance.Warning("F4全局热键注册失败，可能被其他程序占用");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("注册全局热键时出错", ex);
+            }
+        }
+
+        /// <summary>
+        /// 注销全局热键
+        /// </summary>
+        private void UnregisterGlobalHotkeys()
+        {
+            try
+            {
+                // 注销F11热键
+                if (UnregisterHotKey(this.Handle, HOTKEY_ID_F11))
+                {
+                    LogManager.Instance.Info("已成功注销F11全局热键");
+                }
+                
+                // 注销F4热键
+                if (UnregisterHotKey(this.Handle, HOTKEY_ID_F4))
+                {
+                    LogManager.Instance.Info("已成功注销F4全局热键");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("注销全局热键时出错", ex);
             }
         }
 
@@ -315,7 +429,10 @@ namespace ctwebplayer
             // 获取代理状态
             var proxyStatus = _configManager.Config.Proxy?.Enabled == true ? " | 代理：已启用" : " | 代理：已禁用";
             
-            statusLabel.Text = $"缓存命中：{_cacheHits} | 未命中：{_cacheMisses} | 命中率：{hitRate}% | 缓存大小：{cacheSizeText}{proxyStatus}";
+            // 获取静音状态
+            var muteStatus = _isMuted ? " | 静音：开启" : " | 静音：关闭";
+            
+            statusLabel.Text = $"缓存命中：{_cacheHits} | 未命中：{_cacheMisses} | 命中率：{hitRate}% | 缓存大小：{cacheSizeText}{proxyStatus}{muteStatus}";
         }
 
         /// <summary>
@@ -956,6 +1073,10 @@ namespace ctwebplayer
         protected override async void OnFormClosed(FormClosedEventArgs e)
         {
             base.OnFormClosed(e);
+            
+            // 注销全局热键
+            UnregisterGlobalHotkeys();
+            
             _cacheManager?.Dispose();
             
             // 记录应用程序关闭
@@ -963,6 +1084,528 @@ namespace ctwebplayer
             
             // 确保所有日志都已写入
             await LogManager.Instance.FlushAsync();
+        }
+
+        /// <summary>
+        /// 全屏切换菜单项点击事件
+        /// </summary>
+        private void toggleFullScreenMenuItem_Click(object? sender, EventArgs e)
+        {
+            ToggleFullScreen();
+        }
+
+        /// <summary>
+        /// 静音切换菜单项点击事件
+        /// </summary>
+        private void toggleMuteMenuItem_Click(object? sender, EventArgs e)
+        {
+            ToggleMute();
+        }
+
+        /// <summary>
+        /// 关于菜单项点击事件
+        /// </summary>
+        private void aboutMenuItem_Click(object? sender, EventArgs e)
+        {
+            using (var aboutForm = new AboutForm())
+            {
+                aboutForm.ShowDialog(this);
+            }
+        }
+
+        // 以下方法已被全局热键替代，不再使用
+        /*
+        /// <summary>
+        /// 窗体键盘事件处理（F11和F4快捷键）
+        /// </summary>
+        private void Form1_KeyDown(object? sender, KeyEventArgs e)
+        {
+            // 添加调试日志
+            LogManager.Instance.Info($"Form1_KeyDown触发：键码 = {e.KeyCode}, Alt = {e.Alt}, Ctrl = {e.Control}, Shift = {e.Shift}");
+            
+            if (e.KeyCode == Keys.F11)
+            {
+                LogManager.Instance.Info("检测到F11按键，准备切换全屏");
+                ToggleFullScreen();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+            else if (e.KeyCode == Keys.F4)
+            {
+                LogManager.Instance.Info("检测到F4按键，准备切换静音");
+                ToggleMute();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+        }
+        
+        /// <summary>
+        /// WebView2的PreviewKeyDown事件处理
+        /// </summary>
+        private void WebView2_PreviewKeyDown(object? sender, PreviewKeyDownEventArgs e)
+        {
+            LogManager.Instance.Info($"WebView2_PreviewKeyDown触发：键码 = {e.KeyCode}");
+            
+            // 处理F11和F4键
+            if (e.KeyCode == Keys.F11 || e.KeyCode == Keys.F4)
+            {
+                // 标记为输入键，防止WebView2默认处理
+                e.IsInputKey = true;
+                
+                // 触发Form的KeyDown事件
+                var keyEventArgs = new KeyEventArgs(e.KeyCode);
+                Form1_KeyDown(this, keyEventArgs);
+            }
+        }
+        */
+        
+        /// <summary>
+        /// 处理窗口关闭请求
+        /// </summary>
+        private void CoreWebView2_WindowCloseRequested(object? sender, object e)
+        {
+            // 防止网页关闭窗口
+            LogManager.Instance.Info("网页尝试关闭窗口，已阻止");
+        }
+
+        /// <summary>
+        /// 切换全屏模式
+        /// </summary>
+        private void ToggleFullScreen()
+        {
+            if (!_isFullScreen)
+            {
+                // 进入全屏模式
+                EnterFullScreen();
+            }
+            else
+            {
+                // 退出全屏模式
+                ExitFullScreen();
+            }
+        }
+
+        /// <summary>
+        /// 进入全屏模式
+        /// </summary>
+        private void EnterFullScreen()
+        {
+            // 保存当前状态
+            _previousWindowState = this.WindowState;
+            _previousBorderStyle = this.FormBorderStyle;
+            _previousBounds = this.Bounds;
+            _previousToolStripVisible = toolStrip1.Visible;
+            _previousStatusStripVisible = statusStrip1.Visible;
+
+            // 隐藏工具栏和状态栏
+            toolStrip1.Visible = false;
+            statusStrip1.Visible = false;
+
+            // 设置无边框
+            this.FormBorderStyle = FormBorderStyle.None;
+
+            // 设置窗口状态为最大化
+            this.WindowState = FormWindowState.Maximized;
+
+            // 设置全屏标志
+            _isFullScreen = true;
+
+            // 显示全屏提示
+            ShowFullScreenTip();
+            
+            LogManager.Instance.Info("已进入全屏模式");
+        }
+
+        /// <summary>
+        /// 退出全屏模式
+        /// </summary>
+        private void ExitFullScreen()
+        {
+            // 恢复工具栏和状态栏的可见性
+            toolStrip1.Visible = _previousToolStripVisible;
+            statusStrip1.Visible = _previousStatusStripVisible;
+
+            // 恢复边框样式
+            this.FormBorderStyle = _previousBorderStyle;
+
+            // 恢复窗口状态
+            this.WindowState = _previousWindowState;
+
+            // 如果之前不是最大化状态，恢复窗口位置和大小
+            if (_previousWindowState != FormWindowState.Maximized)
+            {
+                this.Bounds = _previousBounds;
+            }
+
+            // 清除全屏标志
+            _isFullScreen = false;
+
+            LogManager.Instance.Info("已退出全屏模式");
+        }
+
+        /// <summary>
+        /// 显示全屏提示
+        /// </summary>
+        private async void ShowFullScreenTip()
+        {
+            try
+            {
+                // 在网页中显示提示
+                var script = @"
+                    (function() {
+                        // 检查是否已经存在提示
+                        var existingTip = document.getElementById('fullscreen-tip');
+                        if (existingTip) {
+                            existingTip.remove();
+                        }
+                        
+                        // 创建提示元素
+                        var tip = document.createElement('div');
+                        tip.id = 'fullscreen-tip';
+                        tip.innerHTML = '按 F11 退出全屏';
+                        tip.style.cssText = `
+                            position: fixed;
+                            top: 20px;
+                            right: 20px;
+                            background-color: rgba(0, 0, 0, 0.7);
+                            color: white;
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            font-size: 14px;
+                            font-family: Arial, sans-serif;
+                            z-index: 999999;
+                            pointer-events: none;
+                            transition: opacity 0.5s ease;
+                        `;
+                        document.body.appendChild(tip);
+                        
+                        // 3秒后淡出
+                        setTimeout(function() {
+                            tip.style.opacity = '0';
+                            setTimeout(function() {
+                                tip.remove();
+                            }, 500);
+                        }, 3000);
+                    })();
+                ";
+                
+                await webView2.CoreWebView2.ExecuteScriptAsync(script);
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("显示全屏提示时出错", ex);
+            }
+        }
+
+        /// <summary>
+        /// 切换静音状态
+        /// </summary>
+        private async void ToggleMute()
+        {
+            try
+            {
+                if (webView2.CoreWebView2 == null)
+                {
+                    LogManager.Instance.Warning("WebView2尚未初始化，无法切换静音");
+                    return;
+                }
+                
+                _isMuted = !_isMuted;
+                
+                // 首先尝试使用WebView2的原生静音API（如果可用）
+                try
+                {
+                    webView2.CoreWebView2.IsMuted = _isMuted;
+                    LogManager.Instance.Info($"使用WebView2原生API设置静音状态：{_isMuted}");
+                }
+                catch (Exception apiEx)
+                {
+                    LogManager.Instance.Warning($"WebView2原生静音API不可用：{apiEx.Message}");
+                }
+                
+                // 使用增强的JavaScript控制页面音频
+                var script = $@"
+                    (function() {{
+                        var muteState = {_isMuted.ToString().ToLower()};
+                        var muteCount = 0;
+                        
+                        // 定义静音函数
+                        function muteElement(element) {{
+                            if (element && (element.tagName === 'AUDIO' || element.tagName === 'VIDEO')) {{
+                                element.muted = muteState;
+                                element.volume = muteState ? 0 : 1;
+                                muteCount++;
+                                
+                                // 监听播放事件，确保静音状态保持
+                                element.addEventListener('play', function() {{
+                                    element.muted = muteState;
+                                }});
+                                
+                                element.addEventListener('volumechange', function() {{
+                                    if (muteState && !element.muted) {{
+                                        element.muted = true;
+                                        element.volume = 0;
+                                    }}
+                                }});
+                            }}
+                        }}
+                        
+                        // 获取所有的音频和视频元素
+                        var mediaElements = document.querySelectorAll('audio, video');
+                        mediaElements.forEach(muteElement);
+                        
+                        // 处理Unity WebGL音频
+                        if (window.WEBAudio && window.WEBAudio.audioContext) {{
+                            try {{
+                                if (muteState) {{
+                                    window.WEBAudio.audioContext.suspend();
+                                }} else {{
+                                    window.WEBAudio.audioContext.resume();
+                                }}
+                                console.log('Unity WebGL audio context ' + (muteState ? 'suspended' : 'resumed'));
+                            }} catch (e) {{
+                                console.log('Failed to control Unity audio context:', e);
+                            }}
+                        }}
+                        
+                        // 处理Web Audio API
+                        if (window.AudioContext || window.webkitAudioContext) {{
+                            var audioContexts = [];
+                            
+                            // 拦截AudioContext创建
+                            var OriginalAudioContext = window.AudioContext || window.webkitAudioContext;
+                            var NewAudioContext = function() {{
+                                var ctx = new OriginalAudioContext();
+                                audioContexts.push(ctx);
+                                if (muteState) {{
+                                    ctx.suspend();
+                                }}
+                                return ctx;
+                            }};
+                            window.AudioContext = NewAudioContext;
+                            if (window.webkitAudioContext) {{
+                                window.webkitAudioContext = NewAudioContext;
+                            }}
+                            
+                            // 处理已存在的AudioContext
+                            if (window.audioContext) {{
+                                audioContexts.push(window.audioContext);
+                            }}
+                            
+                            audioContexts.forEach(function(ctx) {{
+                                if (muteState) {{
+                                    ctx.suspend();
+                                }} else {{
+                                    ctx.resume();
+                                }}
+                            }});
+                        }}
+                        
+                        // 处理iframe中的媒体元素
+                        var iframes = document.querySelectorAll('iframe');
+                        iframes.forEach(function(iframe) {{
+                            try {{
+                                var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                                var iframeMedia = iframeDoc.querySelectorAll('audio, video');
+                                iframeMedia.forEach(muteElement);
+                            }} catch (e) {{
+                                // 跨域iframe无法访问
+                                console.log('Cannot access iframe content:', e);
+                            }}
+                        }});
+                        
+                        // 使用MutationObserver监听新添加的媒体元素
+                        var observer = new MutationObserver(function(mutations) {{
+                            mutations.forEach(function(mutation) {{
+                                mutation.addedNodes.forEach(function(node) {{
+                                    if (node.nodeType === 1) {{ // Element node
+                                        if (node.tagName === 'AUDIO' || node.tagName === 'VIDEO') {{
+                                            muteElement(node);
+                                        }}
+                                        // 检查子节点
+                                        var childMedia = node.querySelectorAll ? node.querySelectorAll('audio, video') : [];
+                                        childMedia.forEach(muteElement);
+                                    }}
+                                }});
+                            }});
+                        }});
+                        
+                        // 开始观察整个文档
+                        observer.observe(document.body, {{
+                            childList: true,
+                            subtree: true
+                        }});
+                        
+                        // 保存观察器引用，以便后续使用
+                        window.__muteObserver = observer;
+                        window.__currentMuteState = muteState;
+                        
+                        console.log('Mute state set to:', muteState, 'Muted elements:', muteCount);
+                        return muteState;
+                    }})();
+                ";
+                
+                var result = await webView2.CoreWebView2.ExecuteScriptAsync(script);
+                
+                // 如果是游戏页面，尝试额外的静音方法
+                var currentUrl = webView2.Source?.ToString() ?? "";
+                if (currentUrl.Contains("unity") || currentUrl.Contains("game"))
+                {
+                    await ApplyGameSpecificMute();
+                }
+                
+                // 更新状态栏显示
+                UpdateCacheStatus();
+                
+                // 显示静音状态提示
+                ShowMuteTip(_isMuted);
+                
+                LogManager.Instance.Info($"静音状态已切换为：{(_isMuted ? "开启" : "关闭")}");
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("切换静音状态时出错", ex);
+                MessageBox.Show($"切换静音状态时出错：{ex.Message}", "错误",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
+        /// <summary>
+        /// 应用游戏特定的静音方法
+        /// </summary>
+        private async Task ApplyGameSpecificMute()
+        {
+            try
+            {
+                var script = $@"
+                    (function() {{
+                        var muteState = {_isMuted.ToString().ToLower()};
+                        
+                        // Unity特定的静音方法
+                        if (window.unityInstance) {{
+                            try {{
+                                if (window.unityInstance.SendMessage) {{
+                                    window.unityInstance.SendMessage('AudioManager', 'SetMute', muteState.toString());
+                                }}
+                                if (window.unityInstance.Module && window.unityInstance.Module.setMute) {{
+                                    window.unityInstance.Module.setMute(muteState);
+                                }}
+                            }} catch (e) {{
+                                console.log('Unity mute failed:', e);
+                            }}
+                        }}
+                        
+                        // 检查全局音频变量
+                        var audioVars = ['gameAudio', 'soundManager', 'audioManager', 'audio'];
+                        audioVars.forEach(function(varName) {{
+                            if (window[varName]) {{
+                                try {{
+                                    if (typeof window[varName].mute === 'function') {{
+                                        window[varName].mute(muteState);
+                                    }} else if (typeof window[varName].setMute === 'function') {{
+                                        window[varName].setMute(muteState);
+                                    }} else if (typeof window[varName].muted !== 'undefined') {{
+                                        window[varName].muted = muteState;
+                                    }}
+                                }} catch (e) {{
+                                    console.log('Failed to mute ' + varName + ':', e);
+                                }}
+                            }}
+                        }});
+                    }})();
+                ";
+                
+                await webView2.CoreWebView2.ExecuteScriptAsync(script);
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("应用游戏特定静音时出错", ex);
+            }
+        }
+
+        /// <summary>
+        /// 显示静音状态提示
+        /// </summary>
+        private async void ShowMuteTip(bool isMuted)
+        {
+            try
+            {
+                var message = isMuted ? "静音已开启" : "静音已关闭";
+                var icon = isMuted ? "🔇" : "🔊";
+                
+                var script = $@"
+                    (function() {{
+                        // 检查是否已经存在提示
+                        var existingTip = document.getElementById('mute-tip');
+                        if (existingTip) {{
+                            existingTip.remove();
+                        }}
+                        
+                        // 创建提示元素
+                        var tip = document.createElement('div');
+                        tip.id = 'mute-tip';
+                        tip.innerHTML = '{icon} {message}';
+                        tip.style.cssText = `
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background-color: rgba(0, 0, 0, 0.8);
+                            color: white;
+                            padding: 20px 40px;
+                            border-radius: 10px;
+                            font-size: 18px;
+                            font-family: Arial, sans-serif;
+                            z-index: 999999;
+                            pointer-events: none;
+                            transition: opacity 0.3s ease;
+                        `;
+                        document.body.appendChild(tip);
+                        
+                        // 1.5秒后淡出
+                        setTimeout(function() {{
+                            tip.style.opacity = '0';
+                            setTimeout(function() {{
+                                tip.remove();
+                            }}, 300);
+                        }}, 1500);
+                    }})();
+                ";
+                
+                await webView2.CoreWebView2.ExecuteScriptAsync(script);
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("显示静音提示时出错", ex);
+            }
+        }
+
+        /// <summary>
+        /// 重写窗口过程以处理热键消息
+        /// </summary>
+        protected override void WndProc(ref Message m)
+        {
+            // 处理WM_HOTKEY消息
+            if (m.Msg == WM_HOTKEY)
+            {
+                int hotkeyId = m.WParam.ToInt32();
+                
+                switch (hotkeyId)
+                {
+                    case HOTKEY_ID_F11:
+                        LogManager.Instance.Info("检测到F11全局热键，准备切换全屏");
+                        ToggleFullScreen();
+                        break;
+                        
+                    case HOTKEY_ID_F4:
+                        LogManager.Instance.Info("检测到F4全局热键，准备切换静音");
+                        ToggleMute();
+                        break;
+                }
+            }
+            
+            // 调用基类的WndProc处理其他消息
+            base.WndProc(ref m);
         }
     }
 }

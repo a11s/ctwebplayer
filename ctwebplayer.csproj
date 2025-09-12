@@ -6,11 +6,11 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationIcon>c001_01_Icon_Texture.ico</ApplicationIcon>
+    <ApplicationIcon>res\c001_01_Icon_Texture.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="c001_01_Icon_Texture.ico" />
+    <Content Include="res\c001_01_Icon_Texture.ico" />
   </ItemGroup>
 
   <ItemGroup>
