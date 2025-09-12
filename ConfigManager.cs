@@ -120,9 +120,9 @@ namespace ctwebplayer
                 Proxy = new ProxyConfig
                 {
                     Enabled = false,
-                    HttpProxy = "http://127.0.0.1:7890",
-                    HttpsProxy = "http://127.0.0.1:7890",
-                    Socks5 = "127.0.0.1:7890"
+                    HttpProxy = "",
+                    HttpsProxy = "",
+                    Socks5 = ""
                 },
                 Logging = new LoggingConfig
                 {
@@ -133,8 +133,8 @@ namespace ctwebplayer
                 EnableAutoIframeNavigation = true, // 默认启用
                 Ui = new UIConfig
                 {
-                    WindowWidth = 1136,
-                    WindowHeight = 640
+                    WindowWidth = 1236,
+                    WindowHeight = 740
                 },
                 DebugMode = false
             };

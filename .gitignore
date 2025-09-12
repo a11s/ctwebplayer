@@ -363,3 +363,9 @@ MigrationBackup/
 FodyWeavers.xsd
 
 cache/
+
+config.json
+
+docs/assets/
+docs/common/
+logs/

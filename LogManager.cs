@@ -31,7 +31,7 @@ namespace ctwebplayer
         private readonly System.Threading.Timer _flushTimer;
         private readonly object _lockObject = new object();
         
-        private string _logFilePath = "./app.log";
+        private string _logFilePath = "./logs/app.log";
         private long _maxFileSize = 10 * 1024 * 1024; // 10MB
         private LogLevel _minLogLevel = LogLevel.Info;
         private bool _isEnabled = true;

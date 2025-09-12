@@ -11,7 +11,7 @@ namespace ctwebplayer
         private static readonly Lazy<RequestLogger> _instance = new Lazy<RequestLogger>(() => new RequestLogger());
         private static readonly Lazy<ConfigManager> _configManagerLazy = new Lazy<ConfigManager>(() => new ConfigManager());
         private readonly object _lockObject = new object();
-        private const string LogPath = "./request.log";
+        private const string LogPath = "./logs/request.log";
         private const long MaxFileSize = 10 * 1024 * 1024; // 10MB
         private static readonly UTF8Encoding Encoding = new UTF8Encoding(false);
 
@@ -34,6 +34,13 @@ namespace ctwebplayer
             {
                 lock (_lockObject)
                 {
+                    // Ensure directory exists
+                    var directory = Path.GetDirectoryName(LogPath);
+                    if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
                     // Check file size and rotate if necessary
                     if (File.Exists(LogPath))
                     {
