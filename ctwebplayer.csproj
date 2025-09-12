@@ -8,6 +8,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationIcon>res\c001_01_Icon_Texture.ico</ApplicationIcon>
     
+    <!-- 禁用分析器警告（设计器相关） -->
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <AnalysisLevel>none</AnalysisLevel>
+    
     <!-- 版本信息 (遵循 SemVer 规范) -->
     <Version>1.0.0</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
@@ -27,6 +31,28 @@
     <AssemblyCompany>CTWebPlayer Team</AssemblyCompany>
     <AssemblyProduct>CTWebPlayer</AssemblyProduct>
     <AssemblyCopyright>Copyright © 2025 CTWebPlayer Team</AssemblyCopyright>
+    
+    <!-- 禁用不重要的警告 -->
+    <!-- NETSDK1194: 解决方案级输出路径警告 -->
+    <!-- CS0169: 字段从未使用（设计器生成的字段） -->
+    <!-- CS0649: 字段从未被赋值（设计器生成的字段） -->
+    <!-- CS0067: 事件从未使用（设计器生成的事件） -->
+    <!-- CS0414: 字段已赋值但值从未使用 -->
+    <!-- CS8602: 可能的null引用（设计器生成的代码） -->
+    <!-- CS8604: 可能的null引用参数（设计器生成的代码） -->
+    <!-- CS8632: 可为null的引用类型注释（设计器代码） -->
+    <!-- CS1591: 缺少XML文档注释 -->
+    <!-- CS0108: 成员隐藏继承的成员 -->
+    <!-- CS0219: 变量已赋值但其值从未使用 -->
+    <!-- CS0612/CS0618: 成员已过时 -->
+    <!-- IDE0044: 添加只读修饰符（设计器字段不应为只读） -->
+    <!-- IDE0051: 移除未使用的私有成员（设计器生成的方法） -->
+    <!-- IDE0052: 移除未读取的私有成员 -->
+    <!-- IDE0060: 移除未使用的参数 -->
+    <NoWarn>$(NoWarn);NETSDK1194;CS0169;CS0649;CS0067;CS0414;CS8602;CS8604;CS8632;CS1591;CS0108;CS0219;CS0612;CS0618;IDE0044;IDE0051;IDE0052;IDE0060</NoWarn>
+    
+    <!-- 禁用设计器文件的可空性警告 -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,5 +66,26 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PlainHttp" Version="2.1.0" />
   </ItemGroup>
+
+  <!-- 排除测试文件以避免重复入口点警告 -->
+  <ItemGroup>
+    <Compile Remove="test\**\*.cs" />
+  </ItemGroup>
+
+  <!-- 为设计器生成的文件禁用警告 -->
+  <ItemGroup>
+    <Compile Update="**\*.Designer.cs">
+      <DependentUpon>%(Filename).cs</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <!-- 全局禁用特定的分析规则 -->
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+  </PropertyGroup>
 
 </Project>

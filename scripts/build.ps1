@@ -1,6 +1,6 @@
-# CTWebPlayer 构建脚本
-# 用于构建项目并生成发布版本
-# 需要: .NET 8.0 SDK
+# CTWebPlayer Build Script
+# For building the project and generating release version
+# Requires: .NET 8.0 SDK
 
 param(
     [string]$Configuration = "Release",
@@ -9,54 +9,55 @@ param(
 )
 
 Write-Host "=====================================" -ForegroundColor Cyan
-Write-Host "CTWebPlayer 构建脚本" -ForegroundColor Cyan
+Write-Host "CTWebPlayer Build Script" -ForegroundColor Cyan
 Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host ""
 
-# 检查 .NET SDK
-Write-Host "检查 .NET SDK..." -ForegroundColor Yellow
+# Check .NET SDK
+Write-Host "Checking .NET SDK..." -ForegroundColor Yellow
 try {
     $dotnetVersion = dotnet --version
-    Write-Host "找到 .NET SDK: $dotnetVersion" -ForegroundColor Green
-} catch {
-    Write-Host "错误: 未找到 .NET SDK，请先安装 .NET 8.0 SDK" -ForegroundColor Red
+    Write-Host "Found .NET SDK: $dotnetVersion" -ForegroundColor Green
+}
+catch {
+    Write-Host "Error: .NET SDK not found, please install .NET 8.0 SDK first" -ForegroundColor Red
     exit 1
 }
 
-# 清理之前的构建输出
+# Clean previous build output
 Write-Host ""
-Write-Host "清理之前的构建输出..." -ForegroundColor Yellow
+Write-Host "Cleaning previous build output..." -ForegroundColor Yellow
 if (Test-Path $OutputDir) {
     Remove-Item -Path $OutputDir -Recurse -Force
-    Write-Host "已清理目录: $OutputDir" -ForegroundColor Green
+    Write-Host "Cleaned directory: $OutputDir" -ForegroundColor Green
 }
 
 if (Test-Path "bin\$Configuration") {
     Remove-Item -Path "bin\$Configuration" -Recurse -Force
-    Write-Host "已清理目录: bin\$Configuration" -ForegroundColor Green
+    Write-Host "Cleaned directory: bin\$Configuration" -ForegroundColor Green
 }
 
 if (Test-Path "obj") {
     Remove-Item -Path "obj" -Recurse -Force
-    Write-Host "已清理目录: obj" -ForegroundColor Green
+    Write-Host "Cleaned directory: obj" -ForegroundColor Green
 }
 
-# 还原项目依赖
+# Restore project dependencies
 Write-Host ""
-Write-Host "还原项目依赖..." -ForegroundColor Yellow
+Write-Host "Restoring project dependencies..." -ForegroundColor Yellow
 dotnet restore
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "错误: 依赖还原失败" -ForegroundColor Red
+    Write-Host "Error: Failed to restore dependencies" -ForegroundColor Red
     exit 1
 }
-Write-Host "依赖还原成功" -ForegroundColor Green
+Write-Host "Dependencies restored successfully" -ForegroundColor Green
 
-# 构建项目
+# Build project
 Write-Host ""
-Write-Host "开始构建项目..." -ForegroundColor Yellow
-Write-Host "配置: $Configuration" -ForegroundColor Cyan
-Write-Host "运行时: $Runtime" -ForegroundColor Cyan
-Write-Host "输出目录: $OutputDir" -ForegroundColor Cyan
+Write-Host "Starting project build..." -ForegroundColor Yellow
+Write-Host "Configuration: $Configuration" -ForegroundColor Cyan
+Write-Host "Runtime: $Runtime" -ForegroundColor Cyan
+Write-Host "Output Directory: $OutputDir" -ForegroundColor Cyan
 
 $publishArgs = @(
     "publish",
@@ -71,68 +72,75 @@ $publishArgs = @(
     "-o", $OutputDir
 )
 
-# 包含 WebView2 运行时
+# Include WebView2 runtime
 $publishArgs += "-p:PublishReadyToRun=true"
-$publishArgs += "-p:PublishTrimmed=false"  # 避免裁剪导致的问题
+$publishArgs += "-p:PublishTrimmed=false"  # Avoid trimming issues
 
 Write-Host ""
-Write-Host "执行命令: dotnet $($publishArgs -join ' ')" -ForegroundColor DarkGray
+Write-Host "Executing command: dotnet $($publishArgs -join ' ')" -ForegroundColor DarkGray
 dotnet @publishArgs
 
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "错误: 构建失败" -ForegroundColor Red
+    Write-Host "Error: Build failed" -ForegroundColor Red
     exit 1
 }
 
-# 验证构建输出
+# Verify build output
 Write-Host ""
-Write-Host "验证构建输出..." -ForegroundColor Yellow
+Write-Host "Verifying build output..." -ForegroundColor Yellow
 $exePath = Join-Path $OutputDir "ctwebplayer.exe"
 if (Test-Path $exePath) {
     $fileInfo = Get-Item $exePath
-    Write-Host "构建成功!" -ForegroundColor Green
-    Write-Host "可执行文件: $exePath" -ForegroundColor Cyan
-    Write-Host "文件大小: $([math]::Round($fileInfo.Length / 1MB, 2)) MB" -ForegroundColor Cyan
+    Write-Host "Build successful!" -ForegroundColor Green
+    Write-Host "Executable: $exePath" -ForegroundColor Cyan
+    Write-Host "File size: $([math]::Round($fileInfo.Length / 1MB, 2)) MB" -ForegroundColor Cyan
     
-    # 获取文件版本信息
-    $versionInfo = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($exePath)
-    if ($versionInfo.FileVersion) {
-        Write-Host "文件版本: $($versionInfo.FileVersion)" -ForegroundColor Cyan
+    # Get file version info
+    try {
+        $fullPath = (Get-Item $exePath).FullName
+        $versionInfo = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($fullPath)
+        if ($versionInfo.FileVersion) {
+            Write-Host "File version: $($versionInfo.FileVersion)" -ForegroundColor Cyan
+        }
     }
-} else {
-    Write-Host "错误: 未找到构建输出文件" -ForegroundColor Red
+    catch {
+        Write-Host "Warning: Unable to get version info from executable" -ForegroundColor Yellow
+    }
+
+    # Copy configuration files and resources (if they exist)
+    Write-Host ""
+    Write-Host "Copying resource files..." -ForegroundColor Yellow
+
+    # Copy config file
+    # if (Test-Path "config.json") {
+    #     Copy-Item "config.json" -Destination $OutputDir -Force
+    #     Write-Host "Copied: config.json" -ForegroundColor Green
+    # }
+
+    # Copy resource directory
+    if (Test-Path "res") {
+        Copy-Item "res" -Destination $OutputDir -Recurse -Force
+        Write-Host "Copied: res/" -ForegroundColor Green
+    }
+
+    # Copy license files
+    if (Test-Path "LICENSE") {
+        Copy-Item "LICENSE" -Destination $OutputDir -Force
+        Write-Host "Copied: LICENSE" -ForegroundColor Green
+    }
+
+    if (Test-Path "THIRD_PARTY_LICENSES.txt") {
+        Copy-Item "THIRD_PARTY_LICENSES.txt" -Destination $OutputDir -Force
+        Write-Host "Copied: THIRD_PARTY_LICENSES.txt" -ForegroundColor Green
+    }
+}
+else {
+    Write-Host "Error: Build output file not found" -ForegroundColor Red
     exit 1
-}
-
-# 复制配置文件和资源（如果存在）
-Write-Host ""
-Write-Host "复制资源文件..." -ForegroundColor Yellow
-
-# 复制配置文件
-if (Test-Path "config.json") {
-    Copy-Item "config.json" -Destination $OutputDir -Force
-    Write-Host "已复制: config.json" -ForegroundColor Green
-}
-
-# 复制资源目录
-if (Test-Path "res") {
-    Copy-Item "res" -Destination $OutputDir -Recurse -Force
-    Write-Host "已复制: res/" -ForegroundColor Green
-}
-
-# 复制许可证文件
-if (Test-Path "LICENSE") {
-    Copy-Item "LICENSE" -Destination $OutputDir -Force
-    Write-Host "已复制: LICENSE" -ForegroundColor Green
-}
-
-if (Test-Path "THIRD_PARTY_LICENSES.txt") {
-    Copy-Item "THIRD_PARTY_LICENSES.txt" -Destination $OutputDir -Force
-    Write-Host "已复制: THIRD_PARTY_LICENSES.txt" -ForegroundColor Green
 }
 
 Write-Host ""
 Write-Host "=====================================" -ForegroundColor Cyan
-Write-Host "构建完成!" -ForegroundColor Green
-Write-Host "输出目录: $OutputDir" -ForegroundColor Cyan
+Write-Host "Build completed!" -ForegroundColor Green
+Write-Host "Output directory: $OutputDir" -ForegroundColor Cyan
 Write-Host "=====================================" -ForegroundColor Cyan

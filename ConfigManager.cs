@@ -21,7 +21,7 @@ namespace ctwebplayer
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
         };
 
-        private AppConfig _config;
+        private AppConfig _config = null!; // 在 LoadConfig 中初始化
 
         /// <summary>
         /// 获取当前配置
@@ -224,12 +224,12 @@ namespace ctwebplayer
         /// <summary>
         /// 代理配置
         /// </summary>
-        public ProxyConfig Proxy { get; set; }
+        public ProxyConfig Proxy { get; set; } = new ProxyConfig();
 
         /// <summary>
         /// 日志配置
         /// </summary>
-        public LoggingConfig Logging { get; set; }
+        public LoggingConfig Logging { get; set; } = new LoggingConfig();
 
         /// <summary>
         /// 是否启用自动导航到 iframe 内容
@@ -239,7 +239,7 @@ namespace ctwebplayer
         /// <summary>
         /// UI配置
         /// </summary>
-        public UIConfig Ui { get; set; }
+        public UIConfig Ui { get; set; } = new UIConfig();
 
         public bool DebugMode { get; set; } = false;
     }
@@ -258,18 +258,18 @@ namespace ctwebplayer
         /// HTTP代理地址
         /// </summary>
         [JsonPropertyName("http_proxy")]
-        public string HttpProxy { get; set; }
+        public string HttpProxy { get; set; } = string.Empty;
 
         /// <summary>
         /// HTTPS代理地址
         /// </summary>
         [JsonPropertyName("https_proxy")]
-        public string HttpsProxy { get; set; }
+        public string HttpsProxy { get; set; } = string.Empty;
 
         /// <summary>
         /// SOCKS5代理地址
         /// </summary>
-        public string Socks5 { get; set; }
+        public string Socks5 { get; set; } = string.Empty;
     }
 
     /// <summary>
@@ -285,7 +285,7 @@ namespace ctwebplayer
         /// <summary>
         /// 日志级别 (Debug, Info, Warning, Error)
         /// </summary>
-        public string LogLevel { get; set; }
+        public string LogLevel { get; set; } = "Info";
 
         /// <summary>
         /// 日志文件最大大小（字节）

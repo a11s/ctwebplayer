@@ -42,7 +42,7 @@ namespace ctwebplayer
         private const string DEFAULT_URL = "https://game.ero-labs.live/cn/cloud_game.html?id=27&connect_type=1&connection_id=20";
         
         // 缓存管理器
-        private CacheManager _cacheManager;
+        private CacheManager _cacheManager = null!; // 在 InitializeWebView 中初始化
         
         // 配置管理器
         private ConfigManager _configManager;
@@ -325,7 +325,7 @@ namespace ctwebplayer
             // 检查是否应该缓存此资源
             if (!_cacheManager.ShouldCache(uri))
             {
-                RequestLogger.Instance.WriteRequestLog(uri, "NOT_CACHEABLE");
+                _ = RequestLogger.Instance.WriteRequestLog(uri, "NOT_CACHEABLE");
                 return; // 不缓存，让WebView2正常处理
             }
 
@@ -334,7 +334,7 @@ namespace ctwebplayer
             
             try
             {
-                CacheResult result = null;
+                CacheResult? result = null;
                 
                 // 首先尝试从缓存读取
                 if (_cacheManager.IsCached(uri))
@@ -345,7 +345,7 @@ namespace ctwebplayer
                         _cacheHits++;
                         UpdateCacheStatus();
                         LogManager.Instance.Debug($"缓存命中：{uri}");
-                        RequestLogger.Instance.WriteRequestLog(uri, "HIT", result.Data.LongLength, $"Cache file: {result.FilePath}");
+                        _ = RequestLogger.Instance.WriteRequestLog(uri, "HIT", result.Data!.LongLength, $"Cache file: {result.FilePath}");
                     }
                 }
                 
@@ -353,7 +353,7 @@ namespace ctwebplayer
                 if (result == null || !result.Success)
                 {
                     // 记录开始下载
-                    RequestLogger.Instance.WriteRequestLog(uri, "DOWNLOADING");
+                    _ = RequestLogger.Instance.WriteRequestLog(uri, "DOWNLOADING");
                     
                     var stopwatch = Stopwatch.StartNew();
                     result = await _cacheManager.DownloadAndCacheAsync(uri);
@@ -364,11 +364,11 @@ namespace ctwebplayer
                         _cacheMisses++;
                         UpdateCacheStatus();
                         LogManager.Instance.Debug($"缓存未命中，已下载并缓存：{uri}");
-                        RequestLogger.Instance.WriteRequestLog(uri, "MISS", result.Data.LongLength, $"Download time: {stopwatch.ElapsedMilliseconds}ms, Cache file: {result.FilePath}");
+                        _ = RequestLogger.Instance.WriteRequestLog(uri, "MISS", result.Data!.LongLength, $"Download time: {stopwatch.ElapsedMilliseconds}ms, Cache file: {result.FilePath}");
                     }
                     else
                     {
-                        RequestLogger.Instance.WriteRequestLog(uri, "ERROR", null, "Download failed");
+                        _ = RequestLogger.Instance.WriteRequestLog(uri, "ERROR", null, "Download failed");
                     }
                 }
                 
@@ -400,7 +400,7 @@ namespace ctwebplayer
             catch (Exception ex)
             {
                 LogManager.Instance.Error($"处理资源请求时出错：{uri}", ex);
-                RequestLogger.Instance.WriteRequestLog(uri, "ERROR", null, ex.Message);
+                _ = RequestLogger.Instance.WriteRequestLog(uri, "ERROR", null, ex.Message);
             }
             finally
             {

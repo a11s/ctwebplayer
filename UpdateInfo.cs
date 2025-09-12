@@ -11,22 +11,22 @@ namespace CTWebPlayer
         /// <summary>
         /// 版本号（如：1.2.0）
         /// </summary>
-        public string Version { get; set; }
+        public string Version { get; set; } = string.Empty;
 
         /// <summary>
         /// 发布标签（如：v1.2.0）
         /// </summary>
-        public string TagName { get; set; }
+        public string TagName { get; set; } = string.Empty;
 
         /// <summary>
         /// 发布名称
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// 发布说明（Markdown 格式）
         /// </summary>
-        public string ReleaseNotes { get; set; }
+        public string ReleaseNotes { get; set; } = string.Empty;
 
         /// <summary>
         /// 发布时间
@@ -41,12 +41,12 @@ namespace CTWebPlayer
         /// <summary>
         /// 下载 URL
         /// </summary>
-        public string DownloadUrl { get; set; }
+        public string DownloadUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// 文件名
         /// </summary>
-        public string FileName { get; set; }
+        public string FileName { get; set; } = string.Empty;
 
         /// <summary>
         /// 文件大小（字节）
@@ -56,7 +56,7 @@ namespace CTWebPlayer
         /// <summary>
         /// SHA256 哈希值（用于文件完整性验证）
         /// </summary>
-        public string SHA256Hash { get; set; }
+        public string SHA256Hash { get; set; } = string.Empty;
 
         /// <summary>
         /// 是否为强制更新
@@ -66,7 +66,7 @@ namespace CTWebPlayer
         /// <summary>
         /// 最小支持版本（低于此版本必须更新）
         /// </summary>
-        public string MinimumVersion { get; set; }
+        public string MinimumVersion { get; set; } = string.Empty;
 
         /// <summary>
         /// 检查当前版本是否需要更新
@@ -131,10 +131,10 @@ namespace CTWebPlayer
         {
             var info = new UpdateInfo
             {
-                TagName = releaseJson.tag_name,
-                Name = releaseJson.name ?? releaseJson.tag_name,
-                ReleaseNotes = releaseJson.body ?? "",
-                PublishedAt = DateTime.Parse(releaseJson.published_at.ToString()),
+                TagName = releaseJson.tag_name?.ToString() ?? string.Empty,
+                Name = releaseJson.name?.ToString() ?? releaseJson.tag_name?.ToString() ?? string.Empty,
+                ReleaseNotes = releaseJson.body?.ToString() ?? string.Empty,
+                PublishedAt = DateTime.Parse(releaseJson.published_at?.ToString() ?? DateTime.Now.ToString()),
                 IsPreRelease = releaseJson.prerelease ?? false
             };
 
@@ -150,11 +150,11 @@ namespace CTWebPlayer
             {
                 foreach (var asset in releaseJson.assets)
                 {
-                    string assetName = asset.name.ToString().ToLower();
-                    if (assetName.EndsWith(".exe") && assetName.Contains("ctwebplayer"))
+                    string? assetName = asset.name?.ToString()?.ToLower();
+                    if (!string.IsNullOrEmpty(assetName) && assetName.EndsWith(".exe") && assetName.Contains("ctwebplayer"))
                     {
-                        info.DownloadUrl = asset.browser_download_url;
-                        info.FileName = asset.name;
+                        info.DownloadUrl = asset.browser_download_url?.ToString() ?? string.Empty;
+                        info.FileName = asset.name?.ToString() ?? string.Empty;
                         info.FileSize = asset.size ?? 0;
                         break;
                     }

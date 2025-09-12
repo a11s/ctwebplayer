@@ -50,9 +50,9 @@ namespace ctwebplayer
         {
             public DateTime Timestamp { get; set; }
             public LogLevel Level { get; set; }
-            public string ClassName { get; set; }
-            public string Message { get; set; }
-            public Exception Exception { get; set; }
+            public string ClassName { get; set; } = string.Empty;
+            public string Message { get; set; } = string.Empty;
+            public Exception? Exception { get; set; }
         }
 
         private LogManager()
@@ -102,7 +102,7 @@ namespace ctwebplayer
         /// <summary>
         /// 记录错误日志
         /// </summary>
-        public void Error(string message, Exception ex = null, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "")
+        public void Error(string message, Exception? ex = null, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "")
         {
             Log(LogLevel.Error, message, GetClassName(filePath), ex);
         }
@@ -110,7 +110,7 @@ namespace ctwebplayer
         /// <summary>
         /// 核心日志记录方法
         /// </summary>
-        private void Log(LogLevel level, string message, string className, Exception exception)
+        private void Log(LogLevel level, string message, string className, Exception? exception)
         {
             if (!_isEnabled || level < _minLogLevel || _isDisposing)
                 return;

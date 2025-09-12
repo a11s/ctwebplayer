@@ -58,6 +58,10 @@ WindowResizable=no
 UninstallDisplayIcon={app}\{#AppExeName}
 UninstallDisplayName={#AppName}
 
+; 语言设置
+ShowLanguageDialog=auto
+LanguageDetectionMethod=uilanguage
+
 ; 静默安装支持
 ; 使用 /SILENT 或 /VERYSILENT 参数
 
@@ -71,8 +75,16 @@ VersionInfoProductName={#AppName}
 VersionInfoProductVersion={#AppVersion}
 
 [Languages]
-Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
+; 英语（默认）
 Name: "english"; MessagesFile: "compiler:Default.isl"
+; 简体中文
+Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
+; 繁体中文
+Name: "chinesetraditional"; MessagesFile: "compiler:Languages\ChineseTraditional.isl"
+; 日语
+Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
+; 朝鲜语（韩语）
+Name: "korean"; MessagesFile: "compiler:Languages\Korean.isl"
 
 [Tasks]
 ; 创建桌面快捷方式（可选）
@@ -85,7 +97,8 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Source: "..\publish\{#AppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 
 ; 配置文件
-Source: "..\config.json"; DestDir: "{app}"; Flags: ignoreversion onlyifdoesntexist
+; 注释掉 config.json 的安装，因为包含测试信息，不应该打包分发
+; Source: "..\config.json"; DestDir: "{app}"; Flags: ignoreversion onlyifdoesntexist
 
 ; 资源文件
 Source: "..\res\*"; DestDir: "{app}\res"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -143,6 +156,23 @@ Root: HKLM; Subkey: "Software\{#AppPublisher}\{#AppName}"; ValueType: string; Va
 Root: HKLM; Subkey: "Software\{#AppPublisher}\{#AppName}"; ValueType: string; ValueName: "Version"; ValueData: "{#AppVersion}"
 
 [Code]
+// 检查应用是否正在运行
+function IsAppRunning(const FileName: string): Boolean;
+var
+  FWMIService: Variant;
+  FSWbemLocator: Variant;
+  FWbemObjectSet: Variant;
+begin
+  Result := False;
+  try
+    FSWbemLocator := CreateOleObject('WBEMScripting.SWBEMLocator');
+    FWMIService := FSWbemLocator.ConnectServer('', 'root\CIMV2', '', '');
+    FWbemObjectSet := FWMIService.ExecQuery(Format('SELECT Name FROM Win32_Process WHERE Name="%s"', [FileName]));
+    Result := (FWbemObjectSet.Count > 0);
+  except
+  end;
+end;
+
 // 创建 README.txt 文件
 procedure CreateReadmeFile();
 var
@@ -191,10 +221,11 @@ end;
 function IsWebView2Installed(): Boolean;
 var
   ResultCode: Integer;
+  Version: String;
 begin
-  Result := RegQueryStringValue(HKLM, 'SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}', 'pv', '') <> '';
+  Result := RegQueryStringValue(HKLM, 'SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}', 'pv', Version);
   if not Result then
-    Result := RegQueryStringValue(HKCU, 'SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}', 'pv', '') <> '';
+    Result := RegQueryStringValue(HKCU, 'SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}', 'pv', Version);
 end;
 
 // 初始化安装
@@ -218,6 +249,8 @@ end;
 
 // 安装后操作
 procedure CurStepChanged(CurStep: TSetupStep);
+var
+  ErrorCode: Integer;
 begin
   if CurStep = ssPostInstall then
   begin
@@ -229,12 +262,12 @@ begin
     begin
       if not WizardSilent() then
       begin
-        if MsgBox('未检测到 Microsoft Edge WebView2 运行时。' + #13#10 + 
-                  '程序需要此组件才能正常运行。' + #13#10 + #13#10 + 
+        if MsgBox('未检测到 Microsoft Edge WebView2 运行时。' + #13#10 +
+                  '程序需要此组件才能正常运行。' + #13#10 + #13#10 +
                   '是否要立即下载并安装？', mbConfirmation, MB_YESNO) = IDYES then
         begin
           // 打开 WebView2 下载页面
-          ShellExec('open', 'https://developer.microsoft.com/microsoft-edge/webview2/', '', '', SW_SHOW, ewNoWait, 0);
+          ShellExec('open', 'https://developer.microsoft.com/microsoft-edge/webview2/', '', '', SW_SHOW, ewNoWait, ErrorCode);
         end;
       end;
     end;
@@ -260,21 +293,4 @@ begin
   // 允许通过命令行参数指定安装目录
   // 例如: setup.exe /DIR="C:\MyApps\CTWebPlayer"
   Result := ExpandConstant('{autopf}\{#AppName}');
-end;
-
-// 检查应用是否正在运行
-function IsAppRunning(const FileName: string): Boolean;
-var
-  FWMIService: Variant;
-  FSWbemLocator: Variant;
-  FWbemObjectSet: Variant;
-begin
-  Result := False;
-  try
-    FSWbemLocator := CreateOleObject('WBEMScripting.SWBEMLocator');
-    FWMIService := FSWbemLocator.ConnectServer('', 'root\CIMV2', '', '');
-    FWbemObjectSet := FWMIService.ExecQuery(Format('SELECT Name FROM Win32_Process WHERE Name="%s"', [FileName]));
-    Result := (FWbemObjectSet.Count > 0);
-  except
-  end;
 end;

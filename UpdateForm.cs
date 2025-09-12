@@ -12,7 +12,7 @@ namespace ctwebplayer
         private readonly UpdateManager _updateManager;
         private readonly CTWebPlayer.UpdateInfo _updateInfo;
         private bool _isDownloading = false;
-        private string _downloadedFilePath = null;
+        private string? _downloadedFilePath = null;
 
         public UpdateForm(CTWebPlayer.UpdateInfo updateInfo)
         {

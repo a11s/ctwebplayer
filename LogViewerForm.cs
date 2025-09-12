@@ -13,7 +13,7 @@ namespace ctwebplayer
     /// </summary>
     public partial class LogViewerForm : Form
     {
-        private System.Timers.Timer refreshTimer;
+        private System.Timers.Timer refreshTimer = null!; // 在 SetupRefreshTimer 中初始化
         private long lastFilePosition = 0;
         private LogLevel selectedLogLevel = LogLevel.Debug;
 

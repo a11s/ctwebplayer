@@ -12,17 +12,17 @@ namespace ctwebplayer
     public partial class ProxySettingsForm : Form
     {
         private ConfigManager _configManager;
-        private CheckBox chkEnableProxy;
-        private GroupBox grpProxySettings;
-        private Label lblHttpProxy;
-        private TextBox txtHttpProxy;
-        private Label lblHttpsProxy;
-        private TextBox txtHttpsProxy;
-        private Label lblSocks5;
-        private TextBox txtSocks5;
-        private Button btnSave;
-        private Button btnCancel;
-        private Label lblNote;
+        private CheckBox chkEnableProxy = null!;
+        private GroupBox grpProxySettings = null!;
+        private Label lblHttpProxy = null!;
+        private TextBox txtHttpProxy = null!;
+        private Label lblHttpsProxy = null!;
+        private TextBox txtHttpsProxy = null!;
+        private Label lblSocks5 = null!;
+        private TextBox txtSocks5 = null!;
+        private Button btnSave = null!;
+        private Button btnCancel = null!;
+        private Label lblNote = null!;
 
         /// <summary>
         /// 构造函数

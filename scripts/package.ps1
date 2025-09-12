@@ -1,6 +1,6 @@
-# CTWebPlayer 打包脚本
-# 用于将构建输出打包成发布版本
-# 依赖: 需要先运行 build.ps1
+# CTWebPlayer Packaging Script
+# Used to package build output into release version
+# Dependency: requires build.ps1 to be run first
 
 param(
     [string]$PublishDir = "publish",
@@ -9,185 +9,207 @@ param(
     [switch]$CreateInstaller = $false
 )
 
+# Get project root directory (parent of scripts directory)
+$projectRoot = Split-Path -Parent $PSScriptRoot
+
+# Convert relative paths to absolute paths based on project root
+if (-not [System.IO.Path]::IsPathRooted($PublishDir)) {
+    $PublishDir = Join-Path $projectRoot $PublishDir
+}
+if (-not [System.IO.Path]::IsPathRooted($PackageDir)) {
+    $PackageDir = Join-Path $projectRoot $PackageDir
+}
+
 Write-Host "=====================================" -ForegroundColor Cyan
-Write-Host "CTWebPlayer 打包脚本" -ForegroundColor Cyan
+Write-Host "CTWebPlayer Packaging Script" -ForegroundColor Cyan
 Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host ""
 
-# 检查构建输出是否存在
+# Check if build output exists
 if (-not (Test-Path $PublishDir)) {
-    Write-Host "错误: 未找到构建输出目录 '$PublishDir'" -ForegroundColor Red
-    Write-Host "请先运行 build.ps1 构建项目" -ForegroundColor Yellow
+    Write-Host "Error: Build output directory '$PublishDir' not found" -ForegroundColor Red
+    Write-Host "Please run build.ps1 first to build the project" -ForegroundColor Yellow
     exit 1
 }
 
 $exePath = Join-Path $PublishDir "ctwebplayer.exe"
 if (-not (Test-Path $exePath)) {
-    Write-Host "错误: 未找到可执行文件 '$exePath'" -ForegroundColor Red
+    Write-Host "Error: Executable file '$exePath' not found" -ForegroundColor Red
     exit 1
 }
 
-# 创建打包目录
-Write-Host "创建打包目录..." -ForegroundColor Yellow
+# Create package directory
+Write-Host "Creating package directory..." -ForegroundColor Yellow
 if (Test-Path $PackageDir) {
     Remove-Item -Path $PackageDir -Recurse -Force
 }
 New-Item -ItemType Directory -Path $PackageDir | Out-Null
-Write-Host "已创建目录: $PackageDir" -ForegroundColor Green
+Write-Host "Created directory: $PackageDir" -ForegroundColor Green
 
-# 设置发布文件名
+# Set release file names
 $timestamp = Get-Date -Format "yyyyMMdd"
 $zipFileName = "CTWebPlayer-v${Version}-win-x64.zip"
 $zipFilePath = Join-Path $PackageDir $zipFileName
 $checksumFileName = "CTWebPlayer-v${Version}-checksums.txt"
 $checksumFilePath = Join-Path $PackageDir $checksumFileName
 
-# 创建临时打包目录
+# Create temporary packaging directory
 $tempPackDir = Join-Path $PackageDir "CTWebPlayer"
 New-Item -ItemType Directory -Path $tempPackDir | Out-Null
 
-# 收集需要打包的文件
+# Collect files to package
 Write-Host ""
-Write-Host "收集文件..." -ForegroundColor Yellow
+Write-Host "Collecting files..." -ForegroundColor Yellow
 
-# 复制主程序
+# Copy main program
 Copy-Item $exePath -Destination $tempPackDir -Force
-Write-Host "已复制: ctwebplayer.exe" -ForegroundColor Green
+Write-Host "Copied: ctwebplayer.exe" -ForegroundColor Green
 
-# 复制配置文件（如果存在）
-$configPath = Join-Path $PublishDir "config.json"
-if (Test-Path $configPath) {
-    Copy-Item $configPath -Destination $tempPackDir -Force
-    Write-Host "已复制: config.json" -ForegroundColor Green
-} else {
-    # 如果发布目录没有，从项目根目录查找
-    if (Test-Path "config.json") {
-        Copy-Item "config.json" -Destination $tempPackDir -Force
-        Write-Host "已复制: config.json (从项目根目录)" -ForegroundColor Green
-    }
-}
+# Copy config file (if exists)
+# 注释掉 config.json 的复制，因为包含测试信息，不应该打包分发
+# $configPath = Join-Path $PublishDir "config.json"
+# if (Test-Path $configPath) {
+#     Copy-Item $configPath -Destination $tempPackDir -Force
+#     Write-Host "Copied: config.json" -ForegroundColor Green
+# } else {
+#     # If not in publish directory, check project root
+#     $configInRoot = Join-Path $projectRoot "config.json"
+#     if (Test-Path $configInRoot) {
+#         Copy-Item $configInRoot -Destination $tempPackDir -Force
+#         Write-Host "Copied: config.json (from project root)" -ForegroundColor Green
+#     }
+# }
 
-# 复制资源目录
+# Copy resource directory
 $resPath = Join-Path $PublishDir "res"
 if (Test-Path $resPath) {
     Copy-Item $resPath -Destination $tempPackDir -Recurse -Force
-    Write-Host "已复制: res/" -ForegroundColor Green
-} elseif (Test-Path "res") {
-    Copy-Item "res" -Destination $tempPackDir -Recurse -Force
-    Write-Host "已复制: res/ (从项目根目录)" -ForegroundColor Green
+    Write-Host "Copied: res/" -ForegroundColor Green
+} else {
+    $resInRoot = Join-Path $projectRoot "res"
+    if (Test-Path $resInRoot) {
+        Copy-Item $resInRoot -Destination $tempPackDir -Recurse -Force
+        Write-Host "Copied: res/ (from project root)" -ForegroundColor Green
+    }
 }
 
-# 复制许可证文件
+# Copy license files
 $licensePath = Join-Path $PublishDir "LICENSE"
 if (Test-Path $licensePath) {
     Copy-Item $licensePath -Destination $tempPackDir -Force
-    Write-Host "已复制: LICENSE" -ForegroundColor Green
-} elseif (Test-Path "LICENSE") {
-    Copy-Item "LICENSE" -Destination $tempPackDir -Force
-    Write-Host "已复制: LICENSE (从项目根目录)" -ForegroundColor Green
+    Write-Host "Copied: LICENSE" -ForegroundColor Green
+} else {
+    $licenseInRoot = Join-Path $projectRoot "LICENSE"
+    if (Test-Path $licenseInRoot) {
+        Copy-Item $licenseInRoot -Destination $tempPackDir -Force
+        Write-Host "Copied: LICENSE (from project root)" -ForegroundColor Green
+    }
 }
 
 $thirdPartyPath = Join-Path $PublishDir "THIRD_PARTY_LICENSES.txt"
 if (Test-Path $thirdPartyPath) {
     Copy-Item $thirdPartyPath -Destination $tempPackDir -Force
-    Write-Host "已复制: THIRD_PARTY_LICENSES.txt" -ForegroundColor Green
-} elseif (Test-Path "THIRD_PARTY_LICENSES.txt") {
-    Copy-Item "THIRD_PARTY_LICENSES.txt" -Destination $tempPackDir -Force
-    Write-Host "已复制: THIRD_PARTY_LICENSES.txt (从项目根目录)" -ForegroundColor Green
+    Write-Host "Copied: THIRD_PARTY_LICENSES.txt" -ForegroundColor Green
+} else {
+    $thirdPartyInRoot = Join-Path $projectRoot "THIRD_PARTY_LICENSES.txt"
+    if (Test-Path $thirdPartyInRoot) {
+        Copy-Item $thirdPartyInRoot -Destination $tempPackDir -Force
+        Write-Host "Copied: THIRD_PARTY_LICENSES.txt (from project root)" -ForegroundColor Green
+    }
 }
 
-# 创建 README.txt 文件
+# Create README.txt file
 $readmeContent = @"
 CTWebPlayer v$Version
 ===================
 
-Unity3D WebPlayer 专属浏览器
+Unity3D WebPlayer Dedicated Browser
 
-系统要求:
-- Windows 10 或更高版本 (64位)
-- Microsoft Edge WebView2 运行时 (如未安装，程序会提示下载)
+System Requirements:
+- Windows 10 or later (64-bit)
+- Microsoft Edge WebView2 Runtime (program will prompt to download if not installed)
 
-使用说明:
-1. 双击运行 ctwebplayer.exe
-2. 程序会自动检查并提示安装 WebView2 运行时（如需要）
-3. 在地址栏输入 Unity WebPlayer 游戏的 URL
-4. 享受游戏！
+Instructions:
+1. Double-click to run ctwebplayer.exe
+2. The program will automatically check and prompt to install WebView2 runtime (if needed)
+3. Enter the Unity WebPlayer game URL in the address bar
+4. Enjoy the game!
 
-功能特性:
-- 缓存管理
-- 代理设置支持
-- CORS 处理
-- 详细日志记录
+Features:
+- Cache management
+- Proxy settings support
+- CORS handling
+- Detailed logging
 
-许可证:
-本软件基于 BSD 3-Clause 许可证发布
-详见 LICENSE 文件
+License:
+This software is released under the BSD 3-Clause License
+See LICENSE file for details
 
-第三方组件许可证详见 THIRD_PARTY_LICENSES.txt
+Third-party component licenses can be found in THIRD_PARTY_LICENSES.txt
 
-项目主页: https://github.com/a11s/ctwebplayer
+Project homepage: https://github.com/a11s/ctwebplayer
 "@
 
 $readmeContent | Out-File -FilePath (Join-Path $tempPackDir "README.txt") -Encoding utf8
-Write-Host "已创建: README.txt" -ForegroundColor Green
+Write-Host "Created: README.txt" -ForegroundColor Green
 
-# 创建 ZIP 压缩包
+# Create ZIP archive
 Write-Host ""
-Write-Host "创建 ZIP 压缩包..." -ForegroundColor Yellow
+Write-Host "Creating ZIP archive..." -ForegroundColor Yellow
 
-# 使用 .NET 压缩功能
+# Use .NET compression functionality
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 
 try {
     [System.IO.Compression.ZipFile]::CreateFromDirectory($tempPackDir, $zipFilePath, 
         [System.IO.Compression.CompressionLevel]::Optimal, $false)
-    Write-Host "已创建: $zipFileName" -ForegroundColor Green
+    Write-Host "Created: $zipFileName" -ForegroundColor Green
     
     $zipInfo = Get-Item $zipFilePath
-    Write-Host "文件大小: $([math]::Round($zipInfo.Length / 1MB, 2)) MB" -ForegroundColor Cyan
+    Write-Host "File size: $([math]::Round($zipInfo.Length / 1MB, 2)) MB" -ForegroundColor Cyan
 } catch {
-    Write-Host "错误: 创建 ZIP 文件失败 - $_" -ForegroundColor Red
+    Write-Host "Error: Failed to create ZIP file - $_" -ForegroundColor Red
     exit 1
 }
 
-# 计算 SHA256 哈希值
+# Calculate SHA256 hash
 Write-Host ""
-Write-Host "计算文件哈希值..." -ForegroundColor Yellow
+Write-Host "Calculating file hashes..." -ForegroundColor Yellow
 
 $checksumContent = @()
 $checksumContent += "CTWebPlayer v$Version - SHA256 Checksums"
 $checksumContent += "======================================="
 $checksumContent += ""
 
-# 计算 ZIP 文件的哈希
+# Calculate ZIP file hash
 $zipHash = Get-FileHash -Path $zipFilePath -Algorithm SHA256
 $checksumContent += "$($zipHash.Hash)  $zipFileName"
 
-# 计算 EXE 文件的哈希
+# Calculate EXE file hash
 $exeFullPath = Join-Path $tempPackDir "ctwebplayer.exe"
 $exeHash = Get-FileHash -Path $exeFullPath -Algorithm SHA256
 $checksumContent += "$($exeHash.Hash)  ctwebplayer.exe"
 
-# 保存哈希文件
+# Save hash file
 $checksumContent | Out-File -FilePath $checksumFilePath -Encoding utf8
-Write-Host "已创建: $checksumFileName" -ForegroundColor Green
+Write-Host "Created: $checksumFileName" -ForegroundColor Green
 
-# 显示哈希值
+# Display hash values
 Write-Host ""
-Write-Host "SHA256 哈希值:" -ForegroundColor Yellow
+Write-Host "SHA256 hashes:" -ForegroundColor Yellow
 foreach ($line in $checksumContent) {
     if ($line -match "^[A-F0-9]{64}") {
         Write-Host $line -ForegroundColor DarkGray
     }
 }
 
-# 清理临时目录
+# Clean up temporary directory
 Write-Host ""
-Write-Host "清理临时文件..." -ForegroundColor Yellow
+Write-Host "Cleaning up temporary files..." -ForegroundColor Yellow
 Remove-Item -Path $tempPackDir -Recurse -Force
-Write-Host "已清理临时目录" -ForegroundColor Green
+Write-Host "Cleaned up temporary directory" -ForegroundColor Green
 
-# 生成发布信息
+# Generate release info
 $releaseInfoPath = Join-Path $PackageDir "release-info.json"
 $releaseInfo = @{
     version = $Version
@@ -202,28 +224,28 @@ $releaseInfo = @{
 }
 
 $releaseInfo | ConvertTo-Json -Depth 3 | Out-File -FilePath $releaseInfoPath -Encoding utf8
-Write-Host "已创建: release-info.json" -ForegroundColor Green
+Write-Host "Created: release-info.json" -ForegroundColor Green
 
-# 创建安装程序（如果指定）
+# Create installer (if specified)
 if ($CreateInstaller) {
     Write-Host ""
     Write-Host "=====================================" -ForegroundColor Cyan
-    Write-Host "创建安装程序..." -ForegroundColor Cyan
+    Write-Host "Creating installer..." -ForegroundColor Cyan
     Write-Host "=====================================" -ForegroundColor Cyan
     
     $installerScriptPath = Join-Path (Split-Path $PSScriptRoot -Parent) "installer\build-installer.ps1"
     if (Test-Path $installerScriptPath) {
-        # 调用安装程序构建脚本
+        # Call installer build script
         & $installerScriptPath -PublishDir $PublishDir -Version $Version
         
-        # 更新发布信息
+        # Update release info
         $setupFileName = "CTWebPlayer-v${Version}-Setup.exe"
         $setupFilePath = Join-Path $PackageDir $setupFileName
         if (Test-Path $setupFilePath) {
             $setupInfo = Get-Item $setupFilePath
             $setupHash = Get-FileHash -Path $setupFilePath -Algorithm SHA256
             
-            # 重新加载并更新 release-info.json
+            # Reload and update release-info.json
             $releaseInfo = Get-Content $releaseInfoPath | ConvertFrom-Json
             $releaseInfo.files += @{
                 name = $setupFileName
@@ -232,20 +254,20 @@ if ($CreateInstaller) {
             }
             
             $releaseInfo | ConvertTo-Json -Depth 3 | Out-File -FilePath $releaseInfoPath -Encoding utf8
-            Write-Host "已更新 release-info.json 包含安装程序信息" -ForegroundColor Green
+            Write-Host "Updated release-info.json with installer info" -ForegroundColor Green
         }
     } else {
-        Write-Host "警告: 未找到安装程序构建脚本: $installerScriptPath" -ForegroundColor Yellow
-        Write-Host "跳过安装程序创建" -ForegroundColor Yellow
+        Write-Host "Warning: Installer build script not found: $installerScriptPath" -ForegroundColor Yellow
+        Write-Host "Skipping installer creation" -ForegroundColor Yellow
     }
 }
 
 Write-Host ""
 Write-Host "=====================================" -ForegroundColor Cyan
-Write-Host "打包完成!" -ForegroundColor Green
-Write-Host "发布目录: $PackageDir" -ForegroundColor Cyan
-Write-Host "压缩包: $zipFileName" -ForegroundColor Cyan
+Write-Host "Packaging completed!" -ForegroundColor Green
+Write-Host "Release directory: $PackageDir" -ForegroundColor Cyan
+Write-Host "ZIP archive: $zipFileName" -ForegroundColor Cyan
 if ($CreateInstaller -and (Test-Path (Join-Path $PackageDir "CTWebPlayer-v${Version}-Setup.exe"))) {
-    Write-Host "安装程序: CTWebPlayer-v${Version}-Setup.exe" -ForegroundColor Cyan
+    Write-Host "Installer: CTWebPlayer-v${Version}-Setup.exe" -ForegroundColor Cyan
 }
 Write-Host "=====================================" -ForegroundColor Cyan

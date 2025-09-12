@@ -1,6 +1,6 @@
-# CTWebPlayer 发布主脚本
-# 协调整个发布流程：构建 -> 打包 -> 准备发布
-# 使用方法: .\scripts\release.ps1 -Version "1.0.0"
+# CTWebPlayer Release Main Script
+# Coordinates the entire release process: build -> package -> prepare release
+# Usage: .\scripts\release.ps1 -Version "1.0.0"
 
 param(
     [Parameter(Mandatory=$true)]
@@ -15,102 +15,92 @@ param(
     [string]$GitHubToken = $env:GITHUB_TOKEN
 )
 
-# 设置错误处理
+# Set error handling
 $ErrorActionPreference = "Stop"
 
 Write-Host "=====================================" -ForegroundColor Cyan
-Write-Host "CTWebPlayer 发布流程" -ForegroundColor Cyan
+Write-Host "CTWebPlayer Release Process" -ForegroundColor Cyan
 Write-Host "=====================================" -ForegroundColor Cyan
-Write-Host "版本: v$Version" -ForegroundColor Yellow
+Write-Host "Version: v$Version" -ForegroundColor Yellow
 Write-Host ""
 
-# 验证脚本目录
+# Verify script directory
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = Split-Path -Parent $scriptDir
 
-# 切换到项目根目录
+# Switch to project root directory
 Push-Location $projectRoot
 try {
-    # 步骤 1: 更新版本号
-    Write-Host "步骤 1: 更新项目版本号..." -ForegroundColor Yellow
+    # Step 1: Update version number
+    Write-Host "Step 1: Updating project version number..." -ForegroundColor Yellow
     $csprojPath = "ctwebplayer.csproj"
     if (Test-Path $csprojPath) {
         $csprojContent = Get-Content $csprojPath -Raw
         
-        # 更新版本号
-        $csprojContent = $csprojContent -replace '<Version>[\d\.]+</Version>', "<Version>$Version</Version>"
-        $csprojContent = $csprojContent -replace '<AssemblyVersion>[\d\.]+</AssemblyVersion>', "<AssemblyVersion>$Version.0</AssemblyVersion>"
-        $csprojContent = $csprojContent -replace '<FileVersion>[\d\.]+</FileVersion>', "<FileVersion>$Version.0</FileVersion>"
+        # Update version number
+        $versionPattern = '<Version>[\d\.]+</Version>'
+        $assemblyPattern = '<AssemblyVersion>[\d\.]+</AssemblyVersion>'
+        $filePattern = '<FileVersion>[\d\.]+</FileVersion>'
         
-        # 如果没有版本标签，添加它们
-        if ($csprojContent -notmatch '<Version>') {
-            $propertyGroupEnd = $csprojContent.IndexOf('</PropertyGroup>')
-            if ($propertyGroupEnd -gt 0) {
-                $versionTags = @"
-    <Version>$Version</Version>
-    <AssemblyVersion>$Version.0</AssemblyVersion>
-    <FileVersion>$Version.0</FileVersion>
-  </PropertyGroup>"@
-                $csprojContent = $csprojContent.Remove($propertyGroupEnd, '</PropertyGroup>'.Length)
-                $csprojContent = $csprojContent.Insert($propertyGroupEnd, $versionTags)
-            }
-        }
+        $csprojContent = $csprojContent -replace $versionPattern, "<Version>$Version</Version>"
+        $csprojContent = $csprojContent -replace $assemblyPattern, "<AssemblyVersion>$Version.0</AssemblyVersion>"
+        $csprojContent = $csprojContent -replace $filePattern, "<FileVersion>$Version.0</FileVersion>"
         
         $csprojContent | Out-File $csprojPath -Encoding utf8
-        Write-Host "已更新版本号到: $Version" -ForegroundColor Green
+        Write-Host "Updated version to: $Version" -ForegroundColor Green
     } else {
-        Write-Host "警告: 未找到项目文件 $csprojPath" -ForegroundColor Yellow
+        Write-Host "Warning: Project file $csprojPath not found" -ForegroundColor Yellow
     }
     
-    # 步骤 2: 运行测试（可选）
+    # Step 2: Run tests (optional)
     if (-not $SkipTests) {
         Write-Host ""
-        Write-Host "步骤 2: 运行测试..." -ForegroundColor Yellow
-        # 如果有测试项目，在这里运行
+        Write-Host "Step 2: Running tests..." -ForegroundColor Yellow
+        # If there are test projects, run them here
         # dotnet test
-        Write-Host "跳过测试（暂无测试项目）" -ForegroundColor DarkGray
+        Write-Host "Skipping tests (no test project available)" -ForegroundColor DarkGray
     }
     
-    # 步骤 3: 构建项目
+    # Step 3: Build project
     if (-not $SkipBuild) {
         Write-Host ""
-        Write-Host "步骤 3: 构建项目..." -ForegroundColor Yellow
+        Write-Host "Step 3: Building project..." -ForegroundColor Yellow
         & "$scriptDir\build.ps1" -Configuration $Configuration -Runtime $Runtime
         if ($LASTEXITCODE -ne 0) {
-            throw "构建失败"
+            throw "Build failed"
         }
     } else {
         Write-Host ""
-        Write-Host "跳过构建步骤" -ForegroundColor DarkGray
+        Write-Host "Skipping build step" -ForegroundColor DarkGray
     }
     
-    # 步骤 4: 打包发布文件
+    # Step 4: Package release files
     Write-Host ""
-    Write-Host "步骤 4: 打包发布文件..." -ForegroundColor Yellow
+    Write-Host "Step 4: Packaging release files..." -ForegroundColor Yellow
     & "$scriptDir\package.ps1" -Version $Version
     if ($LASTEXITCODE -ne 0) {
-        throw "打包失败"
+        throw "Packaging failed"
     }
     
-    # 步骤 5: 创建 CHANGELOG 条目
+    # Step 5: Create CHANGELOG entry
     Write-Host ""
-    Write-Host "步骤 5: 准备更新日志..." -ForegroundColor Yellow
+    Write-Host "Step 5: Preparing changelog..." -ForegroundColor Yellow
     $changelogPath = "CHANGELOG.md"
     $changelogTemplate = @"
-# 更新日志
+# Changelog
 
 ## [v$Version] - $(Get-Date -Format "yyyy-MM-dd")
 
-### 新增功能
+### New Features
 - 
 
-### 改进
+### Improvements
 - 
 
-### 修复
+### Bug Fixes
 - 
 
-### 其他
+### Other
 - 
 
 ---
@@ -119,111 +109,111 @@ try {
     
     if (-not (Test-Path $changelogPath)) {
         $changelogTemplate | Out-File $changelogPath -Encoding utf8
-        Write-Host "已创建 CHANGELOG.md 模板" -ForegroundColor Green
+        Write-Host "Created CHANGELOG.md template" -ForegroundColor Green
     } else {
-        Write-Host "CHANGELOG.md 已存在，请手动更新" -ForegroundColor Yellow
+        Write-Host "CHANGELOG.md already exists, please update manually" -ForegroundColor Yellow
     }
     
-    # 步骤 6: 创建 Git 标签（可选）
+    # Step 6: Create Git tag (optional)
     if ($CreateTag) {
         Write-Host ""
-        Write-Host "步骤 6: 创建 Git 标签..." -ForegroundColor Yellow
+        Write-Host "Step 6: Creating Git tag..." -ForegroundColor Yellow
         
-        # 检查是否有未提交的更改
+        # Check for uncommitted changes
         $gitStatus = git status --porcelain
         if ($gitStatus) {
-            Write-Host "警告: 存在未提交的更改" -ForegroundColor Yellow
-            Write-Host "请先提交更改再创建标签" -ForegroundColor Yellow
+            Write-Host "Warning: Uncommitted changes detected" -ForegroundColor Yellow
+            Write-Host "Please commit changes before creating tag" -ForegroundColor Yellow
         } else {
             $tagName = "v$Version"
             git tag -a $tagName -m "Release version $Version"
             if ($LASTEXITCODE -eq 0) {
-                Write-Host "已创建 Git 标签: $tagName" -ForegroundColor Green
-                Write-Host "使用 'git push origin $tagName' 推送标签到远程仓库" -ForegroundColor Cyan
+                Write-Host "Created Git tag: $tagName" -ForegroundColor Green
+                Write-Host "Use 'git push origin $tagName' to push tag to remote repository" -ForegroundColor Cyan
             } else {
-                Write-Host "创建 Git 标签失败" -ForegroundColor Red
+                Write-Host "Failed to create Git tag" -ForegroundColor Red
             }
         }
     }
     
-    # 生成发布摘要
+    # Generate release summary
     Write-Host ""
     Write-Host "=====================================" -ForegroundColor Cyan
-    Write-Host "发布准备完成!" -ForegroundColor Green
+    Write-Host "Release preparation complete!" -ForegroundColor Green
     Write-Host "=====================================" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "版本: v$Version" -ForegroundColor Cyan
-    Write-Host "发布文件位置: release\" -ForegroundColor Cyan
+    Write-Host "Version: v$Version" -ForegroundColor Cyan
+    Write-Host "Release files location: release\" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "发布文件列表:" -ForegroundColor Yellow
+    Write-Host "Release file list:" -ForegroundColor Yellow
     Get-ChildItem "release" | ForEach-Object {
         Write-Host "  - $($_.Name)" -ForegroundColor Gray
     }
     Write-Host ""
-    Write-Host "下一步操作:" -ForegroundColor Yellow
-    Write-Host "1. 更新 CHANGELOG.md 文件" -ForegroundColor Gray
-    Write-Host "2. 提交所有更改到 Git" -ForegroundColor Gray
-    Write-Host "3. 推送代码和标签到 GitHub" -ForegroundColor Gray
-    Write-Host "4. 在 GitHub 上创建 Release" -ForegroundColor Gray
-    Write-Host "5. 上传 release/ 目录中的文件作为 Release 资产" -ForegroundColor Gray
+    Write-Host "Next steps:" -ForegroundColor Yellow
+    Write-Host "1. Update CHANGELOG.md file" -ForegroundColor Gray
+    Write-Host "2. Commit all changes to Git" -ForegroundColor Gray
+    Write-Host "3. Push code and tags to GitHub" -ForegroundColor Gray
+    Write-Host "4. Create Release on GitHub" -ForegroundColor Gray
+    Write-Host "5. Upload files from release/ directory as Release assets" -ForegroundColor Gray
     Write-Host ""
     
-    # 生成 GitHub Release 草稿内容
+    # Generate GitHub Release draft content
     $releaseDraftPath = "release\RELEASE_DRAFT.md"
     $releaseDraft = @"
 # CTWebPlayer v$Version
 
-发布日期: $(Get-Date -Format "yyyy-MM-dd")
+Release Date: $(Get-Date -Format "yyyy-MM-dd")
 
-## 下载
+## Downloads
 
-- [CTWebPlayer-v$Version-win-x64.zip](../../releases/download/v$Version/CTWebPlayer-v$Version-win-x64.zip) - Windows x64 版本
+- [CTWebPlayer-v$Version-win-x64.zip](../../releases/download/v$Version/CTWebPlayer-v$Version-win-x64.zip) - Windows x64 version
 
-## 系统要求
+## System Requirements
 
-- Windows 10 或更高版本 (64位)
-- Microsoft Edge WebView2 运行时
+- Windows 10 or later (64-bit)
+- Microsoft Edge WebView2 Runtime
 
-## 更新内容
+## What's New
 
-### 新增功能
+### New Features
 - 
 
-### 改进
+### Improvements
 - 
 
-### 修复
+### Bug Fixes
 - 
 
-## 安装说明
+## Installation Instructions
 
-1. 下载 ZIP 文件
-2. 解压到任意目录
-3. 运行 ctwebplayer.exe
-4. 程序会自动检查并提示安装 WebView2 运行时（如需要）
+1. Download the ZIP file
+2. Extract to any directory
+3. Run ctwebplayer.exe
+4. The program will automatically check and prompt to install WebView2 runtime (if needed)
 
-## 文件校验
+## File Verification
 
-请查看 `CTWebPlayer-v$Version-checksums.txt` 文件以验证下载文件的完整性。
+Please check the CTWebPlayer-v$Version-checksums.txt file to verify the integrity of downloaded files.
 
-## 许可证
+## License
 
-本软件基于 BSD 3-Clause 许可证发布。
+This software is released under the BSD 3-Clause License.
 "@
     
     $releaseDraft | Out-File $releaseDraftPath -Encoding utf8
-    Write-Host "已生成 GitHub Release 草稿: $releaseDraftPath" -ForegroundColor Green
+    Write-Host "Generated GitHub Release draft: $releaseDraftPath" -ForegroundColor Green
     
-    # 步骤 7: 创建 GitHub Release（可选）
+    # Step 7: Create GitHub Release (optional)
     if ($CreateGitHubRelease) {
         Write-Host ""
-        Write-Host "步骤 7: 创建 GitHub Release..." -ForegroundColor Yellow
+        Write-Host "Step 7: Creating GitHub Release..." -ForegroundColor Yellow
         
         if (-not $GitHubToken) {
-            Write-Host "错误: 未提供 GitHub Token" -ForegroundColor Red
-            Write-Host "请设置 GITHUB_TOKEN 环境变量或使用 -GitHubToken 参数" -ForegroundColor Yellow
+            Write-Host "Error: GitHub Token not provided" -ForegroundColor Red
+            Write-Host "Please set GITHUB_TOKEN environment variable or use -GitHubToken parameter" -ForegroundColor Yellow
         } else {
-            # GitHub API 设置
+            # GitHub API settings
             $headers = @{
                 "Authorization" = "Bearer $GitHubToken"
                 "Accept" = "application/vnd.github.v3+json"
@@ -233,15 +223,15 @@ try {
             $apiUrl = "https://api.github.com/repos/$repoOwner/$repoName/releases"
             
             try {
-                # 读取 Release 草稿内容
+                # Read Release draft content
                 $releaseDraftPath = "release\RELEASE_DRAFT.md"
                 if (Test-Path $releaseDraftPath) {
                     $releaseBody = Get-Content $releaseDraftPath -Raw
                 } else {
-                    $releaseBody = "CTWebPlayer v$Version - 自动发布"
+                    $releaseBody = "CTWebPlayer v$Version - Automated Release"
                 }
                 
-                # 创建 Release
+                # Create Release
                 $releaseData = @{
                     tag_name = "v$Version"
                     target_commitish = "main"
@@ -251,25 +241,25 @@ try {
                     prerelease = $false
                 } | ConvertTo-Json
                 
-                Write-Host "创建 GitHub Release..." -ForegroundColor Cyan
+                Write-Host "Creating GitHub Release..." -ForegroundColor Cyan
                 $release = Invoke-RestMethod -Uri $apiUrl -Method Post -Headers $headers -Body $releaseData -ContentType "application/json"
                 $releaseId = $release.id
                 $uploadUrl = $release.upload_url -replace '\{.*\}', ''
                 
-                Write-Host "Release 创建成功: $($release.html_url)" -ForegroundColor Green
+                Write-Host "Release created successfully: $($release.html_url)" -ForegroundColor Green
                 
-                # 上传发布文件
+                # Upload release files
                 Write-Host ""
-                Write-Host "上传发布文件..." -ForegroundColor Yellow
+                Write-Host "Uploading release files..." -ForegroundColor Yellow
                 
                 $releaseFiles = Get-ChildItem "release" -File | Where-Object {
                     $_.Extension -in @('.zip', '.txt') -and $_.Name -ne 'RELEASE_DRAFT.md' -and $_.Name -ne 'release-info.json'
                 }
                 
                 foreach ($file in $releaseFiles) {
-                    Write-Host "上传: $($file.Name)..." -ForegroundColor Cyan
+                    Write-Host "Uploading: $($file.Name)..." -ForegroundColor Cyan
                     
-                    # 确定内容类型
+                    # Determine content type
                     $contentType = switch ($file.Extension) {
                         '.zip' { 'application/zip' }
                         '.txt' { 'text/plain' }
@@ -287,27 +277,27 @@ try {
                     
                     try {
                         $asset = Invoke-RestMethod -Uri $uploadUri -Method Post -Headers $uploadHeaders -Body $fileBytes
-                        Write-Host "✓ 已上传: $($file.Name)" -ForegroundColor Green
+                        Write-Host "Uploaded: $($file.Name)" -ForegroundColor Green
                     } catch {
-                        Write-Host "✗ 上传失败: $($file.Name) - $_" -ForegroundColor Red
+                        Write-Host "Upload failed: $($file.Name) - $_" -ForegroundColor Red
                     }
                 }
                 
                 Write-Host ""
-                Write-Host "GitHub Release 发布完成！" -ForegroundColor Green
-                Write-Host "查看 Release: $($release.html_url)" -ForegroundColor Cyan
+                Write-Host "GitHub Release published!" -ForegroundColor Green
+                Write-Host "View Release: $($release.html_url)" -ForegroundColor Cyan
                 
             } catch {
-                Write-Host "创建 GitHub Release 失败: $_" -ForegroundColor Red
-                Write-Host "请手动在 GitHub 上创建 Release" -ForegroundColor Yellow
+                Write-Host "Failed to create GitHub Release: $_" -ForegroundColor Red
+                Write-Host "Please create Release manually on GitHub" -ForegroundColor Yellow
             }
         }
     }
     
-    # 显示完成信息
+    # Display completion message
     Write-Host ""
     Write-Host "=====================================" -ForegroundColor Cyan
-    Write-Host "🎉 所有步骤完成！" -ForegroundColor Green
+    Write-Host "All steps completed!" -ForegroundColor Green
     Write-Host "=====================================" -ForegroundColor Cyan
     
 } finally {

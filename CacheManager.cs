@@ -80,7 +80,7 @@ namespace ctwebplayer
         /// <summary>
         /// 获取URL对应的缓存文件路径
         /// </summary>
-        public string GetCacheFilePath(string url)
+        public string? GetCacheFilePath(string url)
         {
             try
             {
@@ -277,19 +277,22 @@ namespace ctwebplayer
         /// </summary>
         public async Task ClearCacheAsync()
         {
-            try
+            await Task.Run(() =>
             {
-                if (Directory.Exists(_cacheRootPath))
+                try
                 {
-                    Directory.Delete(_cacheRootPath, true);
-                    Directory.CreateDirectory(_cacheRootPath);
-                    LogManager.Instance.Info("缓存已清理");
+                    if (Directory.Exists(_cacheRootPath))
+                    {
+                        Directory.Delete(_cacheRootPath, true);
+                        Directory.CreateDirectory(_cacheRootPath);
+                        LogManager.Instance.Info("缓存已清理");
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                LogManager.Instance.Error("清理缓存失败", ex);
-            }
+                catch (Exception ex)
+                {
+                    LogManager.Instance.Error("清理缓存失败", ex);
+                }
+            });
         }
 
         /// <summary>
@@ -342,8 +345,8 @@ namespace ctwebplayer
     public class CacheResult
     {
         public bool Success { get; set; }
-        public byte[] Data { get; set; }
-        public string MimeType { get; set; }
-        public string FilePath { get; set; }
+        public byte[]? Data { get; set; }
+        public string? MimeType { get; set; }
+        public string? FilePath { get; set; }
     }
 }

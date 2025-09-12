@@ -20,18 +20,18 @@ namespace ctwebplayer
         private const string UPDATE_BATCH_FILE = "update.bat";
         
         private readonly LogManager _logger;
-        private CTWebPlayer.UpdateInfo _latestUpdate;
-        private CancellationTokenSource _downloadCancellation;
+        private CTWebPlayer.UpdateInfo? _latestUpdate;
+        private CancellationTokenSource? _downloadCancellation;
 
         /// <summary>
         /// 下载进度变化事件
         /// </summary>
-        public event EventHandler<DownloadProgressEventArgs> DownloadProgressChanged;
+        public event EventHandler<DownloadProgressEventArgs>? DownloadProgressChanged;
 
         /// <summary>
         /// 更新检查完成事件
         /// </summary>
-        public event EventHandler<UpdateCheckCompletedEventArgs> UpdateCheckCompleted;
+        public event EventHandler<UpdateCheckCompletedEventArgs>? UpdateCheckCompleted;
 
         public UpdateManager()
         {
@@ -55,7 +55,11 @@ namespace ctwebplayer
                     .WithHeader("Accept", "application/vnd.github.v3+json")
                     .GetStringAsync();
 
-                dynamic json = Newtonsoft.Json.JsonConvert.DeserializeObject(response);
+                dynamic? json = Newtonsoft.Json.JsonConvert.DeserializeObject(response);
+                if (json == null)
+                {
+                    throw new Exception("无法解析 GitHub API 响应");
+                }
                 _latestUpdate = CTWebPlayer.UpdateInfo.FromGitHubRelease(json);
 
                 _logger.Info($"获取到最新版本信息: {_latestUpdate.Version}");
@@ -121,7 +125,7 @@ namespace ctwebplayer
         /// </summary>
         /// <param name="updateInfo">更新信息</param>
         /// <returns>下载的文件路径，如果失败则返回 null</returns>
-        public async Task<string> DownloadUpdateAsync(CTWebPlayer.UpdateInfo updateInfo)
+        public async Task<string?> DownloadUpdateAsync(CTWebPlayer.UpdateInfo updateInfo)
         {
             if (updateInfo == null || string.IsNullOrEmpty(updateInfo.DownloadUrl))
             {
@@ -260,7 +264,11 @@ namespace ctwebplayer
 
                 // 获取当前程序路径
                 string currentExePath = Application.ExecutablePath;
-                string currentDir = Path.GetDirectoryName(currentExePath);
+                string? currentDir = Path.GetDirectoryName(currentExePath);
+                if (string.IsNullOrEmpty(currentDir))
+                {
+                    throw new InvalidOperationException("无法获取当前程序目录");
+                }
                 string currentExeName = Path.GetFileName(currentExePath);
 
                 // 创建更新批处理脚本
@@ -318,7 +326,7 @@ exit
         /// <summary>
         /// 获取最后检查的更新信息
         /// </summary>
-        public CTWebPlayer.UpdateInfo GetLatestUpdateInfo()
+        public CTWebPlayer.UpdateInfo? GetLatestUpdateInfo()
         {
             return _latestUpdate;
         }
@@ -340,7 +348,7 @@ exit
     public class UpdateCheckCompletedEventArgs : EventArgs
     {
         public bool UpdateAvailable { get; set; }
-        public CTWebPlayer.UpdateInfo UpdateInfo { get; set; }
-        public Exception Error { get; set; }
+        public CTWebPlayer.UpdateInfo? UpdateInfo { get; set; }
+        public Exception? Error { get; set; }
     }
 }
