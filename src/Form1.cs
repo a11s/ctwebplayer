@@ -371,7 +371,9 @@ namespace ctwebplayer
                     {
                         _cacheHits++;
                         UpdateCacheStatus();
+                        #if DEBUG
                         LogManager.Instance.Debug($"缓存命中：{uri}");
+                        #endif
                         _ = RequestLogger.Instance.WriteRequestLog(uri, "HIT", result.Data!.LongLength, $"Cache file: {result.FilePath}");
                     }
                 }
@@ -390,7 +392,9 @@ namespace ctwebplayer
                     {
                         _cacheMisses++;
                         UpdateCacheStatus();
+                        #if DEBUG
                         LogManager.Instance.Debug($"缓存未命中，已下载并缓存：{uri}");
+                        #endif
                         _ = RequestLogger.Instance.WriteRequestLog(uri, "MISS", result.Data!.LongLength, $"Download time: {stopwatch.ElapsedMilliseconds}ms, Cache file: {result.FilePath}");
                     }
                     else

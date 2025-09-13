@@ -273,6 +273,9 @@ namespace ctwebplayer
         /// </summary>
         public string BaseURL { get; set; } = "https://game.ero-labs.live";
 
+        /// <summary>
+        /// 调试模式（开启后会记录请求日志）
+        /// </summary>
         public bool DebugMode { get; set; } = false;
 
         /// <summary>
