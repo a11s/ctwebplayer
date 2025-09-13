@@ -134,7 +134,7 @@ namespace ctwebplayer
                 Ui = new UIConfig
                 {
                     WindowWidth = 1236,
-                    WindowHeight = 740
+                    WindowHeight = 840
                 },
                 DebugMode = false,
                 BaseURL = "https://mg.ero-labs.live",

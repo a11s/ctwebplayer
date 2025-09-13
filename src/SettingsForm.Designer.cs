@@ -31,6 +31,7 @@ namespace ctwebplayer
             components = new System.ComponentModel.Container();
             tabControl = new TabControl();
             tabNetwork = new TabPage();
+            linkLabel1 = new LinkLabel();
             lblBaseURL = new Label();
             txtBaseURL = new TextBox();
             chkAutoIframeNav = new CheckBox();
@@ -78,7 +79,6 @@ namespace ctwebplayer
             btnApply = new Button();
             btnCancel = new Button();
             toolTip1 = new ToolTip(components);
-            linkLabel1 = new LinkLabel();
             tabControl.SuspendLayout();
             tabNetwork.SuspendLayout();
             grpProxySettings.SuspendLayout();
@@ -121,6 +121,17 @@ namespace ctwebplayer
             tabNetwork.TabIndex = 0;
             tabNetwork.Text = "网络";
             tabNetwork.UseVisualStyleBackColor = true;
+            // 
+            // linkLabel1
+            // 
+            linkLabel1.AutoSize = true;
+            linkLabel1.Location = new Point(176, 94);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(104, 17);
+            linkLabel1.TabIndex = 6;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "没有代理服务器？";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // lblBaseURL
             // 
@@ -439,7 +450,7 @@ namespace ctwebplayer
             numWindowHeight.Name = "numWindowHeight";
             numWindowHeight.Size = new Size(62, 23);
             numWindowHeight.TabIndex = 5;
-            numWindowHeight.Value = new decimal(new int[] { 640, 0, 0, 0 });
+            numWindowHeight.Value = new decimal(new int[] { 840, 0, 0, 0 });
             // 
             // lblHeight
             // 
@@ -470,7 +481,7 @@ namespace ctwebplayer
             numWindowWidth.Name = "numWindowWidth";
             numWindowWidth.Size = new Size(62, 23);
             numWindowWidth.TabIndex = 2;
-            numWindowWidth.Value = new decimal(new int[] { 1136, 0, 0, 0 });
+            numWindowWidth.Value = new decimal(new int[] { 1236, 0, 0, 0 });
             // 
             // lblWidth
             // 
@@ -491,9 +502,9 @@ namespace ctwebplayer
             lblWindowSize.Size = new Size(78, 24);
             lblWindowSize.TabIndex = 0;
             lblWindowSize.Text = "窗口大小设置";
-            //
+            // 
             // tabLogin
-            //
+            // 
             tabLogin.Controls.Add(grpLoginSettings);
             tabLogin.Location = new Point(4, 26);
             tabLogin.Margin = new Padding(2, 3, 2, 3);
@@ -503,9 +514,9 @@ namespace ctwebplayer
             tabLogin.TabIndex = 3;
             tabLogin.Text = "登录引导";
             tabLogin.UseVisualStyleBackColor = true;
-            //
+            // 
             // grpLoginSettings
-            //
+            // 
             grpLoginSettings.Controls.Add(chkEnableLogin);
             grpLoginSettings.Controls.Add(chkShowSkipButton);
             grpLoginSettings.Controls.Add(lblCookieName);
@@ -522,9 +533,9 @@ namespace ctwebplayer
             grpLoginSettings.TabIndex = 0;
             grpLoginSettings.TabStop = false;
             grpLoginSettings.Text = "登录引导设置";
-            //
+            // 
             // chkEnableLogin
-            //
+            // 
             chkEnableLogin.AutoSize = true;
             chkEnableLogin.Location = new Point(16, 28);
             chkEnableLogin.Margin = new Padding(2, 3, 2, 3);
@@ -534,9 +545,9 @@ namespace ctwebplayer
             chkEnableLogin.Text = "启用登录引导";
             chkEnableLogin.UseVisualStyleBackColor = true;
             chkEnableLogin.CheckedChanged += ChkEnableLogin_CheckedChanged;
-            //
+            // 
             // chkShowSkipButton
-            //
+            // 
             chkShowSkipButton.AutoSize = true;
             chkShowSkipButton.Location = new Point(16, 57);
             chkShowSkipButton.Margin = new Padding(2, 3, 2, 3);
@@ -545,9 +556,9 @@ namespace ctwebplayer
             chkShowSkipButton.TabIndex = 1;
             chkShowSkipButton.Text = "显示跳过按钮";
             chkShowSkipButton.UseVisualStyleBackColor = true;
-            //
+            // 
             // lblCookieName
-            //
+            // 
             lblCookieName.Location = new Point(16, 90);
             lblCookieName.Margin = new Padding(2, 0, 2, 0);
             lblCookieName.Name = "lblCookieName";
@@ -555,18 +566,18 @@ namespace ctwebplayer
             lblCookieName.TabIndex = 2;
             lblCookieName.Text = "Cookie 名称:";
             lblCookieName.TextAlign = ContentAlignment.MiddleRight;
-            //
+            // 
             // txtCookieName
-            //
+            // 
             txtCookieName.Location = new Point(107, 90);
             txtCookieName.Margin = new Padding(2, 3, 2, 3);
             txtCookieName.Name = "txtCookieName";
             txtCookieName.PlaceholderText = "例如: erolabsnickname";
             txtCookieName.Size = new Size(194, 23);
             txtCookieName.TabIndex = 3;
-            //
+            // 
             // lblLoginUrl
-            //
+            // 
             lblLoginUrl.Location = new Point(16, 123);
             lblLoginUrl.Margin = new Padding(2, 0, 2, 0);
             lblLoginUrl.Name = "lblLoginUrl";
@@ -574,18 +585,18 @@ namespace ctwebplayer
             lblLoginUrl.TabIndex = 4;
             lblLoginUrl.Text = "登录页路径:";
             lblLoginUrl.TextAlign = ContentAlignment.MiddleRight;
-            //
+            // 
             // txtLoginUrl
-            //
+            // 
             txtLoginUrl.Location = new Point(107, 123);
             txtLoginUrl.Margin = new Padding(2, 3, 2, 3);
             txtLoginUrl.Name = "txtLoginUrl";
             txtLoginUrl.PlaceholderText = "例如: /cn/login.html";
             txtLoginUrl.Size = new Size(194, 23);
             txtLoginUrl.TabIndex = 5;
-            //
+            // 
             // lblRegisterUrl
-            //
+            // 
             lblRegisterUrl.Location = new Point(16, 156);
             lblRegisterUrl.Margin = new Padding(2, 0, 2, 0);
             lblRegisterUrl.Name = "lblRegisterUrl";
@@ -593,16 +604,16 @@ namespace ctwebplayer
             lblRegisterUrl.TabIndex = 6;
             lblRegisterUrl.Text = "注册页地址:";
             lblRegisterUrl.TextAlign = ContentAlignment.MiddleRight;
-            //
+            // 
             // txtRegisterUrl
-            //
+            // 
             txtRegisterUrl.Location = new Point(107, 156);
             txtRegisterUrl.Margin = new Padding(2, 3, 2, 3);
             txtRegisterUrl.Name = "txtRegisterUrl";
             txtRegisterUrl.PlaceholderText = "完整的注册页URL";
             txtRegisterUrl.Size = new Size(194, 23);
             txtRegisterUrl.TabIndex = 7;
-            //
+            // 
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -639,17 +650,6 @@ namespace ctwebplayer
             btnCancel.TabIndex = 3;
             btnCancel.Text = "取消";
             btnCancel.UseVisualStyleBackColor = true;
-            // 
-            // linkLabel1
-            // 
-            linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(176, 94);
-            linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(104, 17);
-            linkLabel1.TabIndex = 6;
-            linkLabel1.TabStop = true;
-            linkLabel1.Text = "没有代理服务器？";
-            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // SettingsForm
             // 

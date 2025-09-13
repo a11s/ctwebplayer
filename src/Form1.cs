@@ -1235,22 +1235,73 @@ namespace ctwebplayer
 
 
         /// <summary>
-        /// 窗体关闭时清理资源
+        /// 窗体即将关闭时的处理
         /// </summary>
-        protected override async void OnFormClosed(FormClosedEventArgs e)
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            base.OnFormClosed(e);
+            LogManager.Instance.Info("OnFormClosing 开始执行");
             
-            // 注销全局热键
-            UnregisterGlobalHotkeys();
+            try
+            {
+                // 同步清理资源
+                LogManager.Instance.Info("准备注销全局热键");
+                UnregisterGlobalHotkeys();
+                
+                // 停止 WebView2
+                if (webView2 != null && webView2.CoreWebView2 != null)
+                {
+                    LogManager.Instance.Info("准备停止 WebView2");
+                    try
+                    {
+                        webView2.CoreWebView2.Stop();
+                        webView2.CoreWebView2.Navigate("about:blank");
+                    }
+                    catch (Exception ex)
+                    {
+                        LogManager.Instance.Error("停止 WebView2 时出错", ex);
+                    }
+                }
+                
+                // 释放缓存管理器
+                LogManager.Instance.Info("准备释放缓存管理器");
+                _cacheManager?.Dispose();
+                
+                LogManager.Instance.Info("OnFormClosing 执行完毕，准备退出进程");
+                
+                // 立即强制退出进程
+                LogManager.Instance.Info("强制调用 Environment.Exit(0)");
+                LogManager.Instance.FlushAsync().Wait(1000); // 等待最多1秒让日志写入
+                Environment.Exit(0);
+            }
+            catch (Exception ex)
+            {
+                // 即使出错也要确保退出
+                LogManager.Instance.Error("OnFormClosing 执行时出错", ex);
+                Environment.Exit(1);
+            }
             
-            _cacheManager?.Dispose();
+            base.OnFormClosing(e);
+        }
+
+        /// <summary>
+        /// 窗体关闭时清理资源（备用方法）
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            LogManager.Instance.Info("OnFormClosed 开始执行（如果看到这条日志说明 OnFormClosing 没有正常退出）");
             
-            // 记录应用程序关闭
-            LogManager.Instance.Info("应用程序关闭");
-            
-            // 确保所有日志都已写入
-            await LogManager.Instance.FlushAsync();
+            try
+            {
+                base.OnFormClosed(e);
+                
+                // 如果执行到这里，说明 OnFormClosing 中的 Environment.Exit 没有生效
+                // 再次尝试退出
+                Environment.Exit(0);
+            }
+            catch (Exception ex)
+            {
+                Environment.Exit(1);
+            }
         }
 
         /// <summary>

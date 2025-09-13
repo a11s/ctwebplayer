@@ -157,7 +157,7 @@ namespace ctwebplayer
         private void BtnResetSize_Click(object sender, EventArgs e)
         {
             numWindowWidth.Value = 1236;
-            numWindowHeight.Value = 740;
+            numWindowHeight.Value = 840;
         }
 
         /// <summary>
