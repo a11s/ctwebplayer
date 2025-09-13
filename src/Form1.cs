@@ -1479,6 +1479,62 @@ namespace ctwebplayer
             }
         }
 
+        /// <summary>
+        /// GitHub菜单项点击事件
+        /// </summary>
+        private void githubMenuItem_Click(object? sender, EventArgs e)
+        {
+            try
+            {
+                const string githubUrl = "https://github.com/a11s/ctwebplayer";
+                
+                LogManager.Instance.Info($"打开GitHub源码：{githubUrl}");
+                
+                // 在默认浏览器中打开GitHub链接
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = githubUrl,
+                    UseShellExecute = true
+                });
+                
+                statusLabel.Text = "已打开GitHub源码";
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("打开GitHub时出错", ex);
+                MessageBox.Show($"打开GitHub时出错：{ex.Message}", "错误",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 手机版下载菜单项点击事件
+        /// </summary>
+        private void mobileDownloadMenuItem_Click(object? sender, EventArgs e)
+        {
+            try
+            {
+                const string mobileDownloadUrl = "https://game.erolabsshare.net/app/627a8937/Cherry_Tale";
+                
+                LogManager.Instance.Info($"打开手机版下载：{mobileDownloadUrl}");
+                
+                // 在默认浏览器中打开手机版下载链接
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = mobileDownloadUrl,
+                    UseShellExecute = true
+                });
+                
+                statusLabel.Text = "已打开手机版下载页面";
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("打开手机版下载页面时出错", ex);
+                MessageBox.Show($"打开手机版下载页面时出错：{ex.Message}", "错误",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         // 以下方法已被全局热键替代，不再使用
         /*
         /// <summary>

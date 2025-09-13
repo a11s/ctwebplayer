@@ -46,6 +46,8 @@
             logoutMenuItem = new ToolStripMenuItem();
             forumMenuItem = new ToolStripMenuItem();
             discordMenuItem = new ToolStripMenuItem();
+            githubMenuItem = new ToolStripMenuItem();
+            mobileDownloadMenuItem = new ToolStripMenuItem();
             toolStripSeparator5 = new ToolStripSeparator();
             checkUpdateMenuItem = new ToolStripMenuItem();
             toolStripSeparator4 = new ToolStripSeparator();
@@ -136,7 +138,7 @@
             // btnUtilities
             //
             btnUtilities.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            btnUtilities.DropDownItems.AddRange(new ToolStripItem[] { toggleFullScreenMenuItem, toggleMuteMenuItem, toolStripSeparator3, logoutMenuItem, forumMenuItem, discordMenuItem, toolStripSeparator5, checkUpdateMenuItem, toolStripSeparator4, aboutMenuItem });
+            btnUtilities.DropDownItems.AddRange(new ToolStripItem[] { toggleFullScreenMenuItem, toggleMuteMenuItem, toolStripSeparator3, logoutMenuItem, forumMenuItem, discordMenuItem, githubMenuItem, mobileDownloadMenuItem, toolStripSeparator5, checkUpdateMenuItem, toolStripSeparator4, aboutMenuItem });
             btnUtilities.Name = "btnUtilities";
             btnUtilities.Size = new Size(69, 22);
             btnUtilities.Text = "实用工具";
@@ -182,6 +184,20 @@
             discordMenuItem.Size = new Size(171, 22);
             discordMenuItem.Text = "官方Discord";
             discordMenuItem.Click += discordMenuItem_Click;
+            //
+            // githubMenuItem
+            //
+            githubMenuItem.Name = "githubMenuItem";
+            githubMenuItem.Size = new Size(171, 22);
+            githubMenuItem.Text = "GitHub 源码";
+            githubMenuItem.Click += githubMenuItem_Click;
+            //
+            // mobileDownloadMenuItem
+            //
+            mobileDownloadMenuItem.Name = "mobileDownloadMenuItem";
+            mobileDownloadMenuItem.Size = new Size(171, 22);
+            mobileDownloadMenuItem.Text = "手机版下载";
+            mobileDownloadMenuItem.Click += mobileDownloadMenuItem_Click;
             //
             // toolStripSeparator5
             //
@@ -283,6 +299,8 @@
         private System.Windows.Forms.ToolStripMenuItem logoutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem forumMenuItem;
         private System.Windows.Forms.ToolStripMenuItem discordMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem githubMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mobileDownloadMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem checkUpdateMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
