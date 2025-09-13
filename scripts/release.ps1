@@ -33,7 +33,7 @@ Push-Location $projectRoot
 try {
     # Step 1: Update version number
     Write-Host "Step 1: Updating project version number..." -ForegroundColor Yellow
-    $csprojPath = "ctwebplayer.csproj"
+    $csprojPath = "src/ctwebplayer.csproj"
     if (Test-Path $csprojPath) {
         $csprojContent = Get-Content $csprojPath -Raw
         

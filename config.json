@@ -1,9 +1,9 @@
 {
   "proxy": {
-    "enabled": true,
-    "http_proxy": "http://127.0.0.1:7890",
-    "https_proxy": "http://127.0.0.1:7890",
-    "socks5": "127.0.0.1:7890"
+    "enabled": false,
+    "http_proxy": "",
+    "https_proxy": "",
+    "socks5": ""
   },
   "logging": {
     "enabled": true,
@@ -12,8 +12,8 @@
   },
   "enableAutoIframeNavigation": true,
   "ui": {
-    "windowWidth": 1136,
-    "windowHeight": 640
+    "windowWidth": 1236,
+    "windowHeight": 740
   },
-  "debugMode": true
+  "debugMode": false
 }

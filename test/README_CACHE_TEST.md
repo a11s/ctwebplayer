@@ -3,7 +3,7 @@
 ## 测试步骤
 
 1. **编译并运行程序**
-   - 在Visual Studio中打开ctwebplayer.sln
+   - 在Visual Studio中打开src/ctwebplayer.sln
    - 编译并运行项目
 
 2. **测试缓存功能**

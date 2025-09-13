@@ -14,7 +14,7 @@
   - 项目：.NET 8 WinForms，依赖WebView2、Flurl、PlainHttp。无当前版本管理。构建为单exe。协议BSD3需注意分发声明。
 
 - [ ] 更新版本号管理：在AssemblyInfo.cs或项目属性中添加版本控制，使用Semantic Versioning (SemVer)，如1.0.0
-  - 在ctwebplayer.csproj添加：
+  - 在src/ctwebplayer.csproj添加：
     ```
     <PropertyGroup>
       <Version>1.0.0</Version>
@@ -25,10 +25,10 @@
   - 使用git tag v1.0.0标记发布。工具：dotnet --version。
 
 - [ ] 优化代码：移除调试模式代码（如debugMode配置），优化缓存和日志性能，添加Release构建配置
-  - 在Form1.cs移除debugMode相关（如LogManager.Debug日志）。优化CacheManager：使用异步I/O，限制缓存大小（e.g., 1GB）。
-  - 在ConfigManager移除debugMode字段。添加条件编译：#if DEBUG。
+  - 在src/Form1.cs移除debugMode相关（如LogManager.Debug日志）。优化CacheManager：使用异步I/O，限制缓存大小（e.g., 1GB）。
+  - 在src/ConfigManager移除debugMode字段。添加条件编译：#if DEBUG。
 
-- [ ] 构建配置准备：修改ctwebplayer.csproj添加Release模式，配置dotnet publish参数（如-self-contained -r win-x64）
+- [ ] 构建配置准备：修改src/ctwebplayer.csproj添加Release模式，配置dotnet publish参数（如-self-contained -r win-x64）
   - csproj更新：
     ```
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -52,12 +52,12 @@
     - ...
     ```
 
-- [ ] 设计自动更新功能：在Form1.cs中集成GitHub API (使用Flurl) 检查最新Release，比较版本号，下载新exe并重启应用
+- [ ] 设计自动更新功能：在src/Form1.cs中集成GitHub API (使用Flurl) 检查最新Release，比较版本号，下载新exe并重启应用
   - 方案：启动时调用GitHub API `https://api.github.com/repos/a11s/ctwebplayer/releases/latest`。解析tag_name与当前版本比较（Assembly.GetExecutingAssembly().GetName().Version）。
   - 如果新版，显示对话框确认下载。使用Flurl.Http：`await "https://github.com/...".GetStringAsync()`。
 
 - [ ] 实现自动更新：添加UpdateManager类，处理下载（使用HttpClient），验证文件完整性（SHA256），用户确认后替换当前exe
-  - 新类UpdateManager.cs：
+  - 新类src/UpdateManager.cs：
     ```csharp
     using System.Security.Cryptography;
     public class UpdateManager {

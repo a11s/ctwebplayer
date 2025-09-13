@@ -1,14 +1,14 @@
 ## 已实现的功能
 
 ### 1. 版本管理系统 ✅
-- 创建了 `Version.cs` 文件，支持 SemVer 版本规范
+- 创建了 `src/Version.cs` 文件，支持 SemVer 版本规范
 - 更新了项目文件和关于窗口，动态显示版本信息
 - 初始版本设置为 1.0.0
 
 ### 2. 自动更新功能 ✅
-- `UpdateManager.cs` - 从 GitHub API 检查更新、下载文件、验证 SHA256
-- `UpdateInfo.cs` - 存储更新信息
-- `UpdateForm` - 更新界面，显示进度和更新说明
+- `src/UpdateManager.cs` - 从 GitHub API 检查更新、下载文件、验证 SHA256
+- `src/UpdateInfo.cs` - 存储更新信息
+- `src/UpdateForm` - 更新界面，显示进度和更新说明
 - 在主菜单添加了"检查更新"功能
 
 ### 3. 构建和打包脚本 ✅
@@ -66,7 +66,7 @@ GitHub Actions 会自动构建、打包并创建 Release。
    - 配置 GitHub 仓库的 Actions 权限
 
 2. **发布时记得**：
-   - 更新版本号（Version.cs）
+   - 更新版本号（src/Version.cs）
    - 编写更新日志
    - 在 Release Notes 中包含 SHA256 哈希值
 

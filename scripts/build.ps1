@@ -45,7 +45,7 @@ if (Test-Path "obj") {
 # Restore project dependencies
 Write-Host ""
 Write-Host "Restoring project dependencies..." -ForegroundColor Yellow
-dotnet restore
+dotnet restore src/ctwebplayer.csproj
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Error: Failed to restore dependencies" -ForegroundColor Red
     exit 1
@@ -61,6 +61,7 @@ Write-Host "Output Directory: $OutputDir" -ForegroundColor Cyan
 
 $publishArgs = @(
     "publish",
+    "src/ctwebplayer.csproj",
     "-c", $Configuration,
     "-r", $Runtime,
     "--self-contained", "true",

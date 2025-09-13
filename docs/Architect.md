@@ -404,7 +404,7 @@ cd ctwebplayer
 ```
 
 2. **打开解决方案**：
-   - 使用 Visual Studio 打开 `ctwebplayer.sln`
+   - 使用 Visual Studio 打开 `src/ctwebplayer.sln`
 
 3. **还原 NuGet 包**：
    - 在解决方案资源管理器中右击解决方案

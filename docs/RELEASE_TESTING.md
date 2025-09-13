@@ -11,7 +11,7 @@
 在开始任何测试前，确保以下项目已完成：
 
 - [ ] **版本管理**
-  - 在 `ctwebplayer.csproj` 中更新 `<Version>1.0.0</Version>` 和相关版本属性
+  - 在 `src/ctwebplayer.csproj` 中更新 `<Version>1.0.0</Version>` 和相关版本属性
   - 创建 Git tag：`git tag v1.0.0`
   - 更新 `CHANGELOG.md` 以记录变更（使用 Keep a Changelog 格式）
 
@@ -26,7 +26,7 @@
   - 准备 GitHub Release 模板（`.github/release-template.md`）
 
 - [ ] **构建配置**
-  - 确认 `ctwebplayer.csproj` 包含 Release 配置（无调试符号，优化启用）
+  - 确认 `src/ctwebplayer.csproj` 包含 Release 配置（无调试符号，优化启用）
   - 测试 dotnet publish 命令：`dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish`
 
 - [ ] **安全检查**
@@ -169,8 +169,8 @@ jobs:
 ## 自动更新功能测试
 
 ### 1. 手动模拟测试
+**前提**：确保 src/UpdateManager.cs 已实现（参考 docs/RELEASE_PLAN.md）
 
-**前提**：确保 UpdateManager.cs 已实现（参考 docs/RELEASE_PLAN.md）
 
 - [ ] **版本检查**
   - 修改当前 exe 版本为 1.0.0

@@ -186,7 +186,7 @@ dotnet --list-sdks
 ### 3. 构建失败
 
 检查以下内容：
-- 项目文件 `ctwebplayer.csproj` 是否存在
+- 项目文件 `src/ctwebplayer.csproj` 是否存在
 - 所有 NuGet 包是否可以正常还原
 - 查看详细错误信息
 

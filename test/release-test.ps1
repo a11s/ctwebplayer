@@ -36,7 +36,7 @@ function Test-VersionConsistency {
     $fileVersion = $ExpectedVersion
     
     # Check version in csproj
-    $csprojPath = "ctwebplayer.csproj"
+    $csprojPath = "src/ctwebplayer.csproj"
     if (Test-Path $csprojPath) {
         $csprojContent = Get-Content $csprojPath -Raw
         $expectedVersionTag = "<Version>$ExpectedVersion</Version>"
@@ -86,7 +86,7 @@ function Test-RequiredFiles {
         "LICENSE",  # BSD3 license
         "THIRD_PARTY_LICENSES.txt",  # Third-party licenses
         "README.md",  # Project documentation
-        "ctwebplayer.csproj",  # Project file
+        "src/ctwebplayer.csproj",  # Project file
         "config.json",  # Default configuration (if exists)
         "res/c001_01_Icon_Texture.ico",  # Icon resource
         "installer/setup.iss"  # Inno Setup script
