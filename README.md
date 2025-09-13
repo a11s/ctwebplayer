@@ -25,7 +25,7 @@ CTWebPlayer 是一个为 Unity3D WebPlayer 游戏开发的基于 WebView2 的专
 
 ### 安装步骤
 1. 从上述链接下载最新版本的 `ctwebplayer-v1.0.0.zip`
-2. 解压到任意目录（建议：`C:\Program Files\CTWebPlayer`）
+2. 解压到任意目录（建议：`C:\Program Files\CTWebPlayer` 或者 `D:\CTWebPlayer`）
 3. 运行 `ctwebplayer.exe`
 4. 如果提示需要安装 WebView2，请按照提示进行安装
 
@@ -44,7 +44,7 @@ CTWebPlayer 是一个为 Unity3D WebPlayer 游戏开发的基于 WebView2 的专
 - 代理设置自动保存
 
 ### 3. 窗口管理
-- 可自定义窗口大小（默认 1236x740）
+- 可自定义窗口大小（默认 1236x740）,用鼠标拖。对于正方形导致UI居中，人物显示全身像，这是游戏的问题。
 - 自动处理 Unity canvas 全屏显示
 - 窗口设置自动保存
 
