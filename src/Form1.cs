@@ -8,6 +8,20 @@ using System.Runtime.InteropServices;
 
 namespace ctwebplayer
 {
+    /// <summary>
+    /// 登录流程状态枚举
+    /// </summary>
+    public enum LoginFlowState
+    {
+        Initial,          // 初始化检查
+        HasCookie,        // 有 cookie，直接游戏
+        NoCookie,         // 无 cookie，询问账号
+        HasAccount,       // 有账号，跳转登录
+        NoAccount,        // 无账号，跳转注册
+        LoginComplete,    // 登录完成，检查 cookie 跳转游戏
+        GameLoaded        // 游戏加载完成
+    }
+
     public partial class Form1 : Form
     {
         #region Win32 API声明
@@ -43,6 +57,12 @@ namespace ctwebplayer
         
         // 配置管理器
         private ConfigManager _configManager;
+        
+        // Cookie管理器
+        private CookieManager _cookieManager = null!; // 在 InitializeWebView 中初始化
+        
+        // 登录流程状态
+        private LoginFlowState _currentLoginState = LoginFlowState.Initial;
         
         // 缓存统计
         private int _cacheHits = 0;
@@ -194,10 +214,19 @@ namespace ctwebplayer
                 // 注册全局热键
                 RegisterGlobalHotkeys();
                 
-                // 导航到配置的BaseURL（构建完整的游戏URL）
-                string initialUrl = BuildGameUrl(_configManager.Config.BaseURL);
-                webView2.CoreWebView2.Navigate(initialUrl);
-                txtAddress.Text = initialUrl;
+                // 暂时不初始化 CookieManager，等导航到正确的域名后再初始化
+                LogManager.Instance.Info("等待导航到正确域名后初始化 CookieManager");
+                
+                // 添加调试日志
+                LogManager.Instance.Info($"登录配置：Enabled={_configManager.Config.Login?.Enabled ?? false}");
+                LogManager.Instance.Info($"Cookie名称：{_configManager.Config.Login?.CookieName ?? "null"}");
+                
+                // 先导航到注册页面，它会自动跳转到游戏页面，确保 WebView2 完全初始化并加载 cookies
+                LogManager.Instance.Info($"先导航到注册页面以初始化：{_configManager.Config.Login.RegisterUrl}");
+                webView2.CoreWebView2.Navigate(_configManager.Config.Login.RegisterUrl);
+                
+                // 等待导航完成后再进行登录流程检查
+                // 这将在 NavigationCompleted 事件中处理
             }
             catch (Exception ex)
             {
@@ -484,15 +513,76 @@ namespace ctwebplayer
                 // 检测并处理 ero-labs 域名跳转
                 await CheckAndUpdateBaseUrl();
                 
-                // 检查当前URL是否是目标URL
+                // 获取当前URL
                 var currentUrl = webView2.Source?.ToString() ?? "";
-                if (currentUrl.StartsWith("https://game.ero-labs.live/cn/cloud_game.html"))
+                
+                // 检查当前域名是否与 baseURL 匹配（支持跳转后的域名）
+                if (!string.IsNullOrEmpty(currentUrl))
                 {
+                    try
+                    {
+                        var currentUri = new Uri(currentUrl);
+                        var baseUri = new Uri(_configManager.Config.BaseURL);
+                        
+                        // 检查是否是同一个主域名（如 ero-labs.live）
+                        var currentDomain = currentUri.Host;
+                        var baseDomain = baseUri.Host;
+                        
+                        // 提取主域名（去掉子域名）
+                        var currentMainDomain = GetMainDomain(currentDomain);
+                        var baseMainDomain = GetMainDomain(baseDomain);
+                        
+                        if (currentMainDomain.Equals(baseMainDomain, StringComparison.OrdinalIgnoreCase))
+                        {
+                            // 如果 CookieManager 还未初始化，或域名发生了变化，重新初始化
+                            if (_cookieManager == null || !currentDomain.Equals(baseDomain, StringComparison.OrdinalIgnoreCase))
+                            {
+                                // 使用新的构造函数，传入 CoreWebView2 实例以支持 JavaScript 检测
+                                _cookieManager = new CookieManager(webView2.CoreWebView2.CookieManager, currentDomain, webView2.CoreWebView2);
+                                LogManager.Instance.Info($"CookieManager 已初始化/更新，使用当前域名：{currentDomain}，支持 JavaScript 检测");
+                            }
+                            
+                            // 检查是否导航到了游戏相关页面并且还未进行登录流程检查
+                            if ((currentUrl.Contains("/game/") || currentUrl.Contains("/cn/game")) &&
+                                _currentLoginState == LoginFlowState.Initial &&
+                                _configManager.Config.Login?.Enabled == true)
+                            {
+                                LogManager.Instance.Info($"检测到游戏页面 {currentUrl}，等待页面稳定后开始登录流程检查");
+                                
+                                // 等待页面完全加载并且 cookies 已同步
+                                await Task.Delay(1500);
+                                
+                                LogManager.Instance.Info("开始登录流程检查");
+                                await StartLoginFlowAsync();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogManager.Instance.Error($"处理导航完成事件时出错：{ex.Message}", ex);
+                    }
+                }
+                
+                // 调试日志：检查iframe自动导航
+                LogManager.Instance.Info("NavigationCompleted: 检查是否需要iframe自动导航，URL=" + currentUrl);
+                
+                // 检查当前URL是否是目标URL
+                if (currentUrl.StartsWith("https://game.ero-labs.live/cn/cloud_game.html") ||
+                    currentUrl.StartsWith("https://mg.ero-labs.live/cn/cloud_game.html"))
+                {
+                    LogManager.Instance.Info("NavigationCompleted: 检测到游戏URL，调用CheckAndNavigateToIframe");
                     await CheckAndNavigateToIframe();
+                }
+                else
+                {
+                    LogManager.Instance.Info("NavigationCompleted: URL不匹配游戏URL，跳过iframe检测");
                 }
                 
                 // 检查并处理Unity canvas元素
                 await CheckAndHandleUnityCanvas();
+                
+                // 无论如何都要检查登录流程状态，确保登录后自动跳转
+                await CheckLoginFlowStatus();
             }
             else
             {
@@ -597,6 +687,8 @@ namespace ctwebplayer
         {
             try
             {
+                LogManager.Instance.Info("开始检查自动导航iframe功能");
+                
                 // 检查是否启用了自动导航功能
                 if (!_configManager.Config.EnableAutoIframeNavigation)
                 {
@@ -633,17 +725,91 @@ namespace ctwebplayer
                 
                 await webView2.CoreWebView2.ExecuteScriptAsync(policyScript);
                 
+                // 添加调试脚本，输出页面元素信息
+                var debugScript = @"
+                    (function() {
+                        console.log('=== Page Debug Info ===');
+                        console.log('Current URL: ' + window.location.href);
+                        console.log('Page Title: ' + document.title);
+                        
+                        // 检查 unity-canvas
+                        var unityCanvas = document.getElementById('unity-canvas');
+                        if (unityCanvas) {
+                            console.log('Unity canvas found: ', unityCanvas);
+                            console.log('Unity canvas parent: ', unityCanvas.parentElement);
+                        } else {
+                            console.log('No unity-canvas found');
+                        }
+                        
+                        // 检查所有 canvas 元素
+                        var allCanvas = document.getElementsByTagName('canvas');
+                        console.log('Total canvas elements: ' + allCanvas.length);
+                        for (var i = 0; i < allCanvas.length; i++) {
+                            console.log('Canvas ' + i + ': id=' + allCanvas[i].id + ', class=' + allCanvas[i].className);
+                        }
+                        
+                        // 检查所有 iframe 元素
+                        var allIframes = document.getElementsByTagName('iframe');
+                        console.log('Total iframe elements: ' + allIframes.length);
+                        for (var i = 0; i < allIframes.length; i++) {
+                            console.log('Iframe ' + i + ': src=' + allIframes[i].src + ', id=' + allIframes[i].id);
+                        }
+                        
+                        console.log('=== End Debug Info ===');
+                    })();
+                ";
+                
+                await webView2.CoreWebView2.ExecuteScriptAsync(debugScript);
+                
                 // 执行JavaScript来查找iframe
                 var script = @"
                     (function() {
                         var iframes = document.getElementsByTagName('iframe');
+                        console.log('Found ' + iframes.length + ' iframes');
+                        
                         if (iframes.length > 0) {
-                            var iframe = iframes[0];
-                            var src = iframe.src;
-                            if (src && src.includes('patch-ct-labs.ecchi.xxx')) {
-                                return src;
+                            var results = [];
+                            for (var i = 0; i < iframes.length; i++) {
+                                var iframe = iframes[i];
+                                var src = iframe.src;
+                                console.log('Iframe ' + i + ' src: ' + src);
+                                results.push({
+                                    index: i,
+                                    src: src,
+                                    id: iframe.id,
+                                    className: iframe.className
+                                });
+                            }
+                            
+                            // 首先检查是否有包含 patch-ct-labs.ecchi.xxx 的iframe
+                            for (var i = 0; i < results.length; i++) {
+                                if (results[i].src && results[i].src.includes('patch-ct-labs.ecchi.xxx')) {
+                                    console.log('Found patch-ct-labs iframe: ' + results[i].src);
+                                    return results[i].src;
+                                }
+                            }
+                            
+                            // 如果没有找到特定域名的iframe，检查是否有任何游戏相关的iframe
+                            for (var i = 0; i < results.length; i++) {
+                                if (results[i].src &&
+                                    (results[i].src.includes('game') ||
+                                     results[i].src.includes('unity') ||
+                                     results[i].src.includes('cloud'))) {
+                                    console.log('Found game-related iframe: ' + results[i].src);
+                                    return results[i].src;
+                                }
+                            }
+                            
+                            // 如果还是没有找到，返回第一个有src的iframe
+                            for (var i = 0; i < results.length; i++) {
+                                if (results[i].src && results[i].src.length > 0) {
+                                    console.log('Using first iframe with src: ' + results[i].src);
+                                    return results[i].src;
+                                }
                             }
                         }
+                        
+                        console.log('No suitable iframe found');
                         return null;
                     })();
                 ";
@@ -1622,8 +1788,8 @@ namespace ctwebplayer
             {
                 var currentUrl = webView2.Source?.ToString() ?? "";
                 
-                // 使用正则表达式匹配 ero-labs 域名模式
-                var eroLabsRegex = new System.Text.RegularExpressions.Regex(@"https?://game\.ero-labs\.[^/]+", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                // 使用正则表达式匹配 ero-labs 域名模式（支持 game. 和 mg. 前缀）
+                var eroLabsRegex = new System.Text.RegularExpressions.Regex(@"https?://(game|mg)\.ero-labs\.[^/]+", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
                 var match = eroLabsRegex.Match(currentUrl);
                 
                 if (match.Success)
@@ -1720,6 +1886,195 @@ namespace ctwebplayer
             {
                 LogManager.Instance.Error("显示 BaseURL 更新提示时出错", ex);
             }
+        }
+
+        /// <summary>
+        /// 启动登录引导流程
+        /// </summary>
+        private async Task StartLoginFlowAsync()
+        {
+            try
+            {
+                LogManager.Instance.Info($"开始登录流程，当前状态：{_currentLoginState}");
+                
+                switch (_currentLoginState)
+                {
+                    case LoginFlowState.Initial:
+                        // 检查是否有登录 cookie
+                        bool hasCookie = await _cookieManager.HasCookieAsync(_configManager.Config.Login.CookieName);
+                        
+                        if (hasCookie)
+                        {
+                            _currentLoginState = LoginFlowState.HasCookie;
+                            LogManager.Instance.Info("检测到登录 cookie，直接进入游戏");
+                            NavigateToGame();
+                        }
+                        else
+                        {
+                            _currentLoginState = LoginFlowState.NoCookie;
+                            LogManager.Instance.Info("未检测到登录 cookie，显示登录对话框");
+                            ShowLoginDialog();
+                        }
+                        break;
+                        
+                    case LoginFlowState.NoCookie:
+                        // 已经在 ShowLoginDialog 中处理
+                        break;
+                        
+                    case LoginFlowState.HasAccount:
+                        // 导航到登录页面
+                        var loginUrl = _configManager.Config.BaseURL.TrimEnd('/') + _configManager.Config.Login.LoginUrl;
+                        webView2.CoreWebView2.Navigate(loginUrl);
+                        txtAddress.Text = loginUrl;
+                        LogManager.Instance.Info($"导航到登录页面：{loginUrl}");
+                        break;
+                        
+                    case LoginFlowState.NoAccount:
+                        // 导航到注册页面
+                        var registerUrl = _configManager.Config.Login.RegisterUrl;
+                        webView2.CoreWebView2.Navigate(registerUrl);
+                        txtAddress.Text = registerUrl;
+                        LogManager.Instance.Info($"导航到注册页面：{registerUrl}");
+                        break;
+                        
+                    case LoginFlowState.LoginComplete:
+                        // 登录完成，导航到游戏页面
+                        NavigateToGame();
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("登录流程出错", ex);
+                // 出错时直接进入游戏
+                NavigateToGame();
+            }
+        }
+
+        /// <summary>
+        /// 显示登录对话框
+        /// </summary>
+        private void ShowLoginDialog()
+        {
+            try
+            {
+                var result = LoginDialog.ShowLoginDialog(this, _configManager.Config.Login.SkipEnabled);
+                
+                switch (result)
+                {
+                    case LoginDialog.DialogResultType.HasAccount:
+                        _currentLoginState = LoginFlowState.HasAccount;
+                        LogManager.Instance.Info("用户选择：已有账号");
+                        _ = StartLoginFlowAsync();
+                        break;
+                        
+                    case LoginDialog.DialogResultType.NoAccount:
+                        _currentLoginState = LoginFlowState.NoAccount;
+                        LogManager.Instance.Info("用户选择：新注册");
+                        _ = StartLoginFlowAsync();
+                        break;
+                        
+                    case LoginDialog.DialogResultType.Skip:
+                        LogManager.Instance.Info("用户选择：跳过登录");
+                        NavigateToGame();
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("显示登录对话框时出错", ex);
+                NavigateToGame();
+            }
+        }
+
+        /// <summary>
+        /// 导航到游戏页面
+        /// </summary>
+        private void NavigateToGame()
+        {
+            _currentLoginState = LoginFlowState.GameLoaded;
+            string gameUrl = BuildGameUrl(_configManager.Config.BaseURL);
+            webView2.CoreWebView2.Navigate(gameUrl);
+            txtAddress.Text = gameUrl;
+            LogManager.Instance.Info($"导航到游戏页面：{gameUrl}");
+        }
+
+        /// <summary>
+        /// 检查登录流程状态
+        /// </summary>
+        private async Task CheckLoginFlowStatus()
+        {
+            try
+            {
+                var currentUrl = webView2.Source?.ToString() ?? "";
+                
+                // 检查是否是从登录/注册后重定向到 index.html 或 profile.html
+                if ((currentUrl.Contains("/cn/index.html") || currentUrl.Contains("/cn/profile.html")) &&
+                    (_currentLoginState == LoginFlowState.HasAccount || _currentLoginState == LoginFlowState.NoAccount))
+                {
+                    LogManager.Instance.Info($"检测到登录/注册后的重定向页面：{currentUrl}，准备检查 cookie");
+                    
+                    // 等待一段时间确保 cookie 已设置
+                    await Task.Delay(1000);
+                    
+                    // 检查是否有登录 cookie
+                    bool hasCookie = await _cookieManager.HasCookieAsync(_configManager.Config.Login.CookieName);
+                    
+                    if (hasCookie)
+                    {
+                        _currentLoginState = LoginFlowState.LoginComplete;
+                        LogManager.Instance.Info("检测到登录 cookie，准备跳转到游戏页面");
+                        
+                        // 延迟一下再跳转，给用户一个视觉反馈
+                        await Task.Delay(500);
+                        NavigateToGame();
+                    }
+                    else
+                    {
+                        // 如果没有检测到 cookie，可能需要重试
+                        LogManager.Instance.Warning("未检测到登录 cookie，可能登录未成功");
+                        
+                        // 重试最多3次
+                        for (int i = 0; i < 3; i++)
+                        {
+                            await Task.Delay(500);
+                            hasCookie = await _cookieManager.HasCookieAsync(_configManager.Config.Login.CookieName);
+                            
+                            if (hasCookie)
+                            {
+                                _currentLoginState = LoginFlowState.LoginComplete;
+                                LogManager.Instance.Info($"第 {i + 2} 次检测到登录 cookie");
+                                NavigateToGame();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("检查登录流程状态时出错", ex);
+            }
+        }
+
+        /// <summary>
+        /// 从完整域名中提取主域名
+        /// </summary>
+        /// <param name="domain">完整域名，如 mg.ero-labs.live</param>
+        /// <returns>主域名，如 ero-labs.live</returns>
+        private string GetMainDomain(string domain)
+        {
+            if (string.IsNullOrEmpty(domain))
+                return domain;
+            
+            var parts = domain.Split('.');
+            if (parts.Length >= 2)
+            {
+                // 返回最后两部分作为主域名（如 ero-labs.live）
+                return $"{parts[parts.Length - 2]}.{parts[parts.Length - 1]}";
+            }
+            
+            return domain;
         }
 
         /// <summary>

@@ -61,6 +61,17 @@ namespace ctwebplayer
                 numWindowHeight.Value = _configManager.Config.Ui.WindowHeight;
             }
 
+            // 加载登录引导设置
+            var loginConfig = _configManager.Config.Login;
+            if (loginConfig != null)
+            {
+                chkEnableLogin.Checked = loginConfig.Enabled;
+                chkShowSkipButton.Checked = loginConfig.SkipEnabled;
+                txtCookieName.Text = loginConfig.CookieName ?? "";
+                txtLoginUrl.Text = loginConfig.LoginUrl ?? "";
+                txtRegisterUrl.Text = loginConfig.RegisterUrl ?? "";
+            }
+
             // 更新当前窗口大小显示
             UpdateCurrentSizeLabel();
         }
@@ -93,6 +104,17 @@ namespace ctwebplayer
             numMaxFileSize.Enabled = chkEnableLogging.Checked;
             btnViewLogs.Enabled = chkEnableLogging.Checked;
             btnClearLogs.Enabled = chkEnableLogging.Checked;
+        }
+
+        /// <summary>
+        /// 启用登录引导复选框状态改变事件
+        /// </summary>
+        private void ChkEnableLogin_CheckedChanged(object sender, EventArgs e)
+        {
+            chkShowSkipButton.Enabled = chkEnableLogin.Checked;
+            txtCookieName.Enabled = chkEnableLogin.Checked;
+            txtLoginUrl.Enabled = chkEnableLogin.Checked;
+            txtRegisterUrl.Enabled = chkEnableLogin.Checked;
         }
 
         /// <summary>
@@ -300,6 +322,16 @@ namespace ctwebplayer
                 {
                     WindowWidth = (int)numWindowWidth.Value,
                     WindowHeight = (int)numWindowHeight.Value
+                });
+
+                // 登录引导设置
+                await _configManager.UpdateLoginConfigAsync(new LoginConfig
+                {
+                    Enabled = chkEnableLogin.Checked,
+                    SkipEnabled = chkShowSkipButton.Checked,
+                    CookieName = txtCookieName.Text.Trim(),
+                    LoginUrl = txtLoginUrl.Text.Trim(),
+                    RegisterUrl = txtRegisterUrl.Text.Trim()
                 });
 
                 // 保存配置

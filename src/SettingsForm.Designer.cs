@@ -64,6 +64,16 @@ namespace ctwebplayer
             numWindowWidth = new NumericUpDown();
             lblWidth = new Label();
             lblWindowSize = new Label();
+            tabLogin = new TabPage();
+            grpLoginSettings = new GroupBox();
+            chkEnableLogin = new CheckBox();
+            chkShowSkipButton = new CheckBox();
+            lblCookieName = new Label();
+            txtCookieName = new TextBox();
+            lblLoginUrl = new Label();
+            txtLoginUrl = new TextBox();
+            lblRegisterUrl = new Label();
+            txtRegisterUrl = new TextBox();
             btnSave = new Button();
             btnApply = new Button();
             btnCancel = new Button();
@@ -77,6 +87,8 @@ namespace ctwebplayer
             tabInterface.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numWindowHeight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numWindowWidth).BeginInit();
+            tabLogin.SuspendLayout();
+            grpLoginSettings.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl
@@ -85,6 +97,7 @@ namespace ctwebplayer
             tabControl.Controls.Add(tabNetwork);
             tabControl.Controls.Add(tabLogging);
             tabControl.Controls.Add(tabInterface);
+            tabControl.Controls.Add(tabLogin);
             tabControl.Location = new Point(9, 11);
             tabControl.Margin = new Padding(2, 3, 2, 3);
             tabControl.Name = "tabControl";
@@ -478,7 +491,118 @@ namespace ctwebplayer
             lblWindowSize.Size = new Size(78, 24);
             lblWindowSize.TabIndex = 0;
             lblWindowSize.Text = "窗口大小设置";
-            // 
+            //
+            // tabLogin
+            //
+            tabLogin.Controls.Add(grpLoginSettings);
+            tabLogin.Location = new Point(4, 26);
+            tabLogin.Margin = new Padding(2, 3, 2, 3);
+            tabLogin.Name = "tabLogin";
+            tabLogin.Padding = new Padding(2, 3, 2, 3);
+            tabLogin.Size = new Size(350, 253);
+            tabLogin.TabIndex = 3;
+            tabLogin.Text = "登录引导";
+            tabLogin.UseVisualStyleBackColor = true;
+            //
+            // grpLoginSettings
+            //
+            grpLoginSettings.Controls.Add(chkEnableLogin);
+            grpLoginSettings.Controls.Add(chkShowSkipButton);
+            grpLoginSettings.Controls.Add(lblCookieName);
+            grpLoginSettings.Controls.Add(txtCookieName);
+            grpLoginSettings.Controls.Add(lblLoginUrl);
+            grpLoginSettings.Controls.Add(txtLoginUrl);
+            grpLoginSettings.Controls.Add(lblRegisterUrl);
+            grpLoginSettings.Controls.Add(txtRegisterUrl);
+            grpLoginSettings.Location = new Point(16, 19);
+            grpLoginSettings.Margin = new Padding(2, 3, 2, 3);
+            grpLoginSettings.Name = "grpLoginSettings";
+            grpLoginSettings.Padding = new Padding(2, 3, 2, 3);
+            grpLoginSettings.Size = new Size(319, 215);
+            grpLoginSettings.TabIndex = 0;
+            grpLoginSettings.TabStop = false;
+            grpLoginSettings.Text = "登录引导设置";
+            //
+            // chkEnableLogin
+            //
+            chkEnableLogin.AutoSize = true;
+            chkEnableLogin.Location = new Point(16, 28);
+            chkEnableLogin.Margin = new Padding(2, 3, 2, 3);
+            chkEnableLogin.Name = "chkEnableLogin";
+            chkEnableLogin.Size = new Size(99, 21);
+            chkEnableLogin.TabIndex = 0;
+            chkEnableLogin.Text = "启用登录引导";
+            chkEnableLogin.UseVisualStyleBackColor = true;
+            chkEnableLogin.CheckedChanged += ChkEnableLogin_CheckedChanged;
+            //
+            // chkShowSkipButton
+            //
+            chkShowSkipButton.AutoSize = true;
+            chkShowSkipButton.Location = new Point(16, 57);
+            chkShowSkipButton.Margin = new Padding(2, 3, 2, 3);
+            chkShowSkipButton.Name = "chkShowSkipButton";
+            chkShowSkipButton.Size = new Size(99, 21);
+            chkShowSkipButton.TabIndex = 1;
+            chkShowSkipButton.Text = "显示跳过按钮";
+            chkShowSkipButton.UseVisualStyleBackColor = true;
+            //
+            // lblCookieName
+            //
+            lblCookieName.Location = new Point(16, 90);
+            lblCookieName.Margin = new Padding(2, 0, 2, 0);
+            lblCookieName.Name = "lblCookieName";
+            lblCookieName.Size = new Size(87, 24);
+            lblCookieName.TabIndex = 2;
+            lblCookieName.Text = "Cookie 名称:";
+            lblCookieName.TextAlign = ContentAlignment.MiddleRight;
+            //
+            // txtCookieName
+            //
+            txtCookieName.Location = new Point(107, 90);
+            txtCookieName.Margin = new Padding(2, 3, 2, 3);
+            txtCookieName.Name = "txtCookieName";
+            txtCookieName.PlaceholderText = "例如: erolabsnickname";
+            txtCookieName.Size = new Size(194, 23);
+            txtCookieName.TabIndex = 3;
+            //
+            // lblLoginUrl
+            //
+            lblLoginUrl.Location = new Point(16, 123);
+            lblLoginUrl.Margin = new Padding(2, 0, 2, 0);
+            lblLoginUrl.Name = "lblLoginUrl";
+            lblLoginUrl.Size = new Size(87, 24);
+            lblLoginUrl.TabIndex = 4;
+            lblLoginUrl.Text = "登录页路径:";
+            lblLoginUrl.TextAlign = ContentAlignment.MiddleRight;
+            //
+            // txtLoginUrl
+            //
+            txtLoginUrl.Location = new Point(107, 123);
+            txtLoginUrl.Margin = new Padding(2, 3, 2, 3);
+            txtLoginUrl.Name = "txtLoginUrl";
+            txtLoginUrl.PlaceholderText = "例如: /cn/login.html";
+            txtLoginUrl.Size = new Size(194, 23);
+            txtLoginUrl.TabIndex = 5;
+            //
+            // lblRegisterUrl
+            //
+            lblRegisterUrl.Location = new Point(16, 156);
+            lblRegisterUrl.Margin = new Padding(2, 0, 2, 0);
+            lblRegisterUrl.Name = "lblRegisterUrl";
+            lblRegisterUrl.Size = new Size(87, 24);
+            lblRegisterUrl.TabIndex = 6;
+            lblRegisterUrl.Text = "注册页地址:";
+            lblRegisterUrl.TextAlign = ContentAlignment.MiddleRight;
+            //
+            // txtRegisterUrl
+            //
+            txtRegisterUrl.Location = new Point(107, 156);
+            txtRegisterUrl.Margin = new Padding(2, 3, 2, 3);
+            txtRegisterUrl.Name = "txtRegisterUrl";
+            txtRegisterUrl.PlaceholderText = "完整的注册页URL";
+            txtRegisterUrl.Size = new Size(194, 23);
+            txtRegisterUrl.TabIndex = 7;
+            //
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -556,6 +680,9 @@ namespace ctwebplayer
             tabInterface.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numWindowHeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)numWindowWidth).EndInit();
+            tabLogin.ResumeLayout(false);
+            grpLoginSettings.ResumeLayout(false);
+            grpLoginSettings.PerformLayout();
             ResumeLayout(false);
 
         }
@@ -597,6 +724,16 @@ namespace ctwebplayer
         private System.Windows.Forms.NumericUpDown numWindowWidth;
         private System.Windows.Forms.Label lblWidth;
         private System.Windows.Forms.Label lblWindowSize;
+        private System.Windows.Forms.TabPage tabLogin;
+        private System.Windows.Forms.GroupBox grpLoginSettings;
+        private System.Windows.Forms.CheckBox chkEnableLogin;
+        private System.Windows.Forms.CheckBox chkShowSkipButton;
+        private System.Windows.Forms.Label lblCookieName;
+        private System.Windows.Forms.TextBox txtCookieName;
+        private System.Windows.Forms.Label lblLoginUrl;
+        private System.Windows.Forms.TextBox txtLoginUrl;
+        private System.Windows.Forms.Label lblRegisterUrl;
+        private System.Windows.Forms.TextBox txtRegisterUrl;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnCancel;

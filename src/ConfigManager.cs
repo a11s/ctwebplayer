@@ -137,7 +137,15 @@ namespace ctwebplayer
                     WindowHeight = 740
                 },
                 DebugMode = false,
-                BaseURL = "https://game.ero-labs.live"
+                BaseURL = "https://mg.ero-labs.live",
+                Login = new LoginConfig
+                {
+                    Enabled = true,
+                    SkipEnabled = true,
+                    LoginUrl = "/cn/login.html",
+                    RegisterUrl = "https://game.erolabsshare.net/app/627a8937/Cherry_Tale",
+                    CookieName = "erolabsnickname"
+                }
             };
         }
 
@@ -165,6 +173,15 @@ namespace ctwebplayer
         public async Task UpdateBaseUrlAsync(string baseUrl)
         {
             _config.BaseURL = baseUrl;
+            await SaveConfigAsync();
+        }
+
+        /// <summary>
+        /// 更新登录配置
+        /// </summary>
+        public async Task UpdateLoginConfigAsync(LoginConfig loginConfig)
+        {
+            _config.Login = loginConfig;
             await SaveConfigAsync();
         }
 
@@ -257,6 +274,11 @@ namespace ctwebplayer
         public string BaseURL { get; set; } = "https://game.ero-labs.live";
 
         public bool DebugMode { get; set; } = false;
+
+        /// <summary>
+        /// 登录配置
+        /// </summary>
+        public LoginConfig Login { get; set; } = new LoginConfig();
     }
 
     /// <summary>
@@ -322,5 +344,36 @@ namespace ctwebplayer
         /// 窗口高度
         /// </summary>
         public int WindowHeight { get; set; }
+    }
+
+    /// <summary>
+    /// 登录配置
+    /// </summary>
+    public class LoginConfig
+    {
+        /// <summary>
+        /// 是否启用登录引导
+        /// </summary>
+        public bool Enabled { get; set; } = true;
+
+        /// <summary>
+        /// 对话框是否显示"跳过"按钮
+        /// </summary>
+        public bool SkipEnabled { get; set; } = true;
+
+        /// <summary>
+        /// 登录页相对路径
+        /// </summary>
+        public string LoginUrl { get; set; } = "/cn/login.html";
+
+        /// <summary>
+        /// 注册页完整URL
+        /// </summary>
+        public string RegisterUrl { get; set; } = "https://game.erolabsshare.net/app/627a8937/Cherry_Tale";
+
+        /// <summary>
+        /// 检查的Cookie名称
+        /// </summary>
+        public string CookieName { get; set; } = "erolabsnickname";
     }
 }

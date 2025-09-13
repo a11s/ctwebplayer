@@ -15,5 +15,13 @@
     "windowWidth": 1236,
     "windowHeight": 740
   },
-  "debugMode": false
+  "debugMode": false,
+  "baseURL": "https://game.ero-labs.live",
+  "login": {
+    "enabled": true,
+    "skipEnabled": true,
+    "loginUrl": "/cn/login.html",
+    "registerUrl": "https://game.erolabsshare.net/app/627a8937/Cherry_Tale",
+    "cookieName": "erolabsnickname"
+  }
 }
