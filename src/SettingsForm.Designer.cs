@@ -1,6 +1,6 @@
 namespace ctwebplayer
 {
-    partial class SettingsForm
+    public partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,504 +28,535 @@ namespace ctwebplayer
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabNetwork = new System.Windows.Forms.TabPage();
-            this.chkAutoIframeNav = new System.Windows.Forms.CheckBox();
-            this.chkEnableProxy = new System.Windows.Forms.CheckBox();
-            this.grpProxySettings = new System.Windows.Forms.GroupBox();
-            this.lblProxyNote = new System.Windows.Forms.Label();
-            this.txtSocks5 = new System.Windows.Forms.TextBox();
-            this.lblSocks5 = new System.Windows.Forms.Label();
-            this.txtHttpsProxy = new System.Windows.Forms.TextBox();
-            this.lblHttpsProxy = new System.Windows.Forms.Label();
-            this.txtHttpProxy = new System.Windows.Forms.TextBox();
-            this.lblHttpProxy = new System.Windows.Forms.Label();
-            this.tabLogging = new System.Windows.Forms.TabPage();
-            this.chkDebugMode = new System.Windows.Forms.CheckBox();
-            this.btnClearLogs = new System.Windows.Forms.Button();
-            this.btnViewLogs = new System.Windows.Forms.Button();
-            this.lblMB = new System.Windows.Forms.Label();
-            this.numMaxFileSize = new System.Windows.Forms.NumericUpDown();
-            this.lblMaxFileSize = new System.Windows.Forms.Label();
-            this.cmbLogLevel = new System.Windows.Forms.ComboBox();
-            this.lblLogLevel = new System.Windows.Forms.Label();
-            this.chkEnableLogging = new System.Windows.Forms.CheckBox();
-            this.tabInterface = new System.Windows.Forms.TabPage();
-            this.lblSizeNote = new System.Windows.Forms.Label();
-            this.btnResetSize = new System.Windows.Forms.Button();
-            this.lblCurrentSize = new System.Windows.Forms.Label();
-            this.lblHeightPx = new System.Windows.Forms.Label();
-            this.numWindowHeight = new System.Windows.Forms.NumericUpDown();
-            this.lblHeight = new System.Windows.Forms.Label();
-            this.lblWidthPx = new System.Windows.Forms.Label();
-            this.numWindowWidth = new System.Windows.Forms.NumericUpDown();
-            this.lblWidth = new System.Windows.Forms.Label();
-            this.lblWindowSize = new System.Windows.Forms.Label();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnApply = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.tabControl.SuspendLayout();
-            this.tabNetwork.SuspendLayout();
-            this.grpProxySettings.SuspendLayout();
-            this.tabLogging.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMaxFileSize)).BeginInit();
-            this.tabInterface.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numWindowWidth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numWindowHeight)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            tabControl = new TabControl();
+            tabNetwork = new TabPage();
+            lblBaseURL = new Label();
+            txtBaseURL = new TextBox();
+            chkAutoIframeNav = new CheckBox();
+            chkEnableProxy = new CheckBox();
+            grpProxySettings = new GroupBox();
+            lblProxyNote = new Label();
+            txtSocks5 = new TextBox();
+            lblSocks5 = new Label();
+            txtHttpsProxy = new TextBox();
+            lblHttpsProxy = new Label();
+            txtHttpProxy = new TextBox();
+            lblHttpProxy = new Label();
+            tabLogging = new TabPage();
+            chkDebugMode = new CheckBox();
+            btnClearLogs = new Button();
+            btnViewLogs = new Button();
+            lblMB = new Label();
+            numMaxFileSize = new NumericUpDown();
+            lblMaxFileSize = new Label();
+            cmbLogLevel = new ComboBox();
+            lblLogLevel = new Label();
+            chkEnableLogging = new CheckBox();
+            tabInterface = new TabPage();
+            lblSizeNote = new Label();
+            btnResetSize = new Button();
+            lblCurrentSize = new Label();
+            lblHeightPx = new Label();
+            numWindowHeight = new NumericUpDown();
+            lblHeight = new Label();
+            lblWidthPx = new Label();
+            numWindowWidth = new NumericUpDown();
+            lblWidth = new Label();
+            lblWindowSize = new Label();
+            btnSave = new Button();
+            btnApply = new Button();
+            btnCancel = new Button();
+            toolTip1 = new ToolTip(components);
+            linkLabel1 = new LinkLabel();
+            tabControl.SuspendLayout();
+            tabNetwork.SuspendLayout();
+            grpProxySettings.SuspendLayout();
+            tabLogging.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMaxFileSize).BeginInit();
+            tabInterface.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numWindowHeight).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numWindowWidth).BeginInit();
+            SuspendLayout();
             // 
             // tabControl
             // 
-            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl.Controls.Add(this.tabNetwork);
-            this.tabControl.Controls.Add(this.tabLogging);
-            this.tabControl.Controls.Add(this.tabInterface);
-            this.tabControl.Location = new System.Drawing.Point(12, 12);
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(460, 300);
-            this.tabControl.TabIndex = 0;
+            tabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabControl.Controls.Add(tabNetwork);
+            tabControl.Controls.Add(tabLogging);
+            tabControl.Controls.Add(tabInterface);
+            tabControl.Location = new Point(9, 11);
+            tabControl.Margin = new Padding(2, 3, 2, 3);
+            tabControl.Name = "tabControl";
+            tabControl.SelectedIndex = 0;
+            tabControl.Size = new Size(358, 283);
+            tabControl.TabIndex = 0;
             // 
             // tabNetwork
             // 
-            this.tabNetwork.Controls.Add(this.chkAutoIframeNav);
-            this.tabNetwork.Controls.Add(this.chkEnableProxy);
-            this.tabNetwork.Controls.Add(this.grpProxySettings);
-            this.tabNetwork.Location = new System.Drawing.Point(4, 24);
-            this.tabNetwork.Name = "tabNetwork";
-            this.tabNetwork.Padding = new System.Windows.Forms.Padding(3);
-            this.tabNetwork.Size = new System.Drawing.Size(452, 272);
-            this.tabNetwork.TabIndex = 0;
-            this.tabNetwork.Text = "网络";
-            this.tabNetwork.UseVisualStyleBackColor = true;
+            tabNetwork.Controls.Add(linkLabel1);
+            tabNetwork.Controls.Add(lblBaseURL);
+            tabNetwork.Controls.Add(txtBaseURL);
+            tabNetwork.Controls.Add(chkAutoIframeNav);
+            tabNetwork.Controls.Add(chkEnableProxy);
+            tabNetwork.Controls.Add(grpProxySettings);
+            tabNetwork.Location = new Point(4, 26);
+            tabNetwork.Margin = new Padding(2, 3, 2, 3);
+            tabNetwork.Name = "tabNetwork";
+            tabNetwork.Padding = new Padding(2, 3, 2, 3);
+            tabNetwork.Size = new Size(350, 253);
+            tabNetwork.TabIndex = 0;
+            tabNetwork.Text = "网络";
+            tabNetwork.UseVisualStyleBackColor = true;
+            // 
+            // lblBaseURL
+            // 
+            lblBaseURL.AutoSize = true;
+            lblBaseURL.Location = new Point(16, 52);
+            lblBaseURL.Margin = new Padding(2, 0, 2, 0);
+            lblBaseURL.Name = "lblBaseURL";
+            lblBaseURL.Size = new Size(68, 17);
+            lblBaseURL.TabIndex = 2;
+            lblBaseURL.Text = "主站域名：";
+            // 
+            // txtBaseURL
+            // 
+            txtBaseURL.Location = new Point(82, 49);
+            txtBaseURL.Margin = new Padding(2, 3, 2, 3);
+            txtBaseURL.Name = "txtBaseURL";
+            txtBaseURL.PlaceholderText = "例如: https://game.ero-labs.live";
+            txtBaseURL.Size = new Size(250, 23);
+            txtBaseURL.TabIndex = 3;
             // 
             // chkAutoIframeNav
             // 
-            this.chkAutoIframeNav.AutoSize = true;
-            this.chkAutoIframeNav.Location = new System.Drawing.Point(20, 20);
-            this.chkAutoIframeNav.Name = "chkAutoIframeNav";
-            this.chkAutoIframeNav.Size = new System.Drawing.Size(200, 25);
-            this.chkAutoIframeNav.TabIndex = 0;
-            this.chkAutoIframeNav.Text = "自动导航到 iframe 内容";
-            this.chkAutoIframeNav.UseVisualStyleBackColor = true;
+            chkAutoIframeNav.AutoSize = true;
+            chkAutoIframeNav.Location = new Point(16, 19);
+            chkAutoIframeNav.Margin = new Padding(2, 3, 2, 3);
+            chkAutoIframeNav.Name = "chkAutoIframeNav";
+            chkAutoIframeNav.Size = new Size(156, 21);
+            chkAutoIframeNav.TabIndex = 0;
+            chkAutoIframeNav.Text = "自动导航到 iframe 内容";
+            chkAutoIframeNav.UseVisualStyleBackColor = true;
             // 
             // chkEnableProxy
             // 
-            this.chkEnableProxy.AutoSize = true;
-            this.chkEnableProxy.Location = new System.Drawing.Point(20, 60);
-            this.chkEnableProxy.Name = "chkEnableProxy";
-            this.chkEnableProxy.Size = new System.Drawing.Size(150, 25);
-            this.chkEnableProxy.TabIndex = 1;
-            this.chkEnableProxy.Text = "启用代理服务器";
-            this.chkEnableProxy.UseVisualStyleBackColor = true;
-            this.chkEnableProxy.CheckedChanged += new System.EventHandler(this.ChkEnableProxy_CheckedChanged);
+            chkEnableProxy.AutoSize = true;
+            chkEnableProxy.Location = new Point(16, 90);
+            chkEnableProxy.Margin = new Padding(2, 3, 2, 3);
+            chkEnableProxy.Name = "chkEnableProxy";
+            chkEnableProxy.Size = new Size(111, 21);
+            chkEnableProxy.TabIndex = 4;
+            chkEnableProxy.Text = "启用代理服务器";
+            chkEnableProxy.UseVisualStyleBackColor = true;
+            chkEnableProxy.CheckedChanged += ChkEnableProxy_CheckedChanged;
             // 
             // grpProxySettings
             // 
-            this.grpProxySettings.Controls.Add(this.lblProxyNote);
-            this.grpProxySettings.Controls.Add(this.txtSocks5);
-            this.grpProxySettings.Controls.Add(this.lblSocks5);
-            this.grpProxySettings.Controls.Add(this.txtHttpsProxy);
-            this.grpProxySettings.Controls.Add(this.lblHttpsProxy);
-            this.grpProxySettings.Controls.Add(this.txtHttpProxy);
-            this.grpProxySettings.Controls.Add(this.lblHttpProxy);
-            this.grpProxySettings.Enabled = false;
-            this.grpProxySettings.Location = new System.Drawing.Point(20, 95);
-            this.grpProxySettings.Name = "grpProxySettings";
-            this.grpProxySettings.Size = new System.Drawing.Size(410, 180);
-            this.grpProxySettings.TabIndex = 2;
-            this.grpProxySettings.TabStop = false;
-            this.grpProxySettings.Text = "代理服务器设置";
+            grpProxySettings.Controls.Add(lblProxyNote);
+            grpProxySettings.Controls.Add(txtSocks5);
+            grpProxySettings.Controls.Add(lblSocks5);
+            grpProxySettings.Controls.Add(txtHttpsProxy);
+            grpProxySettings.Controls.Add(lblHttpsProxy);
+            grpProxySettings.Controls.Add(txtHttpProxy);
+            grpProxySettings.Controls.Add(lblHttpProxy);
+            grpProxySettings.Enabled = false;
+            grpProxySettings.Location = new Point(16, 123);
+            grpProxySettings.Margin = new Padding(2, 3, 2, 3);
+            grpProxySettings.Name = "grpProxySettings";
+            grpProxySettings.Padding = new Padding(2, 3, 2, 3);
+            grpProxySettings.Size = new Size(319, 132);
+            grpProxySettings.TabIndex = 5;
+            grpProxySettings.TabStop = false;
+            grpProxySettings.Text = "代理服务器设置";
             // 
             // lblProxyNote
             // 
-            this.lblProxyNote.ForeColor = System.Drawing.Color.Gray;
-            this.lblProxyNote.Location = new System.Drawing.Point(20, 140);
-            this.lblProxyNote.Name = "lblProxyNote";
-            this.lblProxyNote.Size = new System.Drawing.Size(370, 35);
-            this.lblProxyNote.TabIndex = 6;
-            this.lblProxyNote.Text = "注意：优先使用SOCKS5代理，其次是HTTP/HTTPS代理。\r\n更改代理设置后需要重启浏览器才能生效。";
+            lblProxyNote.ForeColor = Color.Gray;
+            lblProxyNote.Location = new Point(16, 94);
+            lblProxyNote.Margin = new Padding(2, 0, 2, 0);
+            lblProxyNote.Name = "lblProxyNote";
+            lblProxyNote.Size = new Size(288, 33);
+            lblProxyNote.TabIndex = 6;
+            lblProxyNote.Text = "注意：优先使用SOCKS5代理，其次是HTTP/HTTPS代理。\r\n更改代理设置后需要重启浏览器才能生效。";
             // 
             // txtSocks5
             // 
-            this.txtSocks5.Location = new System.Drawing.Point(105, 100);
-            this.txtSocks5.Name = "txtSocks5";
-            this.txtSocks5.PlaceholderText = "例如: 127.0.0.1:7890";
-            this.txtSocks5.Size = new System.Drawing.Size(280, 25);
-            this.txtSocks5.TabIndex = 5;
+            txtSocks5.Location = new Point(82, 61);
+            txtSocks5.Margin = new Padding(2, 3, 2, 3);
+            txtSocks5.Name = "txtSocks5";
+            txtSocks5.PlaceholderText = "例如: 127.0.0.1:7890";
+            txtSocks5.Size = new Size(219, 23);
+            txtSocks5.TabIndex = 5;
             // 
             // lblSocks5
             // 
-            this.lblSocks5.Location = new System.Drawing.Point(20, 100);
-            this.lblSocks5.Name = "lblSocks5";
-            this.lblSocks5.Size = new System.Drawing.Size(80, 25);
-            this.lblSocks5.TabIndex = 4;
-            this.lblSocks5.Text = "SOCKS5 代理:";
-            this.lblSocks5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            lblSocks5.Location = new Point(16, 61);
+            lblSocks5.Margin = new Padding(2, 0, 2, 0);
+            lblSocks5.Name = "lblSocks5";
+            lblSocks5.Size = new Size(62, 24);
+            lblSocks5.TabIndex = 4;
+            lblSocks5.Text = "SOCKS5 代理:";
+            lblSocks5.TextAlign = ContentAlignment.MiddleRight;
             // 
             // txtHttpsProxy
             // 
-            this.txtHttpsProxy.Location = new System.Drawing.Point(105, 65);
-            this.txtHttpsProxy.Name = "txtHttpsProxy";
-            this.txtHttpsProxy.PlaceholderText = "例如: http://127.0.0.1:7890";
-            this.txtHttpsProxy.Size = new System.Drawing.Size(280, 25);
-            this.txtHttpsProxy.TabIndex = 3;
+            txtHttpsProxy.Location = new Point(226, 28);
+            txtHttpsProxy.Margin = new Padding(2, 3, 2, 3);
+            txtHttpsProxy.Name = "txtHttpsProxy";
+            txtHttpsProxy.PlaceholderText = "例如: http://127.0.0.1:7890";
+            txtHttpsProxy.Size = new Size(75, 23);
+            txtHttpsProxy.TabIndex = 3;
             // 
             // lblHttpsProxy
             // 
-            this.lblHttpsProxy.Location = new System.Drawing.Point(20, 65);
-            this.lblHttpsProxy.Name = "lblHttpsProxy";
-            this.lblHttpsProxy.Size = new System.Drawing.Size(80, 25);
-            this.lblHttpsProxy.TabIndex = 2;
-            this.lblHttpsProxy.Text = "HTTPS 代理:";
-            this.lblHttpsProxy.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            lblHttpsProxy.Location = new Point(163, 28);
+            lblHttpsProxy.Margin = new Padding(2, 0, 2, 0);
+            lblHttpsProxy.Name = "lblHttpsProxy";
+            lblHttpsProxy.Size = new Size(58, 24);
+            lblHttpsProxy.TabIndex = 2;
+            lblHttpsProxy.Text = "HTTPS:";
+            lblHttpsProxy.TextAlign = ContentAlignment.MiddleRight;
             // 
             // txtHttpProxy
             // 
-            this.txtHttpProxy.Location = new System.Drawing.Point(105, 30);
-            this.txtHttpProxy.Name = "txtHttpProxy";
-            this.txtHttpProxy.PlaceholderText = "例如: http://127.0.0.1:7890";
-            this.txtHttpProxy.Size = new System.Drawing.Size(280, 25);
-            this.txtHttpProxy.TabIndex = 1;
+            txtHttpProxy.Location = new Point(82, 28);
+            txtHttpProxy.Margin = new Padding(2, 3, 2, 3);
+            txtHttpProxy.Name = "txtHttpProxy";
+            txtHttpProxy.PlaceholderText = "例如: http://127.0.0.1:7890";
+            txtHttpProxy.Size = new Size(75, 23);
+            txtHttpProxy.TabIndex = 1;
             // 
             // lblHttpProxy
             // 
-            this.lblHttpProxy.Location = new System.Drawing.Point(20, 30);
-            this.lblHttpProxy.Name = "lblHttpProxy";
-            this.lblHttpProxy.Size = new System.Drawing.Size(80, 25);
-            this.lblHttpProxy.TabIndex = 0;
-            this.lblHttpProxy.Text = "HTTP 代理:";
-            this.lblHttpProxy.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            lblHttpProxy.Location = new Point(16, 28);
+            lblHttpProxy.Margin = new Padding(2, 0, 2, 0);
+            lblHttpProxy.Name = "lblHttpProxy";
+            lblHttpProxy.Size = new Size(62, 24);
+            lblHttpProxy.TabIndex = 0;
+            lblHttpProxy.Text = "HTTP:";
+            lblHttpProxy.TextAlign = ContentAlignment.MiddleRight;
             // 
             // tabLogging
             // 
-            this.tabLogging.Controls.Add(this.chkDebugMode);
-            this.tabLogging.Controls.Add(this.btnClearLogs);
-            this.tabLogging.Controls.Add(this.btnViewLogs);
-            this.tabLogging.Controls.Add(this.lblMB);
-            this.tabLogging.Controls.Add(this.numMaxFileSize);
-            this.tabLogging.Controls.Add(this.lblMaxFileSize);
-            this.tabLogging.Controls.Add(this.cmbLogLevel);
-            this.tabLogging.Controls.Add(this.lblLogLevel);
-            this.tabLogging.Controls.Add(this.chkEnableLogging);
-            this.tabLogging.Location = new System.Drawing.Point(4, 24);
-            this.tabLogging.Name = "tabLogging";
-            this.tabLogging.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLogging.Size = new System.Drawing.Size(452, 272);
-            this.tabLogging.TabIndex = 1;
-            this.tabLogging.Text = "日志";
-            this.tabLogging.UseVisualStyleBackColor = true;
+            tabLogging.Controls.Add(chkDebugMode);
+            tabLogging.Controls.Add(btnClearLogs);
+            tabLogging.Controls.Add(btnViewLogs);
+            tabLogging.Controls.Add(lblMB);
+            tabLogging.Controls.Add(numMaxFileSize);
+            tabLogging.Controls.Add(lblMaxFileSize);
+            tabLogging.Controls.Add(cmbLogLevel);
+            tabLogging.Controls.Add(lblLogLevel);
+            tabLogging.Controls.Add(chkEnableLogging);
+            tabLogging.Location = new Point(4, 26);
+            tabLogging.Margin = new Padding(2, 3, 2, 3);
+            tabLogging.Name = "tabLogging";
+            tabLogging.Padding = new Padding(2, 3, 2, 3);
+            tabLogging.Size = new Size(350, 253);
+            tabLogging.TabIndex = 1;
+            tabLogging.Text = "日志";
+            tabLogging.UseVisualStyleBackColor = true;
             // 
             // chkDebugMode
-            //
-            this.chkDebugMode.AutoSize = true;
-            this.chkDebugMode.Location = new System.Drawing.Point(20, 190);
-            this.chkDebugMode.Name = "chkDebugMode";
-            this.chkDebugMode.Size = new System.Drawing.Size(150, 25);
-            this.chkDebugMode.TabIndex = 8;
-            this.chkDebugMode.Text = "Debug模式";
-            this.chkDebugMode.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkDebugMode, "开启后将记录所有HTTP请求及缓存状态到request.log文件");
+            // 
+            chkDebugMode.AutoSize = true;
+            chkDebugMode.Location = new Point(16, 179);
+            chkDebugMode.Margin = new Padding(2, 3, 2, 3);
+            chkDebugMode.Name = "chkDebugMode";
+            chkDebugMode.Size = new Size(90, 21);
+            chkDebugMode.TabIndex = 8;
+            chkDebugMode.Text = "Debug模式";
+            toolTip1.SetToolTip(chkDebugMode, "开启后将记录所有HTTP请求及缓存状态到request.log文件");
+            chkDebugMode.UseVisualStyleBackColor = true;
+            // 
             // btnClearLogs
-            //
-            this.btnClearLogs.Location = new System.Drawing.Point(130, 150);
-            this.btnClearLogs.Name = "btnClearLogs";
-            this.btnClearLogs.Size = new System.Drawing.Size(100, 30);
-            this.btnClearLogs.TabIndex = 7;
-            this.btnClearLogs.Text = "清理日志";
-            this.btnClearLogs.UseVisualStyleBackColor = true;
-            this.btnClearLogs.Click += new System.EventHandler(this.BtnClearLogs_Click);
+            // 
+            btnClearLogs.Location = new Point(101, 142);
+            btnClearLogs.Margin = new Padding(2, 3, 2, 3);
+            btnClearLogs.Name = "btnClearLogs";
+            btnClearLogs.Size = new Size(78, 28);
+            btnClearLogs.TabIndex = 7;
+            btnClearLogs.Text = "清理日志";
+            btnClearLogs.UseVisualStyleBackColor = true;
+            btnClearLogs.Click += BtnClearLogs_Click;
             // 
             // btnViewLogs
             // 
-            this.btnViewLogs.Location = new System.Drawing.Point(20, 150);
-            this.btnViewLogs.Name = "btnViewLogs";
-            this.btnViewLogs.Size = new System.Drawing.Size(100, 30);
-            this.btnViewLogs.TabIndex = 6;
-            this.btnViewLogs.Text = "查看日志";
-            this.btnViewLogs.UseVisualStyleBackColor = true;
-            this.btnViewLogs.Click += new System.EventHandler(this.BtnViewLogs_Click);
+            btnViewLogs.Location = new Point(16, 142);
+            btnViewLogs.Margin = new Padding(2, 3, 2, 3);
+            btnViewLogs.Name = "btnViewLogs";
+            btnViewLogs.Size = new Size(78, 28);
+            btnViewLogs.TabIndex = 6;
+            btnViewLogs.Text = "查看日志";
+            btnViewLogs.UseVisualStyleBackColor = true;
+            btnViewLogs.Click += BtnViewLogs_Click;
             // 
             // lblMB
             // 
-            this.lblMB.Location = new System.Drawing.Point(210, 100);
-            this.lblMB.Name = "lblMB";
-            this.lblMB.Size = new System.Drawing.Size(30, 25);
-            this.lblMB.TabIndex = 5;
-            this.lblMB.Text = "MB";
-            this.lblMB.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            lblMB.Location = new Point(163, 94);
+            lblMB.Margin = new Padding(2, 0, 2, 0);
+            lblMB.Name = "lblMB";
+            lblMB.Size = new Size(23, 24);
+            lblMB.TabIndex = 5;
+            lblMB.Text = "MB";
+            lblMB.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // numMaxFileSize
             // 
-            this.numMaxFileSize.Location = new System.Drawing.Point(105, 100);
-            this.numMaxFileSize.Maximum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.numMaxFileSize.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numMaxFileSize.Name = "numMaxFileSize";
-            this.numMaxFileSize.Size = new System.Drawing.Size(100, 25);
-            this.numMaxFileSize.TabIndex = 4;
-            this.numMaxFileSize.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
+            numMaxFileSize.Location = new Point(82, 94);
+            numMaxFileSize.Margin = new Padding(2, 3, 2, 3);
+            numMaxFileSize.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numMaxFileSize.Name = "numMaxFileSize";
+            numMaxFileSize.Size = new Size(78, 23);
+            numMaxFileSize.TabIndex = 4;
+            numMaxFileSize.Value = new decimal(new int[] { 10, 0, 0, 0 });
             // 
             // lblMaxFileSize
             // 
-            this.lblMaxFileSize.Location = new System.Drawing.Point(20, 100);
-            this.lblMaxFileSize.Name = "lblMaxFileSize";
-            this.lblMaxFileSize.Size = new System.Drawing.Size(80, 25);
-            this.lblMaxFileSize.TabIndex = 3;
-            this.lblMaxFileSize.Text = "最大文件大小:";
-            this.lblMaxFileSize.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            lblMaxFileSize.Location = new Point(16, 94);
+            lblMaxFileSize.Margin = new Padding(2, 0, 2, 0);
+            lblMaxFileSize.Name = "lblMaxFileSize";
+            lblMaxFileSize.Size = new Size(62, 24);
+            lblMaxFileSize.TabIndex = 3;
+            lblMaxFileSize.Text = "最大文件大小:";
+            lblMaxFileSize.TextAlign = ContentAlignment.MiddleRight;
             // 
             // cmbLogLevel
             // 
-            this.cmbLogLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbLogLevel.FormattingEnabled = true;
-            this.cmbLogLevel.Items.AddRange(new object[] {
-            "Debug",
-            "Info",
-            "Warning",
-            "Error"});
-            this.cmbLogLevel.Location = new System.Drawing.Point(105, 60);
-            this.cmbLogLevel.Name = "cmbLogLevel";
-            this.cmbLogLevel.Size = new System.Drawing.Size(150, 25);
-            this.cmbLogLevel.TabIndex = 2;
+            cmbLogLevel.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbLogLevel.FormattingEnabled = true;
+            cmbLogLevel.Items.AddRange(new object[] { "Debug", "Info", "Warning", "Error" });
+            cmbLogLevel.Location = new Point(82, 57);
+            cmbLogLevel.Margin = new Padding(2, 3, 2, 3);
+            cmbLogLevel.Name = "cmbLogLevel";
+            cmbLogLevel.Size = new Size(118, 25);
+            cmbLogLevel.TabIndex = 2;
             // 
             // lblLogLevel
             // 
-            this.lblLogLevel.Location = new System.Drawing.Point(20, 60);
-            this.lblLogLevel.Name = "lblLogLevel";
-            this.lblLogLevel.Size = new System.Drawing.Size(80, 25);
-            this.lblLogLevel.TabIndex = 1;
-            this.lblLogLevel.Text = "日志级别:";
-            this.lblLogLevel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            lblLogLevel.Location = new Point(16, 57);
+            lblLogLevel.Margin = new Padding(2, 0, 2, 0);
+            lblLogLevel.Name = "lblLogLevel";
+            lblLogLevel.Size = new Size(62, 24);
+            lblLogLevel.TabIndex = 1;
+            lblLogLevel.Text = "日志级别:";
+            lblLogLevel.TextAlign = ContentAlignment.MiddleRight;
             // 
             // chkEnableLogging
             // 
-            this.chkEnableLogging.AutoSize = true;
-            this.chkEnableLogging.Checked = true;
-            this.chkEnableLogging.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkEnableLogging.Location = new System.Drawing.Point(20, 20);
-            this.chkEnableLogging.Name = "chkEnableLogging";
-            this.chkEnableLogging.Size = new System.Drawing.Size(150, 25);
-            this.chkEnableLogging.TabIndex = 0;
-            this.chkEnableLogging.Text = "启用日志记录";
-            this.chkEnableLogging.UseVisualStyleBackColor = true;
-            this.chkEnableLogging.CheckedChanged += new System.EventHandler(this.ChkEnableLogging_CheckedChanged);
+            chkEnableLogging.AutoSize = true;
+            chkEnableLogging.Checked = true;
+            chkEnableLogging.CheckState = CheckState.Checked;
+            chkEnableLogging.Location = new Point(16, 19);
+            chkEnableLogging.Margin = new Padding(2, 3, 2, 3);
+            chkEnableLogging.Name = "chkEnableLogging";
+            chkEnableLogging.Size = new Size(99, 21);
+            chkEnableLogging.TabIndex = 0;
+            chkEnableLogging.Text = "启用日志记录";
+            chkEnableLogging.UseVisualStyleBackColor = true;
+            chkEnableLogging.CheckedChanged += ChkEnableLogging_CheckedChanged;
             // 
             // tabInterface
             // 
-            this.tabInterface.Controls.Add(this.lblSizeNote);
-            this.tabInterface.Controls.Add(this.btnResetSize);
-            this.tabInterface.Controls.Add(this.lblCurrentSize);
-            this.tabInterface.Controls.Add(this.lblHeightPx);
-            this.tabInterface.Controls.Add(this.numWindowHeight);
-            this.tabInterface.Controls.Add(this.lblHeight);
-            this.tabInterface.Controls.Add(this.lblWidthPx);
-            this.tabInterface.Controls.Add(this.numWindowWidth);
-            this.tabInterface.Controls.Add(this.lblWidth);
-            this.tabInterface.Controls.Add(this.lblWindowSize);
-            this.tabInterface.Location = new System.Drawing.Point(4, 24);
-            this.tabInterface.Name = "tabInterface";
-            this.tabInterface.Padding = new System.Windows.Forms.Padding(3);
-            this.tabInterface.Size = new System.Drawing.Size(452, 272);
-            this.tabInterface.TabIndex = 2;
-            this.tabInterface.Text = "界面";
-            this.tabInterface.UseVisualStyleBackColor = true;
+            tabInterface.Controls.Add(lblSizeNote);
+            tabInterface.Controls.Add(btnResetSize);
+            tabInterface.Controls.Add(lblCurrentSize);
+            tabInterface.Controls.Add(lblHeightPx);
+            tabInterface.Controls.Add(numWindowHeight);
+            tabInterface.Controls.Add(lblHeight);
+            tabInterface.Controls.Add(lblWidthPx);
+            tabInterface.Controls.Add(numWindowWidth);
+            tabInterface.Controls.Add(lblWidth);
+            tabInterface.Controls.Add(lblWindowSize);
+            tabInterface.Location = new Point(4, 26);
+            tabInterface.Margin = new Padding(2, 3, 2, 3);
+            tabInterface.Name = "tabInterface";
+            tabInterface.Padding = new Padding(2, 3, 2, 3);
+            tabInterface.Size = new Size(350, 253);
+            tabInterface.TabIndex = 2;
+            tabInterface.Text = "界面";
+            tabInterface.UseVisualStyleBackColor = true;
             // 
             // lblSizeNote
             // 
-            this.lblSizeNote.ForeColor = System.Drawing.Color.Gray;
-            this.lblSizeNote.Location = new System.Drawing.Point(20, 200);
-            this.lblSizeNote.Name = "lblSizeNote";
-            this.lblSizeNote.Size = new System.Drawing.Size(410, 40);
-            this.lblSizeNote.TabIndex = 9;
-            this.lblSizeNote.Text = "注意：更改窗口大小后，需要重启应用才能生效。\r\n当前窗口大小：1136 x 640 像素";
+            lblSizeNote.ForeColor = Color.Gray;
+            lblSizeNote.Location = new Point(16, 189);
+            lblSizeNote.Margin = new Padding(2, 0, 2, 0);
+            lblSizeNote.Name = "lblSizeNote";
+            lblSizeNote.Size = new Size(319, 38);
+            lblSizeNote.TabIndex = 9;
+            lblSizeNote.Text = "注意：更改窗口大小后，需要重启应用才能生效。\r\n当前窗口大小：1136 x 640 像素";
             // 
             // btnResetSize
             // 
-            this.btnResetSize.Location = new System.Drawing.Point(20, 150);
-            this.btnResetSize.Name = "btnResetSize";
-            this.btnResetSize.Size = new System.Drawing.Size(100, 30);
-            this.btnResetSize.TabIndex = 8;
-            this.btnResetSize.Text = "重置大小";
-            this.btnResetSize.UseVisualStyleBackColor = true;
-            this.btnResetSize.Click += new System.EventHandler(this.BtnResetSize_Click);
+            btnResetSize.Location = new Point(16, 142);
+            btnResetSize.Margin = new Padding(2, 3, 2, 3);
+            btnResetSize.Name = "btnResetSize";
+            btnResetSize.Size = new Size(78, 28);
+            btnResetSize.TabIndex = 8;
+            btnResetSize.Text = "重置大小";
+            btnResetSize.UseVisualStyleBackColor = true;
+            btnResetSize.Click += BtnResetSize_Click;
             // 
             // lblCurrentSize
             // 
-            this.lblCurrentSize.Location = new System.Drawing.Point(130, 155);
-            this.lblCurrentSize.Name = "lblCurrentSize";
-            this.lblCurrentSize.Size = new System.Drawing.Size(200, 20);
-            this.lblCurrentSize.TabIndex = 7;
-            this.lblCurrentSize.Text = "当前大小：1136 x 640";
+            lblCurrentSize.Location = new Point(101, 146);
+            lblCurrentSize.Margin = new Padding(2, 0, 2, 0);
+            lblCurrentSize.Name = "lblCurrentSize";
+            lblCurrentSize.Size = new Size(156, 19);
+            lblCurrentSize.TabIndex = 7;
+            lblCurrentSize.Text = "当前大小：1136 x 640";
             // 
             // lblHeightPx
             // 
-            this.lblHeightPx.Location = new System.Drawing.Point(360, 60);
-            this.lblHeightPx.Name = "lblHeightPx";
-            this.lblHeightPx.Size = new System.Drawing.Size(40, 25);
-            this.lblHeightPx.TabIndex = 6;
-            this.lblHeightPx.Text = "像素";
-            this.lblHeightPx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            lblHeightPx.Location = new Point(280, 57);
+            lblHeightPx.Margin = new Padding(2, 0, 2, 0);
+            lblHeightPx.Name = "lblHeightPx";
+            lblHeightPx.Size = new Size(31, 24);
+            lblHeightPx.TabIndex = 6;
+            lblHeightPx.Text = "像素";
+            lblHeightPx.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // numWindowHeight
             // 
-            this.numWindowHeight.Location = new System.Drawing.Point(275, 60);
-            this.numWindowHeight.Maximum = new decimal(new int[] {
-            2160,
-            0,
-            0,
-            0});
-            this.numWindowHeight.Minimum = new decimal(new int[] {
-            600,
-            0,
-            0,
-            0});
-            this.numWindowHeight.Name = "numWindowHeight";
-            this.numWindowHeight.Size = new System.Drawing.Size(80, 25);
-            this.numWindowHeight.TabIndex = 5;
-            this.numWindowHeight.Value = new decimal(new int[] {
-            640,
-            0,
-            0,
-            0});
+            numWindowHeight.Location = new Point(214, 57);
+            numWindowHeight.Margin = new Padding(2, 3, 2, 3);
+            numWindowHeight.Maximum = new decimal(new int[] { 2160, 0, 0, 0 });
+            numWindowHeight.Minimum = new decimal(new int[] { 600, 0, 0, 0 });
+            numWindowHeight.Name = "numWindowHeight";
+            numWindowHeight.Size = new Size(62, 23);
+            numWindowHeight.TabIndex = 5;
+            numWindowHeight.Value = new decimal(new int[] { 640, 0, 0, 0 });
             // 
             // lblHeight
             // 
-            this.lblHeight.Location = new System.Drawing.Point(220, 60);
-            this.lblHeight.Name = "lblHeight";
-            this.lblHeight.Size = new System.Drawing.Size(50, 25);
-            this.lblHeight.TabIndex = 4;
-            this.lblHeight.Text = "高度:";
-            this.lblHeight.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            lblHeight.Location = new Point(171, 57);
+            lblHeight.Margin = new Padding(2, 0, 2, 0);
+            lblHeight.Name = "lblHeight";
+            lblHeight.Size = new Size(39, 24);
+            lblHeight.TabIndex = 4;
+            lblHeight.Text = "高度:";
+            lblHeight.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblWidthPx
             // 
-            this.lblWidthPx.Location = new System.Drawing.Point(160, 60);
-            this.lblWidthPx.Name = "lblWidthPx";
-            this.lblWidthPx.Size = new System.Drawing.Size(40, 25);
-            this.lblWidthPx.TabIndex = 3;
-            this.lblWidthPx.Text = "像素";
-            this.lblWidthPx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            lblWidthPx.Location = new Point(124, 57);
+            lblWidthPx.Margin = new Padding(2, 0, 2, 0);
+            lblWidthPx.Name = "lblWidthPx";
+            lblWidthPx.Size = new Size(31, 24);
+            lblWidthPx.TabIndex = 3;
+            lblWidthPx.Text = "像素";
+            lblWidthPx.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // numWindowWidth
             // 
-            this.numWindowWidth.Location = new System.Drawing.Point(75, 60);
-            this.numWindowWidth.Maximum = new decimal(new int[] {
-            3840,
-            0,
-            0,
-            0});
-            this.numWindowWidth.Minimum = new decimal(new int[] {
-            800,
-            0,
-            0,
-            0});
-            this.numWindowWidth.Name = "numWindowWidth";
-            this.numWindowWidth.Size = new System.Drawing.Size(80, 25);
-            this.numWindowWidth.TabIndex = 2;
-            this.numWindowWidth.Value = new decimal(new int[] {
-            1136,
-            0,
-            0,
-            0});
+            numWindowWidth.Location = new Point(58, 57);
+            numWindowWidth.Margin = new Padding(2, 3, 2, 3);
+            numWindowWidth.Maximum = new decimal(new int[] { 3840, 0, 0, 0 });
+            numWindowWidth.Minimum = new decimal(new int[] { 800, 0, 0, 0 });
+            numWindowWidth.Name = "numWindowWidth";
+            numWindowWidth.Size = new Size(62, 23);
+            numWindowWidth.TabIndex = 2;
+            numWindowWidth.Value = new decimal(new int[] { 1136, 0, 0, 0 });
             // 
             // lblWidth
             // 
-            this.lblWidth.Location = new System.Drawing.Point(20, 60);
-            this.lblWidth.Name = "lblWidth";
-            this.lblWidth.Size = new System.Drawing.Size(50, 25);
-            this.lblWidth.TabIndex = 1;
-            this.lblWidth.Text = "宽度:";
-            this.lblWidth.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            lblWidth.Location = new Point(16, 57);
+            lblWidth.Margin = new Padding(2, 0, 2, 0);
+            lblWidth.Name = "lblWidth";
+            lblWidth.Size = new Size(39, 24);
+            lblWidth.TabIndex = 1;
+            lblWidth.Text = "宽度:";
+            lblWidth.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblWindowSize
             // 
-            this.lblWindowSize.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblWindowSize.Location = new System.Drawing.Point(20, 20);
-            this.lblWindowSize.Name = "lblWindowSize";
-            this.lblWindowSize.Size = new System.Drawing.Size(100, 25);
-            this.lblWindowSize.TabIndex = 0;
-            this.lblWindowSize.Text = "窗口大小设置";
+            lblWindowSize.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 134);
+            lblWindowSize.Location = new Point(16, 19);
+            lblWindowSize.Margin = new Padding(2, 0, 2, 0);
+            lblWindowSize.Name = "lblWindowSize";
+            lblWindowSize.Size = new Size(78, 24);
+            lblWindowSize.TabIndex = 0;
+            lblWindowSize.Text = "窗口大小设置";
             // 
             // btnSave
             // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnSave.Location = new System.Drawing.Point(302, 320);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 30);
-            this.btnSave.TabIndex = 1;
-            this.btnSave.Text = "保存";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
+            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSave.DialogResult = DialogResult.OK;
+            btnSave.Location = new Point(235, 302);
+            btnSave.Margin = new Padding(2, 3, 2, 3);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(58, 28);
+            btnSave.TabIndex = 1;
+            btnSave.Text = "保存";
+            btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += BtnSave_Click;
             // 
             // btnApply
             // 
-            this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnApply.Location = new System.Drawing.Point(383, 320);
-            this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(75, 30);
-            this.btnApply.TabIndex = 2;
-            this.btnApply.Text = "应用";
-            this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new System.EventHandler(this.BtnApply_Click);
+            btnApply.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnApply.Location = new Point(298, 302);
+            btnApply.Margin = new Padding(2, 3, 2, 3);
+            btnApply.Name = "btnApply";
+            btnApply.Size = new Size(58, 28);
+            btnApply.TabIndex = 2;
+            btnApply.Text = "应用";
+            btnApply.UseVisualStyleBackColor = true;
+            btnApply.Click += BtnApply_Click;
             // 
             // btnCancel
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(221, 320);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 30);
-            this.btnCancel.TabIndex = 3;
-            this.btnCancel.Text = "取消";
-            this.btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnCancel.DialogResult = DialogResult.Cancel;
+            btnCancel.Location = new Point(172, 302);
+            btnCancel.Margin = new Padding(2, 3, 2, 3);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(58, 28);
+            btnCancel.TabIndex = 3;
+            btnCancel.Text = "取消";
+            btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // linkLabel1
+            // 
+            linkLabel1.AutoSize = true;
+            linkLabel1.Location = new Point(176, 94);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(104, 17);
+            linkLabel1.TabIndex = 6;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "没有代理服务器？";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // SettingsForm
             // 
-            this.AcceptButton = this.btnSave;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(484, 361);
-            this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.btnApply);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.tabControl);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "SettingsForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "设置";
-            this.tabControl.ResumeLayout(false);
-            this.tabNetwork.ResumeLayout(false);
-            this.tabNetwork.PerformLayout();
-            this.grpProxySettings.ResumeLayout(false);
-            this.grpProxySettings.PerformLayout();
-            this.tabLogging.ResumeLayout(false);
-            this.tabLogging.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMaxFileSize)).EndInit();
-            this.tabInterface.ResumeLayout(false);
-            this.tabInterface.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numWindowWidth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numWindowHeight)).EndInit();
-            this.ResumeLayout(false);
+            AcceptButton = btnSave;
+            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancel;
+            ClientSize = new Size(376, 341);
+            Controls.Add(btnSave);
+            Controls.Add(btnApply);
+            Controls.Add(btnCancel);
+            Controls.Add(tabControl);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Margin = new Padding(2, 3, 2, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "SettingsForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "设置";
+            tabControl.ResumeLayout(false);
+            tabNetwork.ResumeLayout(false);
+            tabNetwork.PerformLayout();
+            grpProxySettings.ResumeLayout(false);
+            grpProxySettings.PerformLayout();
+            tabLogging.ResumeLayout(false);
+            tabLogging.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMaxFileSize).EndInit();
+            tabInterface.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numWindowHeight).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numWindowWidth).EndInit();
+            ResumeLayout(false);
 
         }
 
@@ -533,6 +564,8 @@ namespace ctwebplayer
 
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabNetwork;
+        private System.Windows.Forms.Label lblBaseURL;
+        private System.Windows.Forms.TextBox txtBaseURL;
         private System.Windows.Forms.CheckBox chkAutoIframeNav;
         private System.Windows.Forms.CheckBox chkEnableProxy;
         private System.Windows.Forms.GroupBox grpProxySettings;
@@ -568,5 +601,6 @@ namespace ctwebplayer
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.ToolTip toolTip1;
+        private LinkLabel linkLabel1;
     }
 }

@@ -74,8 +74,28 @@
 
   <!-- 为设计器生成的文件禁用警告 -->
   <ItemGroup>
-    <Compile Update="**\*.Designer.cs">
-      <DependentUpon>%(Filename).cs</DependentUpon>
+    <Compile Update="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="LogViewerForm.Designer.cs">
+      <DependentUpon>LogViewerForm.cs</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="UpdateForm.Designer.cs">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>

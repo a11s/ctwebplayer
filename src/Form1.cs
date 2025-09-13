@@ -38,9 +38,6 @@ namespace ctwebplayer
         private const uint VK_F11 = 0x7A;
         #endregion
         
-        // 默认加载的URL
-        private const string DEFAULT_URL = "https://game.ero-labs.live/cn/cloud_game.html?id=27&connect_type=1&connection_id=20";
-        
         // 缓存管理器
         private CacheManager _cacheManager = null!; // 在 InitializeWebView 中初始化
         
@@ -197,9 +194,10 @@ namespace ctwebplayer
                 // 注册全局热键
                 RegisterGlobalHotkeys();
                 
-                // 导航到默认URL
-                webView2.CoreWebView2.Navigate(DEFAULT_URL);
-                txtAddress.Text = DEFAULT_URL;
+                // 导航到配置的BaseURL（构建完整的游戏URL）
+                string initialUrl = BuildGameUrl(_configManager.Config.BaseURL);
+                webView2.CoreWebView2.Navigate(initialUrl);
+                txtAddress.Text = initialUrl;
             }
             catch (Exception ex)
             {
@@ -482,6 +480,9 @@ namespace ctwebplayer
                 
                 // 注入 CORS 处理脚本
                 await InjectCorsHandlingScript();
+                
+                // 检测并处理 ero-labs 域名跳转
+                await CheckAndUpdateBaseUrl();
                 
                 // 检查当前URL是否是目标URL
                 var currentUrl = webView2.Source?.ToString() ?? "";
@@ -1609,6 +1610,115 @@ namespace ctwebplayer
             catch (Exception ex)
             {
                 LogManager.Instance.Error("显示静音提示时出错", ex);
+            }
+        }
+
+        /// <summary>
+        /// 检测并更新 BaseURL（如果检测到 ero-labs 域名跳转）
+        /// </summary>
+        private async Task CheckAndUpdateBaseUrl()
+        {
+            try
+            {
+                var currentUrl = webView2.Source?.ToString() ?? "";
+                
+                // 使用正则表达式匹配 ero-labs 域名模式
+                var eroLabsRegex = new System.Text.RegularExpressions.Regex(@"https?://game\.ero-labs\.[^/]+", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                var match = eroLabsRegex.Match(currentUrl);
+                
+                if (match.Success)
+                {
+                    var detectedBaseUrl = match.Value;
+                    var currentBaseUrl = _configManager.Config.BaseURL;
+                    
+                    // 如果检测到的域名与当前配置的不同，则更新配置
+                    if (!string.Equals(detectedBaseUrl, currentBaseUrl, StringComparison.OrdinalIgnoreCase))
+                    {
+                        LogManager.Instance.Info($"检测到 ero-labs 域名跳转：从 {currentBaseUrl} 到 {detectedBaseUrl}");
+                        
+                        // 更新配置中的 BaseURL
+                        await _configManager.UpdateBaseUrlAsync(detectedBaseUrl);
+                        
+                        LogManager.Instance.Info($"已自动更新 BaseURL 配置为：{detectedBaseUrl}");
+                        
+                        // 显示提示信息
+                        await ShowBaseUrlUpdateTip(detectedBaseUrl);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("检测和更新 BaseURL 时出错", ex);
+            }
+        }
+
+        /// <summary>
+        /// 构建完整的游戏URL
+        /// </summary>
+        private string BuildGameUrl(string baseUrl)
+        {
+            // 确保 baseUrl 以斜杠结尾
+            if (!baseUrl.EndsWith("/"))
+            {
+                baseUrl += "/";
+            }
+            
+            // 添加游戏路径和参数
+            return $"{baseUrl}cn/cloud_game.html?id=27&connect_type=1&connection_id=20";
+        }
+
+        /// <summary>
+        /// 显示 BaseURL 更新提示
+        /// </summary>
+        private async Task ShowBaseUrlUpdateTip(string newBaseUrl)
+        {
+            try
+            {
+                var script = $@"
+                    (function() {{
+                        // 检查是否已经存在提示
+                        var existingTip = document.getElementById('baseurl-update-tip');
+                        if (existingTip) {{
+                            existingTip.remove();
+                        }}
+                        
+                        // 创建提示元素
+                        var tip = document.createElement('div');
+                        tip.id = 'baseurl-update-tip';
+                        tip.innerHTML = '🔄 已自动更新服务器地址为：{newBaseUrl.Replace("'", "\\'")}';
+                        tip.style.cssText = `
+                            position: fixed;
+                            top: 20px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            background-color: rgba(0, 128, 0, 0.9);
+                            color: white;
+                            padding: 15px 30px;
+                            border-radius: 8px;
+                            font-size: 14px;
+                            font-family: Arial, sans-serif;
+                            z-index: 999999;
+                            pointer-events: none;
+                            transition: opacity 0.5s ease;
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                        `;
+                        document.body.appendChild(tip);
+                        
+                        // 5秒后淡出
+                        setTimeout(function() {{
+                            tip.style.opacity = '0';
+                            setTimeout(function() {{
+                                tip.remove();
+                            }}, 500);
+                        }}, 5000);
+                    }})();
+                ";
+                
+                await webView2.CoreWebView2.ExecuteScriptAsync(script);
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("显示 BaseURL 更新提示时出错", ex);
             }
         }
 

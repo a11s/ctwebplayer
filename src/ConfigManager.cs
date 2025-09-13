@@ -136,7 +136,8 @@ namespace ctwebplayer
                     WindowWidth = 1236,
                     WindowHeight = 740
                 },
-                DebugMode = false
+                DebugMode = false,
+                BaseURL = "https://game.ero-labs.live"
             };
         }
 
@@ -155,6 +156,15 @@ namespace ctwebplayer
         public async Task UpdateUIConfigAsync(UIConfig uiConfig)
         {
             _config.Ui = uiConfig;
+            await SaveConfigAsync();
+        }
+
+        /// <summary>
+        /// 更新BaseURL配置
+        /// </summary>
+        public async Task UpdateBaseUrlAsync(string baseUrl)
+        {
+            _config.BaseURL = baseUrl;
             await SaveConfigAsync();
         }
 
@@ -240,6 +250,11 @@ namespace ctwebplayer
         /// UI配置
         /// </summary>
         public UIConfig Ui { get; set; } = new UIConfig();
+
+        /// <summary>
+        /// 基础URL
+        /// </summary>
+        public string BaseURL { get; set; } = "https://game.ero-labs.live";
 
         public bool DebugMode { get; set; } = false;
     }
