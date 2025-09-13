@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             toolStrip1 = new ToolStrip();
+            btnHome = new ToolStripButton();
             btnBack = new ToolStripButton();
             btnForward = new ToolStripButton();
             btnRefresh = new ToolStripButton();
@@ -42,6 +43,10 @@
             toggleFullScreenMenuItem = new ToolStripMenuItem();
             toggleMuteMenuItem = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
+            logoutMenuItem = new ToolStripMenuItem();
+            forumMenuItem = new ToolStripMenuItem();
+            discordMenuItem = new ToolStripMenuItem();
+            toolStripSeparator5 = new ToolStripSeparator();
             checkUpdateMenuItem = new ToolStripMenuItem();
             toolStripSeparator4 = new ToolStripSeparator();
             aboutMenuItem = new ToolStripMenuItem();
@@ -56,12 +61,20 @@
             //
             // toolStrip1
             //
-            toolStrip1.Items.AddRange(new ToolStripItem[] { btnBack, btnForward, btnRefresh, toolStripSeparator1, txtAddress, btnGo, toolStripSeparator2, btnSettings, btnUtilities });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { btnHome, btnBack, btnForward, btnRefresh, toolStripSeparator1, txtAddress, btnGo, toolStripSeparator2, btnSettings, btnUtilities });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(1374, 25);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
+            //
+            // btnHome
+            //
+            btnHome.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnHome.Name = "btnHome";
+            btnHome.Size = new Size(36, 22);
+            btnHome.Text = "主页";
+            btnHome.Click += btnHome_Click;
             // 
             // btnBack
             // 
@@ -123,7 +136,7 @@
             // btnUtilities
             //
             btnUtilities.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            btnUtilities.DropDownItems.AddRange(new ToolStripItem[] { toggleFullScreenMenuItem, toggleMuteMenuItem, toolStripSeparator3, checkUpdateMenuItem, toolStripSeparator4, aboutMenuItem });
+            btnUtilities.DropDownItems.AddRange(new ToolStripItem[] { toggleFullScreenMenuItem, toggleMuteMenuItem, toolStripSeparator3, logoutMenuItem, forumMenuItem, discordMenuItem, toolStripSeparator5, checkUpdateMenuItem, toolStripSeparator4, aboutMenuItem });
             btnUtilities.Name = "btnUtilities";
             btnUtilities.Size = new Size(69, 22);
             btnUtilities.Text = "实用工具";
@@ -148,6 +161,32 @@
             //
             toolStripSeparator3.Name = "toolStripSeparator3";
             toolStripSeparator3.Size = new Size(168, 6);
+            //
+            // logoutMenuItem
+            //
+            logoutMenuItem.Name = "logoutMenuItem";
+            logoutMenuItem.Size = new Size(171, 22);
+            logoutMenuItem.Text = "退出登录";
+            logoutMenuItem.Click += logoutMenuItem_Click;
+            //
+            // forumMenuItem
+            //
+            forumMenuItem.Name = "forumMenuItem";
+            forumMenuItem.Size = new Size(171, 22);
+            forumMenuItem.Text = "官方讨论区";
+            forumMenuItem.Click += forumMenuItem_Click;
+            //
+            // discordMenuItem
+            //
+            discordMenuItem.Name = "discordMenuItem";
+            discordMenuItem.Size = new Size(171, 22);
+            discordMenuItem.Text = "官方Discord";
+            discordMenuItem.Click += discordMenuItem_Click;
+            //
+            // toolStripSeparator5
+            //
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new Size(168, 6);
             //
             // checkUpdateMenuItem
             //
@@ -228,6 +267,7 @@
         #endregion
 
         private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton btnHome;
         private System.Windows.Forms.ToolStripButton btnBack;
         private System.Windows.Forms.ToolStripButton btnForward;
         private System.Windows.Forms.ToolStripButton btnRefresh;
@@ -240,6 +280,10 @@
         private System.Windows.Forms.ToolStripMenuItem toggleFullScreenMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toggleMuteMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem logoutMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem forumMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem discordMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem checkUpdateMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem aboutMenuItem;

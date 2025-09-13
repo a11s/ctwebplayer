@@ -1058,6 +1058,15 @@ namespace ctwebplayer
         }
 
         /// <summary>
+        /// 主页按钮点击事件
+        /// </summary>
+        private void btnHome_Click(object? sender, EventArgs e)
+        {
+            // 导航到游戏主页
+            NavigateToGame();
+        }
+
+        /// <summary>
         /// 后退按钮点击事件
         /// </summary>
         private void btnBack_Click(object? sender, EventArgs e)
@@ -1360,6 +1369,113 @@ namespace ctwebplayer
             using (var aboutForm = new AboutForm())
             {
                 aboutForm.ShowDialog(this);
+            }
+        }
+
+        /// <summary>
+        /// 退出登录菜单项点击事件
+        /// </summary>
+        private async void logoutMenuItem_Click(object? sender, EventArgs e)
+        {
+            try
+            {
+                var result = MessageBox.Show("确定要退出登录吗？\n\n这将清除所有 Cookies 并返回登录页面。",
+                    "确认退出登录", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    statusLabel.Text = "正在退出登录...";
+                    LogManager.Instance.Info("用户选择退出登录");
+
+                    // 清除所有 cookies
+                    if (_cookieManager != null)
+                    {
+                        await _cookieManager.DeleteAllCookiesAsync();
+                        LogManager.Instance.Info("已清除所有 Cookies");
+                    }
+
+                    // 重置登录状态
+                    _currentLoginState = LoginFlowState.Initial;
+
+                    // 导航到登录页面
+                    var loginUrl = _configManager.Config.BaseURL.TrimEnd('/') + _configManager.Config.Login.LoginUrl;
+                    webView2.CoreWebView2.Navigate(loginUrl);
+                    
+                    statusLabel.Text = "已退出登录";
+                    LogManager.Instance.Info($"已导航到登录页面：{loginUrl}");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("退出登录时出错", ex);
+                MessageBox.Show($"退出登录时出错：{ex.Message}", "错误",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                statusLabel.Text = "退出登录失败";
+            }
+        }
+
+        /// <summary>
+        /// 官方讨论区菜单项点击事件
+        /// </summary>
+        private void forumMenuItem_Click(object? sender, EventArgs e)
+        {
+            try
+            {
+                // 获取当前主站域名
+                var currentUrl = webView2.Source?.ToString() ?? "";
+                var baseUrl = _configManager.Config.BaseURL;
+                
+                // 从 baseURL 中提取域名
+                Uri baseUri = new Uri(baseUrl);
+                var domain = baseUri.Host;
+                
+                // 构建论坛URL
+                var forumUrl = $"https://{domain}/cn/forum/cherry-tale";
+                
+                LogManager.Instance.Info($"打开官方讨论区：{forumUrl}");
+                
+                // 在新标签页中打开（实际上是在默认浏览器中打开）
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = forumUrl,
+                    UseShellExecute = true
+                });
+                
+                statusLabel.Text = "已打开官方讨论区";
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("打开官方讨论区时出错", ex);
+                MessageBox.Show($"打开官方讨论区时出错：{ex.Message}", "错误",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 官方Discord菜单项点击事件
+        /// </summary>
+        private void discordMenuItem_Click(object? sender, EventArgs e)
+        {
+            try
+            {
+                const string discordUrl = "https://discord.gg/h6q59YNwGW";
+                
+                LogManager.Instance.Info($"打开官方Discord：{discordUrl}");
+                
+                // 在默认浏览器中打开Discord邀请链接
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = discordUrl,
+                    UseShellExecute = true
+                });
+                
+                statusLabel.Text = "已打开官方Discord";
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("打开官方Discord时出错", ex);
+                MessageBox.Show($"打开官方Discord时出错：{ex.Message}", "错误",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
