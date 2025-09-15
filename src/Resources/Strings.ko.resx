@@ -166,6 +166,9 @@
   <data name="Form1_toolStrip1_btnUtilities_toggleMuteMenuItem" xml:space="preserve">
     <value>음소거 전환 (F4)</value>
   </data>
+  <data name="Form1_Tool_Screenshot" xml:space="preserve">
+    <value>스크린샷 (F10)</value>
+  </data>
   <data name="Form1_toolStrip1_btnUtilities_logoutMenuItem" xml:space="preserve">
     <value>로그아웃</value>
   </data>
@@ -183,6 +186,12 @@
   </data>
   <data name="Form1_toolStrip1_btnUtilities_checkUpdateMenuItem" xml:space="preserve">
     <value>업데이트 확인</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_aboutMenuItem" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_donateToolStripMenuItem" xml:space="preserve">
+    <value>후원</value>
   </data>
   <!-- Form1 - 상태 메시지 -->
   <data name="Form1_Status_InitializingBrowser" xml:space="preserve">
@@ -223,6 +232,12 @@
   </data>
   <data name="Form1_Status_LogoutFailed" xml:space="preserve">
     <value>로그아웃 실패</value>
+  </data>
+  <data name="Form1_Status_OpenedDonate" xml:space="preserve">
+    <value>후원 페이지를 열었습니다</value>
+  </data>
+  <data name="Form1_OpenDonate_Failed" xml:space="preserve">
+    <value>후원 페이지 열기 실패</value>
   </data>
   <!-- Form1 - 캐시 상태 -->
   <data name="Form1_Cache_Status" xml:space="preserve">
@@ -748,5 +763,50 @@
   </data>
   <data name="UpdateManager_DownloadCompleteVerification" xml:space="preserve">
     <value>다운로드 완료, 확인 중...</value>
+  </data>
+  <!-- Form1 - 스크린샷 -->
+  <data name="Form1_Screenshot_CanvasNotFound" xml:space="preserve">
+    <value>Unity 캔버스 요소를 찾을 수 없습니다</value>
+  </data>
+  <data name="Form1_Screenshot_CaptureFailed" xml:space="preserve">
+    <value>캔버스 콘텐츠 캡처 실패: {0}</value>
+  </data>
+  <data name="Form1_Screenshot_SavedTo" xml:space="preserve">
+    <value>스크린샷 저장됨: {0}</value>
+  </data>
+  <data name="Form1_Screenshot_Failed" xml:space="preserve">
+    <value>스크린샷 실패: {0}</value>
+  </data>
+  <data name="Form1_Screenshot_SaveSuccess" xml:space="preserve">
+    <value>📸 스크린샷 저장됨: {0}</value>
+  </data>
+  <data name="Form1_Screenshot_Tip" xml:space="preserve">
+    <value>스크린샷 (F10)</value>
+  </data>
+  <data name="Form1_Screenshot_Error" xml:space="preserve">
+    <value>스크린샷 실패</value>
+  </data>
+  <data name="Form1_Screenshot_ErrorTitle" xml:space="preserve">
+    <value>오류</value>
+  </data>
+  <data name="AboutForm_Title" xml:space="preserve">
+    <value>CTWebPlayer 정보</value>
+  </data>
+  <data name="AboutForm_txtLicense" xml:space="preserve">
+    <value></value>
+    <comment>License text box - content loaded dynamically</comment>
+  </data>
+  <data name="SettingsForm_Title" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_cmbLanguage" xml:space="preserve">
+    <value></value>
+    <comment>Language combo box - items populated in code</comment>
+  </data>
+  <data name="Form1_Tip_PressF11ToExitFullscreen" xml:space="preserve">
+    <value>F11을 눌러 전체 화면 종료</value>
+  </data>
+  <data name="Form1_Status_UnityCanvasFullscreen" xml:space="preserve">
+    <value>Unity 캔버스 전체 화면이 적용됨</value>
   </data>
 </root>

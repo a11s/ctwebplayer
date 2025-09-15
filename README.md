@@ -2,7 +2,7 @@
 
 ## 项目介绍
 
-CTWebPlayer 是一个为 Unity3D WebPlayer 游戏开发的基于 WebView2 的专属浏览器工具。这是一个**纯粹的浏览器优化工具**，专注于提升游戏加载速度和用户体验，不会修改游戏代码，也不会改变任何内存数据。
+CTWebPlayer 是一个为 <<樱境物语>>> (Cherry tale) 游戏开发的基于 WebView2 的专属浏览器工具。这是一个**纯粹的浏览器优化工具**，专注于提升游戏加载速度和用户体验，不会修改游戏代码，也不会改变任何内存数据。
 
 ### 核心特性
 - **智能缓存系统**：自动缓存游戏静态资源，避免重复下载，显著提升加载速度
@@ -13,11 +13,32 @@ CTWebPlayer 是一个为 Unity3D WebPlayer 游戏开发的基于 WebView2 的专
 - **登录引导系统**：智能检测登录状态，提供便捷的登录引导流程
 - **自动更新功能**：支持自动检查和下载更新
 - **多语言支持**：支持英语、简体中文、繁体中文、日语和韩语界面
+- **游戏截图功能**：支持一键截取Unity游戏画面，自动保存到本地
+
+## 赞助/Sponsor
+
+如果您觉得这个项目对您有帮助，欢迎通过以下方式支持我：
+
+**English:** Just a little reminder! If you enjoy what I create, you can support me at https://ko-fi.com/magicnumber
+
+**中文:** 只是一点提醒！如果你喜欢我创造的东西，你可以在 https://ko-fi.com/magicnumber 支持我
+
+<div align="center">
+  
+[![Support on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/magicnumber)
+
+**扫描二维码支持 / Scan QR Code to Support**
+
+![Ko-fi QR Code](https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://ko-fi.com/magicnumber)
+
+</div>
+
+感谢您的支持！ / Thank you for your support! ❤️
 
 ## 下载安装
 
 ### 下载地址
-- **最新版本**：[CTWebPlayer v1.0.0](https://github.com/a11s/ctwebplayer/releases/latest)
+- **最新版本**：[CTWebPlayer v1.2.0](https://github.com/a11s/ctwebplayer/releases/latest)
 - **所有版本**：[Releases 页面](https://github.com/a11s/ctwebplayer/releases)
 
 ### 系统要求
@@ -25,7 +46,7 @@ CTWebPlayer 是一个为 Unity3D WebPlayer 游戏开发的基于 WebView2 的专
 - 需要安装 [WebView2 运行时](https://developer.microsoft.com/microsoft-edge/webview2/)（程序会自动提示安装）
 
 ### 安装步骤
-1. 从上述链接下载最新版本的 `ctwebplayer-v1.0.0.zip`
+1. 从上述链接下载最新版本的 `ctwebplayer-v1.2.0.zip`
 2. 解压到任意目录（建议：`C:\Program Files\CTWebPlayer` 或者 `D:\CTWebPlayer`）
 3. 运行 `ctwebplayer.exe`
 4. 如果提示需要安装 WebView2，请按照提示进行安装
@@ -61,19 +82,28 @@ CTWebPlayer 是一个为 Unity3D WebPlayer 游戏开发的基于 WebView2 的专
 - **语言切换**：可在设置界面随时切换界面语言
 - **持久化保存**：语言设置会自动保存，下次启动时使用
 
-### 6. 其他实用功能
+### 6. 游戏截图功能
+- **一键截图**：按 F10 键即可截取当前游戏画面
+- **智能截取**：自动识别并截取 Unity WebGL canvas 内容
+- **多种截图方案**：支持多种截图技术，确保不会出现黑屏
+- **自动保存**：截图自动保存到程序目录下的 Capture 文件夹
+- **文件命名**：使用时间戳命名（Screenshot_yyyyMMdd_HHmmss.png）
+- **全屏模式优化**：全屏模式下显示增强的截图成功提示
+
+### 7. 其他实用功能
 - **自动 iframe 导航**：自动检测并导航到游戏 iframe 内容
 - **CORS 处理**：自动注入脚本处理跨域请求问题
 - **导航控制**：支持后退、前进、刷新等基本浏览器功能
 - **地址栏**：可手动输入和导航到指定 URL
 - **状态栏**：实时显示加载状态和缓存统计信息
-- **快捷键支持**：F11 全屏切换，F4 静音切换
+- **快捷键支持**：F11 全屏切换，F4 静音切换，F10 截图
 - **多开**：你只要再拷贝一份就能单独再开一个号。这个浏览器的登录信息是记录在目录里的。
 
 ## 快捷键
 
 - **F11**：切换全屏模式
 - **F4**：切换静音状态
+- **F10**：截取游戏画面
 - **F5**：刷新页面
 - **F12**：打开开发者工具
 - **Enter**：在地址栏中按下回车键进行导航
@@ -191,8 +221,9 @@ CTWebPlayer 支持两种缓存规则：
   - 设置：打开综合设置窗口
   - 退出登录：清除Cookies并返回登录页
   - 退出：关闭程序
-- **视图菜单**
+- **实用工具菜单**
   - 全屏切换（F11）：进入/退出全屏模式
+  - 截图（F10）：截取当前游戏画面
   - 静音切换（F4）：开启/关闭声音
 - **帮助菜单**
   - 检查更新：检查并下载新版本
@@ -224,6 +255,7 @@ ctwebplayer/
 ├── ctwebplayer.exe          # 主程序
 ├── config.json             # 配置文件
 ├── cache/                  # 缓存目录
+├── Capture/                # 截图保存目录
 ├── logs/                   # 日志目录
 └── data/                   # WebView2 用户数据目录
 ```

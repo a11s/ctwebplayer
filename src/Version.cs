@@ -15,7 +15,7 @@ namespace CTWebPlayer
         /// <summary>
         /// 次版本号 - 向下兼容的功能性新增时增加
         /// </summary>
-        public const int Minor = 0;
+        public const int Minor = 2;
 
         /// <summary>
         /// 修订号 - 向下兼容的问题修正时增加
@@ -73,7 +73,7 @@ namespace CTWebPlayer
         /// <summary>
         /// 获取版本发布日期
         /// </summary>
-        public static DateTime ReleaseDate => new DateTime(2025, 9, 12);
+        public static DateTime ReleaseDate => new DateTime(2025, 9, 16);
 
         /// <summary>
         /// 获取版本描述信息

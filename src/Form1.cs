@@ -5,6 +5,8 @@ using Microsoft.Web.WebView2.Core;
 using System.IO;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace ctwebplayer
 {
@@ -46,9 +48,11 @@ namespace ctwebplayer
         // 热键ID定义
         private const int HOTKEY_ID_F11 = 1; // F11全屏切换
         private const int HOTKEY_ID_F4 = 2;  // F4静音切换
+        private const int HOTKEY_ID_F10 = 3; // F10截图
         
         // 虚拟键码
         private const uint VK_F4 = 0x73;
+        private const uint VK_F10 = 0x79;
         private const uint VK_F11 = 0x7A;
         #endregion
         
@@ -274,6 +278,17 @@ namespace ctwebplayer
                 {
                     LogManager.Instance.Warning("F4全局热键注册失败，可能被其他程序占用");
                 }
+
+                // 注册F10热键（截图）
+                bool f10Registered = RegisterHotKey(this.Handle, HOTKEY_ID_F10, MOD_NOREPEAT, VK_F10);
+                if (f10Registered)
+                {
+                    LogManager.Instance.Info("已成功注册F10全局热键");
+                }
+                else
+                {
+                    LogManager.Instance.Warning("F10全局热键注册失败，可能被其他程序占用");
+                }
             }
             catch (Exception ex)
             {
@@ -298,6 +313,12 @@ namespace ctwebplayer
                 if (UnregisterHotKey(this.Handle, HOTKEY_ID_F4))
                 {
                     LogManager.Instance.Info("已成功注销F4全局热键");
+                }
+                
+                // 注销F10热键
+                if (UnregisterHotKey(this.Handle, HOTKEY_ID_F10))
+                {
+                    LogManager.Instance.Info("已成功注销F10全局热键");
                 }
             }
             catch (Exception ex)
@@ -874,11 +895,19 @@ namespace ctwebplayer
                         // 查找Unity canvas元素
                         var canvas = document.getElementById('unity-canvas');
                         if (!canvas) {
+                            console.log('JS: Unity canvas 未找到');
                             return false;
                         }
                         
                         // 记录原始canvas信息
                         console.log('Unity canvas detected:', canvas);
+                        
+                        // 检查 Unity 实例是否存在
+                        if (window.unityInstance) {
+                            console.log('JS: Unity 实例已加载');
+                        } else {
+                            console.log('JS: Unity 实例未加载，可能注入时机过早');
+                        }
                         
                         // 首先移除所有可能存在的旧样式
                         var oldStyles = document.querySelectorAll('style[data-unity-fullscreen]');
@@ -1022,7 +1051,10 @@ namespace ctwebplayer
                 {
                     LogManager.Instance.Info("检测到Unity canvas元素，已应用全屏样式");
                     statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_UnityCanvasFullscreen");
+                } else {
+                    LogManager.Instance.Warning("未检测到 Unity canvas 或处理失败，result: " + result);
                 }
+                LogManager.Instance.Info("CheckAndHandleUnityCanvas: 完成处理");
             }
             catch (Exception ex)
             {
@@ -1351,6 +1383,14 @@ namespace ctwebplayer
         }
 
         /// <summary>
+        /// 截图菜单项点击事件
+        /// </summary>
+        private void screenshotMenuItem_Click(object? sender, EventArgs e)
+        {
+            _ = CaptureUnityCanvas();
+        }
+
+        /// <summary>
         /// 检查更新菜单项点击事件
         /// </summary>
         private async void checkUpdateMenuItem_Click(object? sender, EventArgs e)
@@ -1390,6 +1430,35 @@ namespace ctwebplayer
             using (var aboutForm = new AboutForm())
             {
                 aboutForm.ShowDialog(this);
+            }
+        }
+
+        /// <summary>
+        /// 捐助菜单项点击事件
+        /// </summary>
+        private void donateToolStripMenuItem_Click(object? sender, EventArgs e)
+        {
+            try
+            {
+                const string donateUrl = "https://ko-fi.com/magicnumber";
+                
+                LogManager.Instance.Info($"打开捐助页面：{donateUrl}");
+                
+                // 在默认浏览器中打开捐助链接
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = donateUrl,
+                    UseShellExecute = true
+                });
+                
+                statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_OpenedDonate");
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("打开捐助页面时出错", ex);
+                MessageBox.Show($"{LanguageManager.Instance.GetString("Form1_OpenDonate_Failed")}: {ex.Message}",
+                    LanguageManager.Instance.GetString("Message_Error"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -2345,11 +2414,652 @@ namespace ctwebplayer
                         LogManager.Instance.Info("检测到F4全局热键，准备切换静音");
                         ToggleMute();
                         break;
+                        
+                    case HOTKEY_ID_F10:
+                        LogManager.Instance.Info("检测到F10全局热键，准备截图");
+                        _ = CaptureUnityCanvas();
+                        break;
                 }
             }
             
             // 调用基类的WndProc处理其他消息
             base.WndProc(ref m);
+        }
+
+        /// <summary>
+        /// 截取Unity Canvas的内容
+        /// </summary>
+        private async Task CaptureUnityCanvas()
+        {
+            try
+            {
+                if (webView2.CoreWebView2 == null)
+                {
+                    LogManager.Instance.Warning("WebView2尚未初始化，无法截图");
+                    return;
+                }
+
+                // 全屏模式下的特殊处理：先检查是否在全屏模式
+                var isFullScreenMode = _isFullScreen;
+                
+                LogManager.Instance.Info("开始执行Unity WebGL截图");
+                
+                // 方案1：首先尝试使用改进的canvas截图方法
+                var captureResult = await TryCaptureUnityCanvasImproved();
+                
+                if (captureResult.Success)
+                {
+                    // 检测是否为黑屏
+                    if (IsBlackImage(captureResult.ImageData))
+                    {
+                        LogManager.Instance.Warning("检测到截图为黑屏，尝试备用方案");
+                        
+                        // 方案2：尝试使用Unity内置截图命令
+                        captureResult = await TryCaptureWithUnityCommand();
+                        
+                        if (!captureResult.Success || IsBlackImage(captureResult.ImageData))
+                        {
+                            // 方案3：使用WebView2截图API
+                            LogManager.Instance.Info("尝试WebView2截图API");
+                            captureResult = await TryCaptureWithWebView2API();
+                        }
+                    }
+                    
+                    if (captureResult.Success && !IsBlackImage(captureResult.ImageData))
+                    {
+                        await SaveScreenshot(captureResult.ImageData, isFullScreenMode);
+                        return;
+                    }
+                }
+                
+                // 显示错误信息
+                string displayError = captureResult.ErrorMessage ?? LanguageManager.Instance.GetString("Form1_Screenshot_Failed");
+                LogManager.Instance.Warning($"截图失败：{displayError}");
+                statusLabel.Text = LanguageManager.Instance.GetString("Form1_Screenshot_Error");
+                
+                // 在全屏模式下使用页面内提示
+                if (isFullScreenMode)
+                {
+                    await ShowScreenshotErrorInPage(displayError);
+                }
+                else
+                {
+                    MessageBox.Show(displayError, LanguageManager.Instance.GetString("Form1_Screenshot_ErrorTitle"),
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("截取Unity Canvas时出错", ex);
+                var errorMsg = string.Format(LanguageManager.Instance.GetString("Form1_Screenshot_Failed"), ex.Message);
+                
+                if (_isFullScreen)
+                {
+                    await ShowScreenshotErrorInPage(errorMsg);
+                }
+                else
+                {
+                    MessageBox.Show(errorMsg, LanguageManager.Instance.GetString("Form1_Screenshot_ErrorTitle"),
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 使用改进的方法尝试捕获Unity Canvas
+        /// </summary>
+        private async Task<CaptureResult> TryCaptureUnityCanvasImproved()
+        {
+            try
+            {
+                // 执行JavaScript来获取unity-canvas的内容
+                var script = @"
+                    (function() {
+                        try {
+                            // 查找canvas元素
+                            var canvas = document.getElementById('unity-canvas');
+                            
+                            if (!canvas) {
+                                console.log('Canvas not found by ID, trying other methods');
+                                canvas = document.querySelector('canvas');
+                                
+                                if (!canvas) {
+                                    return JSON.stringify({ success: false, error: 'canvas_not_found' });
+                                }
+                            }
+                            
+                            console.log('Found canvas:', canvas.id || 'no-id', 'size:', canvas.width, 'x', canvas.height);
+                            
+                            // 尝试直接截图
+                            var dataUrl = canvas.toDataURL('image/png');
+                            
+                            if (!dataUrl || dataUrl === 'data:,' || dataUrl.length < 100) {
+                                console.log('toDataURL returned empty or invalid data');
+                                
+                                // 尝试获取WebGL context
+                                var gl = canvas.getContext('webgl') || canvas.getContext('webgl2');
+                                if (gl && !gl.isContextLost()) {
+                                    console.log('WebGL context is active but cannot capture');
+                                    return JSON.stringify({ success: false, error: 'webgl_capture_not_supported' });
+                                } else {
+                                    return JSON.stringify({ success: false, error: 'empty_canvas' });
+                                }
+                            }
+                            
+                            console.log('Canvas captured successfully, dataUrl length:', dataUrl.length);
+                            
+                            return JSON.stringify({
+                                success: true,
+                                dataUrl: dataUrl
+                            });
+                            
+                        } catch (e) {
+                            console.error('Screenshot error:', e);
+                            return JSON.stringify({
+                                success: false,
+                                error: e.message || 'unknown_error'
+                            });
+                        }
+                    })();
+                ";
+
+                var result = await webView2.CoreWebView2.ExecuteScriptAsync(script);
+                
+                // 记录原始结果用于调试
+                LogManager.Instance.Info($"JavaScript原始返回值长度：{result?.Length ?? 0}");
+                
+                // 解析结果
+                if (!string.IsNullOrEmpty(result) && result != "null")
+                {
+                    try
+                    {
+                        // ExecuteScriptAsync返回的结果是JSON编码的字符串，需要先解码
+                        string jsonResult;
+                        
+                        // 如果结果以引号开始和结束，说明是JSON字符串
+                        if (result.StartsWith("\"") && result.EndsWith("\""))
+                        {
+                            // 使用System.Text.Json来正确解码JSON字符串
+                            jsonResult = System.Text.Json.JsonSerializer.Deserialize<string>(result) ?? "";
+                        }
+                        else
+                        {
+                            jsonResult = result;
+                        }
+                        
+                        LogManager.Instance.Info($"解码后的JSON结果前100字符：{jsonResult.Substring(0, Math.Min(100, jsonResult.Length))}");
+                        
+                        // 使用正则表达式来解析JSON（更稳定）
+                        var successMatch = System.Text.RegularExpressions.Regex.Match(jsonResult, @"""success""\s*:\s*(true|false)");
+                        
+                        if (!successMatch.Success)
+                        {
+                            LogManager.Instance.Warning($"无法找到success字段，JSON内容：{jsonResult}");
+                            return new CaptureResult { Success = false, ErrorMessage = "Invalid JSON format - no success field found" };
+                        }
+                        
+                        bool success = successMatch.Groups[1].Value == "true";
+                        
+                        if (success)
+                        {
+                            // 提取dataUrl
+                            var dataUrlMatch = System.Text.RegularExpressions.Regex.Match(jsonResult, @"""dataUrl""\s*:\s*""([^""]+)""");
+                            
+                            if (!dataUrlMatch.Success)
+                            {
+                                return new CaptureResult { Success = false, ErrorMessage = "Invalid JSON format - dataUrl not found" };
+                            }
+                            
+                            var dataUrl = dataUrlMatch.Groups[1].Value;
+                            
+                            // 处理转义字符
+                            dataUrl = dataUrl.Replace("\\/", "/");
+                            
+                            // 解码base64数据
+                            var base64Start = dataUrl.IndexOf("base64,");
+                            if (base64Start == -1)
+                            {
+                                return new CaptureResult { Success = false, ErrorMessage = "Invalid data URL format - no base64 marker" };
+                            }
+                            base64Start += 7;
+                            
+                            if (base64Start >= dataUrl.Length)
+                            {
+                                return new CaptureResult { Success = false, ErrorMessage = "Empty base64 data" };
+                            }
+                            
+                            var base64Data = dataUrl.Substring(base64Start);
+                            
+                            LogManager.Instance.Info($"Base64数据长度：{base64Data.Length}");
+                            
+                            var imageBytes = Convert.FromBase64String(base64Data);
+                            
+                            LogManager.Instance.Info($"解码后的图片大小：{imageBytes.Length} bytes");
+                            
+                            return new CaptureResult { Success = true, ImageData = imageBytes };
+                        }
+                        else
+                        {
+                            // 提取错误信息
+                            var errorMatch = System.Text.RegularExpressions.Regex.Match(jsonResult, @"""error""\s*:\s*""([^""]+)""");
+                            
+                            if (errorMatch.Success)
+                            {
+                                var errorMsg = errorMatch.Groups[1].Value;
+                                LogManager.Instance.Warning($"JavaScript返回错误：{errorMsg}");
+                                return new CaptureResult { Success = false, ErrorMessage = GetLocalizedError(errorMsg) };
+                            }
+                            else
+                            {
+                                return new CaptureResult { Success = false, ErrorMessage = "Unknown error - no error message provided" };
+                            }
+                        }
+                    }
+                    catch (Exception parseEx)
+                    {
+                        LogManager.Instance.Error($"解析JavaScript结果时出错，原始结果：{result}", parseEx);
+                        return new CaptureResult { Success = false, ErrorMessage = $"JSON parse error: {parseEx.Message}" };
+                    }
+                }
+                
+                return new CaptureResult { Success = false, ErrorMessage = "No result from JavaScript" };
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("改进的canvas截图方法失败", ex);
+                return new CaptureResult { Success = false, ErrorMessage = ex.Message };
+            }
+        }
+
+        /// <summary>
+        /// 尝试使用Unity内置截图命令
+        /// </summary>
+        private async Task<CaptureResult> TryCaptureWithUnityCommand()
+        {
+            try
+            {
+                LogManager.Instance.Info("尝试Unity内置截图命令");
+                
+                var script = @"
+                    (function() {
+                        // 尝试通过Unity实例发送截图命令
+                        if (window.unityInstance && window.unityInstance.SendMessage) {
+                            try {
+                                // 创建临时canvas用于接收截图数据
+                                window.__screenshotCanvas = document.createElement('canvas');
+                                window.__screenshotReady = false;
+                                window.__screenshotData = null;
+                                
+                                // 监听截图完成事件
+                                window.__onScreenshotReady = function(base64Data) {
+                                    window.__screenshotData = base64Data;
+                                    window.__screenshotReady = true;
+                                };
+                                
+                                // 发送截图命令到Unity
+                                window.unityInstance.SendMessage('ScreenCapture', 'TakeScreenshot', '');
+                                
+                                // 等待截图完成（最多2秒）
+                                var waitTime = 0;
+                                var checkInterval = setInterval(function() {
+                                    if (window.__screenshotReady || waitTime >= 2000) {
+                                        clearInterval(checkInterval);
+                                        if (window.__screenshotData) {
+                                            window.postMessage({
+                                                type: 'screenshot',
+                                                data: window.__screenshotData
+                                            }, '*');
+                                        }
+                                    }
+                                    waitTime += 100;
+                                }, 100);
+                                
+                                return JSON.stringify({ success: true, waiting: true });
+                            } catch (e) {
+                                return JSON.stringify({ success: false, error: 'Unity command failed: ' + e.message });
+                            }
+                        } else {
+                            return JSON.stringify({ success: false, error: 'Unity instance not found' });
+                        }
+                    })();
+                ";
+                
+                var result = await webView2.CoreWebView2.ExecuteScriptAsync(script);
+                
+                // Unity截图通常需要时间，所以这里返回失败，让主流程继续尝试其他方法
+                return new CaptureResult { Success = false, ErrorMessage = "Unity内置截图不可用" };
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("Unity截图命令失败", ex);
+                return new CaptureResult { Success = false, ErrorMessage = ex.Message };
+            }
+        }
+
+        /// <summary>
+        /// 使用WebView2 API进行截图
+        /// </summary>
+        private async Task<CaptureResult> TryCaptureWithWebView2API()
+        {
+            try
+            {
+                LogManager.Instance.Info("使用WebView2 API截图");
+                
+                // 使用WebView2的CapturePreviewAsync方法
+                using (var stream = new MemoryStream())
+                {
+                    // 设置截图格式为PNG
+                    await webView2.CoreWebView2.CapturePreviewAsync(
+                        CoreWebView2CapturePreviewImageFormat.Png,
+                        stream);
+                    
+                    var imageBytes = stream.ToArray();
+                    
+                    if (imageBytes.Length > 0)
+                    {
+                        LogManager.Instance.Info($"WebView2截图成功，大小：{imageBytes.Length} bytes");
+                        return new CaptureResult { Success = true, ImageData = imageBytes };
+                    }
+                    else
+                    {
+                        return new CaptureResult { Success = false, ErrorMessage = "WebView2截图为空" };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("WebView2 API截图失败", ex);
+                return new CaptureResult { Success = false, ErrorMessage = ex.Message };
+            }
+        }
+
+        /// <summary>
+        /// 检测图片是否为纯黑色
+        /// </summary>
+        private bool IsBlackImage(byte[] imageData)
+        {
+            try
+            {
+                using (var ms = new MemoryStream(imageData))
+                using (var bitmap = new Bitmap(ms))
+                {
+                    // 采样检查图片是否为纯黑色
+                    int sampleSize = 10; // 每隔10个像素采样一次
+                    int blackPixelCount = 0;
+                    int totalSamples = 0;
+                    
+                    for (int x = 0; x < bitmap.Width; x += sampleSize)
+                    {
+                        for (int y = 0; y < bitmap.Height; y += sampleSize)
+                        {
+                            var pixel = bitmap.GetPixel(x, y);
+                            totalSamples++;
+                            
+                            // 检查像素是否接近黑色（RGB值都小于10）
+                            if (pixel.R < 10 && pixel.G < 10 && pixel.B < 10)
+                            {
+                                blackPixelCount++;
+                            }
+                        }
+                    }
+                    
+                    // 如果超过95%的采样点都是黑色，认为是黑屏
+                    var blackRatio = (double)blackPixelCount / totalSamples;
+                    var isBlack = blackRatio > 0.95;
+                    
+                    if (isBlack)
+                    {
+                        LogManager.Instance.Warning($"检测到黑屏图片，黑色像素比例：{blackRatio:P}");
+                    }
+                    
+                    return isBlack;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("检测黑屏图片时出错", ex);
+                return false; // 出错时假设不是黑屏，继续保存
+            }
+        }
+
+        /// <summary>
+        /// 获取本地化的错误信息
+        /// </summary>
+        private string GetLocalizedError(string errorMsg)
+        {
+            if (errorMsg == "canvas_not_found")
+            {
+                return LanguageManager.Instance.GetString("Form1_Screenshot_CanvasNotFound");
+            }
+            else if (errorMsg == "webgl_capture_not_supported")
+            {
+                return LanguageManager.Instance.GetString("Form1_Screenshot_WebGLNotSupported");
+            }
+            else if (errorMsg == "empty_canvas")
+            {
+                return LanguageManager.Instance.GetString("Form1_Screenshot_EmptyCanvas");
+            }
+            else if (errorMsg.StartsWith("capture_failed:"))
+            {
+                var detailError = errorMsg.Substring("capture_failed:".Length).Trim();
+                return string.Format(LanguageManager.Instance.GetString("Form1_Screenshot_CaptureFailed"), detailError);
+            }
+            else
+            {
+                return string.Format(LanguageManager.Instance.GetString("Form1_Screenshot_Failed"), errorMsg);
+            }
+        }
+
+        /// <summary>
+        /// 截图结果类
+        /// </summary>
+        private class CaptureResult
+        {
+            public bool Success { get; set; }
+            public byte[] ImageData { get; set; }
+            public string ErrorMessage { get; set; }
+        }
+
+        /// <summary>
+        /// 保存截图到文件
+        /// </summary>
+        private async Task SaveScreenshot(byte[] imageData, bool isFullScreenMode = false)
+        {
+            try
+            {
+                // 创建Capture目录
+                string captureDir = Path.Combine(Application.StartupPath, "Capture");
+                if (!Directory.Exists(captureDir))
+                {
+                    Directory.CreateDirectory(captureDir);
+                    LogManager.Instance.Info($"创建截图目录：{captureDir}");
+                }
+
+                // 使用时间戳命名文件
+                string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                string fileName = $"Screenshot_{timestamp}.png";
+                string filePath = Path.Combine(captureDir, fileName);
+
+                // 保存图片文件
+                await File.WriteAllBytesAsync(filePath, imageData);
+                
+                LogManager.Instance.Info($"截图已保存：{filePath}");
+                
+                // 在状态栏显示成功信息（使用多语言）
+                statusLabel.Text = string.Format(LanguageManager.Instance.GetString("Form1_Screenshot_SavedTo"), fileName);
+                
+                // 显示截图成功提示
+                await ShowScreenshotTip(fileName, isFullScreenMode);
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("保存截图时出错", ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 显示截图成功提示
+        /// </summary>
+        private async Task ShowScreenshotTip(string fileName, bool isFullScreenMode = false)
+        {
+            try
+            {
+                // 获取多语言提示文本
+                var tipText = string.Format(LanguageManager.Instance.GetString("Form1_Screenshot_SaveSuccess"), fileName).Replace("'", "\\'");
+                
+                // 全屏模式下使用更醒目的样式
+                var tipStyle = isFullScreenMode ? @"
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background-color: rgba(0, 128, 0, 0.95);
+                            color: white;
+                            padding: 30px 60px;
+                            border-radius: 15px;
+                            font-size: 20px;
+                            font-family: Arial, sans-serif;
+                            z-index: 999999;
+                            pointer-events: none;
+                            transition: opacity 0.3s ease;
+                            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+                            animation: pulse 0.5s ease-out;
+                        " : @"
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background-color: rgba(0, 128, 0, 0.9);
+                            color: white;
+                            padding: 20px 40px;
+                            border-radius: 10px;
+                            font-size: 16px;
+                            font-family: Arial, sans-serif;
+                            z-index: 999999;
+                            pointer-events: none;
+                            transition: opacity 0.3s ease;
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                        ";
+                
+                var script = $@"
+                    (function() {{
+                        // 检查是否已经存在提示
+                        var existingTip = document.getElementById('screenshot-tip');
+                        if (existingTip) {{
+                            existingTip.remove();
+                        }}
+                        
+                        // 添加动画样式（仅在全屏模式下）
+                        if ({isFullScreenMode.ToString().ToLower()}) {{
+                            var style = document.createElement('style');
+                            style.innerHTML = `
+                                @keyframes pulse {{
+                                    0% {{ transform: translate(-50%, -50%) scale(0.9); opacity: 0; }}
+                                    50% {{ transform: translate(-50%, -50%) scale(1.05); }}
+                                    100% {{ transform: translate(-50%, -50%) scale(1); opacity: 1; }}
+                                }}
+                            `;
+                            document.head.appendChild(style);
+                        }}
+                        
+                        // 创建提示元素
+                        var tip = document.createElement('div');
+                        tip.id = 'screenshot-tip';
+                        tip.innerHTML = '{tipText}';
+                        tip.style.cssText = `{tipStyle}`;
+                        document.body.appendChild(tip);
+                        
+                        // 显示时间根据全屏模式调整
+                        var displayTime = {(isFullScreenMode ? 3000 : 2000)};
+                        
+                        // 延时后淡出
+                        setTimeout(function() {{
+                            tip.style.opacity = '0';
+                            setTimeout(function() {{
+                                tip.remove();
+                            }}, 300);
+                        }}, displayTime);
+                    }})();
+                ";
+                
+                await webView2.CoreWebView2.ExecuteScriptAsync(script);
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("显示截图提示时出错", ex);
+            }
+        }
+
+        /// <summary>
+        /// 在页面内显示截图错误提示（全屏模式下使用）
+        /// </summary>
+        private async Task ShowScreenshotErrorInPage(string errorMessage)
+        {
+            try
+            {
+                var tipText = errorMessage.Replace("'", "\\'").Replace("\n", "\\n");
+                
+                var script = $@"
+                    (function() {{
+                        // 检查是否已经存在提示
+                        var existingTip = document.getElementById('screenshot-error-tip');
+                        if (existingTip) {{
+                            existingTip.remove();
+                        }}
+                        
+                        // 创建提示元素
+                        var tip = document.createElement('div');
+                        tip.id = 'screenshot-error-tip';
+                        tip.innerHTML = '❌ ' + '{tipText}';
+                        tip.style.cssText = `
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background-color: rgba(220, 53, 69, 0.95);
+                            color: white;
+                            padding: 30px 60px;
+                            border-radius: 15px;
+                            font-size: 18px;
+                            font-family: Arial, sans-serif;
+                            z-index: 999999;
+                            pointer-events: auto;
+                            transition: opacity 0.3s ease;
+                            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+                            max-width: 80%;
+                            text-align: center;
+                            cursor: pointer;
+                        `;
+                        
+                        // 点击即可关闭
+                        tip.onclick = function() {{
+                            tip.style.opacity = '0';
+                            setTimeout(function() {{
+                                tip.remove();
+                            }}, 300);
+                        }};
+                        
+                        document.body.appendChild(tip);
+                        
+                        // 5秒后自动淡出
+                        setTimeout(function() {{
+                            if (document.getElementById('screenshot-error-tip')) {{
+                                tip.style.opacity = '0';
+                                setTimeout(function() {{
+                                    tip.remove();
+                                }}, 300);
+                            }}
+                        }}, 5000);
+                    }})();
+                ";
+                
+                await webView2.CoreWebView2.ExecuteScriptAsync(script);
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("显示截图错误提示时出错", ex);
+            }
         }
     }
 }

@@ -42,6 +42,7 @@
             btnUtilities = new ToolStripDropDownButton();
             toggleFullScreenMenuItem = new ToolStripMenuItem();
             toggleMuteMenuItem = new ToolStripMenuItem();
+            screenshotMenuItem = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
             logoutMenuItem = new ToolStripMenuItem();
             forumMenuItem = new ToolStripMenuItem();
@@ -52,6 +53,7 @@
             checkUpdateMenuItem = new ToolStripMenuItem();
             toolStripSeparator4 = new ToolStripSeparator();
             aboutMenuItem = new ToolStripMenuItem();
+            donateToolStripMenuItem = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             statusLabel = new ToolStripStatusLabel();
             progressBar = new ToolStripProgressBar();
@@ -145,7 +147,7 @@
             // btnUtilities
             //
             btnUtilities.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            btnUtilities.DropDownItems.AddRange(new ToolStripItem[] { toggleFullScreenMenuItem, toggleMuteMenuItem, toolStripSeparator3, logoutMenuItem, forumMenuItem, discordMenuItem, githubMenuItem, mobileDownloadMenuItem, toolStripSeparator5, checkUpdateMenuItem, toolStripSeparator4, aboutMenuItem });
+            btnUtilities.DropDownItems.AddRange(new ToolStripItem[] { toggleFullScreenMenuItem, toggleMuteMenuItem, screenshotMenuItem, toolStripSeparator3, logoutMenuItem, forumMenuItem, discordMenuItem, githubMenuItem, mobileDownloadMenuItem, toolStripSeparator5, checkUpdateMenuItem, toolStripSeparator4, aboutMenuItem, donateToolStripMenuItem });
             btnUtilities.Name = "btnUtilities";
             btnUtilities.Size = new Size(69, 22);
             btnUtilities.Text = "实用工具";
@@ -168,6 +170,15 @@
             toggleMuteMenuItem.Text = "静音切换 (F4)";
             toggleMuteMenuItem.Tag = "Form1_toolStrip1_btnUtilities_toggleMuteMenuItem";
             toggleMuteMenuItem.Click += toggleMuteMenuItem_Click;
+            //
+            // screenshotMenuItem
+            //
+            screenshotMenuItem.Name = "screenshotMenuItem";
+            screenshotMenuItem.ShortcutKeys = Keys.F10;
+            screenshotMenuItem.Size = new Size(171, 22);
+            screenshotMenuItem.Text = "截图 (F10)";
+            screenshotMenuItem.Tag = "Form1_Tool_Screenshot";
+            screenshotMenuItem.Click += screenshotMenuItem_Click;
             //
             // toolStripSeparator3
             //
@@ -240,8 +251,16 @@
             aboutMenuItem.Tag = "Form1_toolStrip1_btnUtilities_aboutMenuItem";
             aboutMenuItem.Click += aboutMenuItem_Click;
             //
+            // donateToolStripMenuItem
+            //
+            donateToolStripMenuItem.Name = "donateToolStripMenuItem";
+            donateToolStripMenuItem.Size = new Size(171, 22);
+            donateToolStripMenuItem.Text = "捐助";
+            donateToolStripMenuItem.Tag = "Form1_toolStrip1_btnUtilities_donateToolStripMenuItem";
+            donateToolStripMenuItem.Click += donateToolStripMenuItem_Click;
+            //
             // statusStrip1
-            // 
+            //
             statusStrip1.Items.AddRange(new ToolStripItem[] { statusLabel, progressBar });
             statusStrip1.Location = new Point(0, 842);
             statusStrip1.Name = "statusStrip1";
@@ -314,6 +333,7 @@
         private System.Windows.Forms.ToolStripDropDownButton btnUtilities;
         private System.Windows.Forms.ToolStripMenuItem toggleFullScreenMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toggleMuteMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem screenshotMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem logoutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem forumMenuItem;
@@ -324,6 +344,7 @@
         private System.Windows.Forms.ToolStripMenuItem checkUpdateMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem aboutMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem donateToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
         private System.Windows.Forms.ToolStripProgressBar progressBar;

@@ -241,17 +241,37 @@ namespace ctwebplayer
         {
             try
             {
+                // 诊断日志：记录正在查找的键和当前文化
+                LogManager.Instance.Debug($"[LanguageManager] 正在查找资源键: {key}, 当前语言: {_currentCulture.Name}");
+                
                 string value = _resourceManager.GetString(key, _currentCulture);
                 if (string.IsNullOrEmpty(value))
                 {
-                    LogManager.Instance.Warning($"找不到资源键: {key}");
-                    return key; // 返回键名作为后备
+                    // 尝试从默认资源获取
+                    LogManager.Instance.Debug($"[LanguageManager] 在 {_currentCulture.Name} 中找不到键 {key}，尝试默认资源");
+                    value = _resourceManager.GetString(key, CultureInfo.InvariantCulture);
+                    
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        LogManager.Instance.Warning($"[LanguageManager] 找不到资源键: {key} (在所有资源文件中都不存在)");
+                        // 诊断信息：列出可能的原因
+                        LogManager.Instance.Debug($"[LanguageManager] 可能的原因: 1) 键名拼写错误 2) 资源文件中缺少此键 3) 资源文件未正确加载");
+                        return key; // 返回键名作为后备
+                    }
+                    else
+                    {
+                        LogManager.Instance.Debug($"[LanguageManager] 在默认资源中找到键 {key}");
+                    }
+                }
+                else
+                {
+                    LogManager.Instance.Debug($"[LanguageManager] 成功找到资源键 {key} = {value.Substring(0, Math.Min(50, value.Length))}...");
                 }
                 return value;
             }
             catch (Exception ex)
             {
-                LogManager.Instance.Error($"获取资源字符串失败 - 键: {key}, 错误: {ex.Message}", ex);
+                LogManager.Instance.Error($"[LanguageManager] 获取资源字符串失败 - 键: {key}, 错误: {ex.Message}", ex);
                 return key; // 返回键名作为后备
             }
         }

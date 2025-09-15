@@ -4,7 +4,7 @@
 ; 使用 Inno Setup 6.x 编译
 
 #define AppName "CTWebPlayer"
-#define AppVersion "1.0.0"
+#define AppVersion "1.2.0"
 #define AppPublisher "CTWebPlayer Team"
 #define AppURL "https://github.com/a11s/ctwebplayer"
 #define AppExeName "ctwebplayer.exe"
@@ -117,8 +117,8 @@ Source: "..\THIRD_PARTY_LICENSES.txt"; DestDir: "{app}"; Flags: ignoreversion
 ; 开始菜单快捷方式
 Name: "{autoprograms}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Comment: "{#AppDescription}"
 Name: "{autoprograms}\{#AppName}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Comment: "{#AppDescription}"
-Name: "{autoprograms}\{#AppName}\卸载 {#AppName}"; Filename: "{uninstallexe}"; Comment: "卸载 {#AppName}"
-Name: "{autoprograms}\{#AppName}\许可证"; Filename: "{app}\LICENSE"; Comment: "查看许可证"
+Name: "{autoprograms}\{#AppName}\Uninstall {#AppName}"; Filename: "{uninstallexe}"; Comment: "Uninstall {#AppName}"
+Name: "{autoprograms}\{#AppName}\License"; Filename: "{app}\LICENSE"; Comment: "View License"
 
 ; 桌面快捷方式（如果选择）
 Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Tasks: desktopicon; Comment: "{#AppDescription}"
@@ -190,31 +190,31 @@ begin
     ReadmeContent.Add('CTWebPlayer v' + '{#AppVersion}');
     ReadmeContent.Add('===================');
     ReadmeContent.Add('');
-    ReadmeContent.Add('Unity3D WebPlayer 专属浏览器');
+    ReadmeContent.Add('Unity3D WebPlayer Browser');
     ReadmeContent.Add('');
-    ReadmeContent.Add('系统要求:');
-    ReadmeContent.Add('- Windows 10 或更高版本 (64位)');
-    ReadmeContent.Add('- Microsoft Edge WebView2 运行时 (如未安装，程序会提示下载)');
+    ReadmeContent.Add('System Requirements:');
+    ReadmeContent.Add('- Windows 10 or later (64-bit)');
+    ReadmeContent.Add('- Microsoft Edge WebView2 Runtime (will prompt to download if not installed)');
     ReadmeContent.Add('');
-    ReadmeContent.Add('使用说明:');
-    ReadmeContent.Add('1. 双击运行 ctwebplayer.exe');
-    ReadmeContent.Add('2. 程序会自动检查并提示安装 WebView2 运行时（如需要）');
-    ReadmeContent.Add('3. 在地址栏输入 Unity WebPlayer 游戏的 URL');
-    ReadmeContent.Add('4. 享受游戏！');
+    ReadmeContent.Add('How to Use:');
+    ReadmeContent.Add('1. Double-click ctwebplayer.exe to run');
+    ReadmeContent.Add('2. The program will check and prompt to install WebView2 Runtime if needed');
+    ReadmeContent.Add('3. Enter the Unity WebPlayer game URL in the address bar');
+    ReadmeContent.Add('4. Enjoy the game!');
     ReadmeContent.Add('');
-    ReadmeContent.Add('功能特性:');
-    ReadmeContent.Add('- 缓存管理');
-    ReadmeContent.Add('- 代理设置支持');
-    ReadmeContent.Add('- CORS 处理');
-    ReadmeContent.Add('- 详细日志记录');
+    ReadmeContent.Add('Features:');
+    ReadmeContent.Add('- Cache management');
+    ReadmeContent.Add('- Proxy settings support');
+    ReadmeContent.Add('- CORS handling');
+    ReadmeContent.Add('- Detailed logging');
     ReadmeContent.Add('');
-    ReadmeContent.Add('许可证:');
-    ReadmeContent.Add('本软件基于 BSD 3-Clause 许可证发布');
-    ReadmeContent.Add('详见 LICENSE 文件');
+    ReadmeContent.Add('License:');
+    ReadmeContent.Add('This software is released under the BSD 3-Clause License');
+    ReadmeContent.Add('See LICENSE file for details');
     ReadmeContent.Add('');
-    ReadmeContent.Add('第三方组件许可证详见 THIRD_PARTY_LICENSES.txt');
+    ReadmeContent.Add('Third-party component licenses can be found in THIRD_PARTY_LICENSES.txt');
     ReadmeContent.Add('');
-    ReadmeContent.Add('项目主页: https://github.com/a11s/ctwebplayer');
+    ReadmeContent.Add('Project Homepage: https://github.com/a11s/ctwebplayer');
     
     ReadmeContent.SaveToFile(ReadmePath);
   finally
@@ -245,7 +245,7 @@ begin
   // 检查是否有运行中的程序实例
   if IsAppRunning('{#AppExeName}') then
   begin
-    Result := '{#AppName} 正在运行。请关闭程序后重试。';
+    Result := '{#AppName} is running. Please close the program and try again.';
     Exit;
   end;
   
@@ -267,9 +267,9 @@ begin
     begin
       if not WizardSilent() then
       begin
-        if MsgBox('未检测到 Microsoft Edge WebView2 运行时。' + #13#10 +
-                  '程序需要此组件才能正常运行。' + #13#10 + #13#10 +
-                  '是否要立即下载并安装？', mbConfirmation, MB_YESNO) = IDYES then
+        if MsgBox('Microsoft Edge WebView2 Runtime not detected.' + #13#10 +
+                  'This component is required for the program to run properly.' + #13#10 + #13#10 +
+                  'Would you like to download and install it now?', mbConfirmation, MB_YESNO) = IDYES then
         begin
           // 打开 WebView2 下载页面
           ShellExec('open', 'https://developer.microsoft.com/microsoft-edge/webview2/', '', '', SW_SHOW, ewNoWait, ErrorCode);
@@ -285,7 +285,7 @@ begin
   // 检查程序是否正在运行
   if IsAppRunning('{#AppExeName}') then
   begin
-    MsgBox('{#AppName} 正在运行。请关闭程序后再卸载。', mbError, MB_OK);
+    MsgBox('{#AppName} is running. Please close the program before uninstalling.', mbError, MB_OK);
     Result := False;
   end
   else

@@ -166,6 +166,9 @@
   <data name="Form1_toolStrip1_btnUtilities_toggleMuteMenuItem" xml:space="preserve">
     <value>静音切换 (F4)</value>
   </data>
+  <data name="Form1_Tool_Screenshot" xml:space="preserve">
+    <value>截图 (F10)</value>
+  </data>
   <data name="Form1_toolStrip1_btnUtilities_logoutMenuItem" xml:space="preserve">
     <value>退出登录</value>
   </data>
@@ -183,6 +186,12 @@
   </data>
   <data name="Form1_toolStrip1_btnUtilities_checkUpdateMenuItem" xml:space="preserve">
     <value>检查更新</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_aboutMenuItem" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_donateToolStripMenuItem" xml:space="preserve">
+    <value>捐助</value>
   </data>
   <!-- Form1 - 状态消息 -->
   <data name="Form1_Status_InitializingBrowser" xml:space="preserve">
@@ -223,6 +232,12 @@
   </data>
   <data name="Form1_Status_LogoutFailed" xml:space="preserve">
     <value>退出登录失败</value>
+  </data>
+  <data name="Form1_Status_OpenedDonate" xml:space="preserve">
+    <value>已打开捐助页面</value>
+  </data>
+  <data name="Form1_OpenDonate_Failed" xml:space="preserve">
+    <value>打开捐助页面失败</value>
   </data>
   <!-- Form1 - 缓存状态 -->
   <data name="Form1_Cache_Status" xml:space="preserve">
@@ -747,5 +762,56 @@
   </data>
   <data name="UpdateManager_DownloadCompleteVerification" xml:space="preserve">
     <value>下载完成，正在验证...</value>
+  </data>
+  <!-- Form1 - 截图 -->
+  <data name="Form1_Screenshot_CanvasNotFound" xml:space="preserve">
+    <value>找不到Unity画布元素</value>
+  </data>
+  <data name="Form1_Screenshot_CaptureFailed" xml:space="preserve">
+    <value>获取画布内容失败：{0}</value>
+  </data>
+  <data name="Form1_Screenshot_SavedTo" xml:space="preserve">
+    <value>截图已保存：{0}</value>
+  </data>
+  <data name="Form1_Screenshot_Failed" xml:space="preserve">
+    <value>截图失败：{0}</value>
+  </data>
+  <data name="Form1_Screenshot_SaveSuccess" xml:space="preserve">
+    <value>📸 截图已保存：{0}</value>
+  </data>
+  <data name="Form1_Screenshot_Tip" xml:space="preserve">
+    <value>截图 (F10)</value>
+  </data>
+  <data name="Form1_Screenshot_Error" xml:space="preserve">
+    <value>截图失败</value>
+  </data>
+  <data name="Form1_Screenshot_ErrorTitle" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Form1_Screenshot_WebGLNotSupported" xml:space="preserve">
+    <value>由于安全限制，无法直接截取WebGL画布。请使用WebView2截图方法。</value>
+  </data>
+  <data name="Form1_Screenshot_EmptyCanvas" xml:space="preserve">
+    <value>画布为空或未渲染</value>
+  </data>
+  <data name="AboutForm_Title" xml:space="preserve">
+    <value>关于 CTWebPlayer</value>
+  </data>
+  <data name="AboutForm_txtLicense" xml:space="preserve">
+    <value></value>
+    <comment>License text box - content loaded dynamically</comment>
+  </data>
+  <data name="SettingsForm_Title" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_cmbLanguage" xml:space="preserve">
+    <value></value>
+    <comment>Language combo box - items populated in code</comment>
+  </data>
+  <data name="Form1_Tip_PressF11ToExitFullscreen" xml:space="preserve">
+    <value>按 F11 退出全屏</value>
+  </data>
+  <data name="Form1_Status_UnityCanvasFullscreen" xml:space="preserve">
+    <value>Unity画布全屏已应用</value>
   </data>
 </root>

@@ -166,6 +166,9 @@
   <data name="Form1_toolStrip1_btnUtilities_toggleMuteMenuItem" xml:space="preserve">
     <value>ミュート切替 (F4)</value>
   </data>
+  <data name="Form1_Tool_Screenshot" xml:space="preserve">
+    <value>スクリーンショット (F10)</value>
+  </data>
   <data name="Form1_toolStrip1_btnUtilities_logoutMenuItem" xml:space="preserve">
     <value>ログアウト</value>
   </data>
@@ -183,6 +186,12 @@
   </data>
   <data name="Form1_toolStrip1_btnUtilities_checkUpdateMenuItem" xml:space="preserve">
     <value>更新の確認</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_aboutMenuItem" xml:space="preserve">
+    <value>バージョン情報</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_donateToolStripMenuItem" xml:space="preserve">
+    <value>寄付</value>
   </data>
   <!-- Form1 - ステータスメッセージ -->
   <data name="Form1_Status_InitializingBrowser" xml:space="preserve">
@@ -223,6 +232,12 @@
   </data>
   <data name="Form1_Status_LogoutFailed" xml:space="preserve">
     <value>ログアウトに失敗しました</value>
+  </data>
+  <data name="Form1_Status_OpenedDonate" xml:space="preserve">
+    <value>寄付ページを開きました</value>
+  </data>
+  <data name="Form1_OpenDonate_Failed" xml:space="preserve">
+    <value>寄付ページを開けませんでした</value>
   </data>
   <!-- Form1 - キャッシュステータス -->
   <data name="Form1_Cache_Status" xml:space="preserve">
@@ -747,5 +762,50 @@
   </data>
   <data name="UpdateManager_DownloadCompleteVerification" xml:space="preserve">
     <value>ダウンロード完了、検証中...</value>
+  </data>
+  <!-- Form1 - スクリーンショット -->
+  <data name="Form1_Screenshot_CanvasNotFound" xml:space="preserve">
+    <value>Unityキャンバス要素が見つかりません</value>
+  </data>
+  <data name="Form1_Screenshot_CaptureFailed" xml:space="preserve">
+    <value>キャンバスコンテンツの取得に失敗しました：{0}</value>
+  </data>
+  <data name="Form1_Screenshot_SavedTo" xml:space="preserve">
+    <value>スクリーンショットを保存しました：{0}</value>
+  </data>
+  <data name="Form1_Screenshot_Failed" xml:space="preserve">
+    <value>スクリーンショットに失敗しました：{0}</value>
+  </data>
+  <data name="Form1_Screenshot_SaveSuccess" xml:space="preserve">
+    <value>📸 スクリーンショットを保存しました：{0}</value>
+  </data>
+  <data name="Form1_Screenshot_Tip" xml:space="preserve">
+    <value>スクリーンショット (F10)</value>
+  </data>
+  <data name="Form1_Screenshot_Error" xml:space="preserve">
+    <value>スクリーンショット失敗</value>
+  </data>
+  <data name="Form1_Screenshot_ErrorTitle" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="AboutForm_Title" xml:space="preserve">
+    <value>CTWebPlayerについて</value>
+  </data>
+  <data name="AboutForm_txtLicense" xml:space="preserve">
+    <value></value>
+    <comment>License text box - content loaded dynamically</comment>
+  </data>
+  <data name="SettingsForm_Title" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_cmbLanguage" xml:space="preserve">
+    <value></value>
+    <comment>Language combo box - items populated in code</comment>
+  </data>
+  <data name="Form1_Tip_PressF11ToExitFullscreen" xml:space="preserve">
+    <value>F11キーで全画面を終了</value>
+  </data>
+  <data name="Form1_Status_UnityCanvasFullscreen" xml:space="preserve">
+    <value>Unityキャンバスフルスクリーンが適用されました</value>
   </data>
 </root>

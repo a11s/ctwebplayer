@@ -166,6 +166,9 @@
   <data name="Form1_toolStrip1_btnUtilities_toggleMuteMenuItem" xml:space="preserve">
     <value>Toggle Mute (F4)</value>
   </data>
+  <data name="Form1_Tool_Screenshot" xml:space="preserve">
+    <value>Screenshot (F10)</value>
+  </data>
   <data name="Form1_toolStrip1_btnUtilities_logoutMenuItem" xml:space="preserve">
     <value>Logout</value>
   </data>
@@ -183,6 +186,12 @@
   </data>
   <data name="Form1_toolStrip1_btnUtilities_checkUpdateMenuItem" xml:space="preserve">
     <value>Check for Updates</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_aboutMenuItem" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_donateToolStripMenuItem" xml:space="preserve">
+    <value>Donate</value>
   </data>
   <!-- Form1 - Status Messages -->
   <data name="Form1_Status_InitializingBrowser" xml:space="preserve">
@@ -224,6 +233,12 @@
   <data name="Form1_Status_LogoutFailed" xml:space="preserve">
     <value>Logout failed</value>
   </data>
+  <data name="Form1_Status_OpenedDonate" xml:space="preserve">
+    <value>Opened donation page</value>
+  </data>
+  <data name="Form1_OpenDonate_Failed" xml:space="preserve">
+    <value>Failed to open donation page</value>
+  </data>
   <!-- Form1 - Cache Status -->
   <data name="Form1_Cache_Status" xml:space="preserve">
     <value>Cache hits: {0} | Misses: {1} | Hit rate: {2}% | Cache size: {3}</value>
@@ -242,6 +257,12 @@
   </data>
   <!-- Form1 - Messages -->
   <!-- Form1 - Fullscreen Tips -->
+  <data name="Form1_Tip_PressF11ToExitFullscreen" xml:space="preserve">
+    <value>Press F11 to exit fullscreen</value>
+  </data>
+  <data name="Form1_Status_UnityCanvasFullscreen" xml:space="preserve">
+    <value>Unity canvas fullscreen applied</value>
+  </data>
   <!-- Form1 - Cache Info Dialog -->
   <data name="Form1_CacheInfo_Title" xml:space="preserve">
     <value>Cache Information</value>
@@ -251,6 +272,9 @@
     <value>Confirm</value>
   </data>
   <!-- SettingsForm - Settings Window -->
+  <data name="SettingsForm_Title" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <!-- SettingsForm - Tabs -->
   <data name="SettingsForm_tabControl_tabNetwork" xml:space="preserve">
     <value>Network</value>
@@ -342,6 +366,10 @@ Restart the browser for proxy changes to take effect.</value>
   </data>
   <data name="SettingsForm_tabControl_tabInterface_lblSizeNote" xml:space="preserve">
     <value>Note: Window size changes require application restart to take effect.</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_cmbLanguage" xml:space="preserve">
+    <value></value>
+    <comment>Language combo box - items populated in code</comment>
   </data>
   <!-- SettingsForm - Login Tab -->
   <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings" xml:space="preserve">
@@ -602,6 +630,9 @@ This action cannot be undone.</value>
     <value>Log Viewer</value>
   </data>
   <!-- AboutForm - About Window -->
+  <data name="AboutForm_Title" xml:space="preserve">
+    <value>About CTWebPlayer</value>
+  </data>
   <data name="AboutForm_lblTitle" xml:space="preserve">
     <value>CTWebPlayer</value>
   </data>
@@ -620,6 +651,10 @@ Please read the license terms below carefully.</value>
   </data>
   <data name="AboutForm_btnOK" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="AboutForm_txtLicense" xml:space="preserve">
+    <value></value>
+    <comment>License text box - content loaded dynamically</comment>
   </data>
   <!-- ProxySettingsForm -->
   <data name="ProxySettingsForm" xml:space="preserve">
@@ -746,5 +781,36 @@ Please restart the browser to apply the changes.</value>
   </data>
   <data name="UpdateManager_DownloadCompleteVerification" xml:space="preserve">
     <value>Download complete, verifying...</value>
+  </data>
+  <!-- Form1 - Screenshot -->
+  <data name="Form1_Screenshot_CanvasNotFound" xml:space="preserve">
+    <value>Unity canvas element not found</value>
+  </data>
+  <data name="Form1_Screenshot_CaptureFailed" xml:space="preserve">
+    <value>Failed to capture canvas content: {0}</value>
+  </data>
+  <data name="Form1_Screenshot_SavedTo" xml:space="preserve">
+    <value>Screenshot saved: {0}</value>
+  </data>
+  <data name="Form1_Screenshot_Failed" xml:space="preserve">
+    <value>Screenshot failed: {0}</value>
+  </data>
+  <data name="Form1_Screenshot_SaveSuccess" xml:space="preserve">
+    <value>📸 Screenshot saved: {0}</value>
+  </data>
+  <data name="Form1_Screenshot_Tip" xml:space="preserve">
+    <value>Screenshot (F10)</value>
+  </data>
+  <data name="Form1_Screenshot_Error" xml:space="preserve">
+    <value>Screenshot failed</value>
+  </data>
+  <data name="Form1_Screenshot_ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Form1_Screenshot_WebGLNotSupported" xml:space="preserve">
+    <value>WebGL canvas screenshot is not supported due to security restrictions. Please use WebView2 capture method.</value>
+  </data>
+  <data name="Form1_Screenshot_EmptyCanvas" xml:space="preserve">
+    <value>Canvas is empty or not rendered</value>
   </data>
 </root>
