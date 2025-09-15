@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
@@ -188,7 +188,7 @@ namespace ctwebplayer
         private void UpdateFileInfo(long fileSize)
         {
             var sizeText = FormatFileSize(fileSize);
-            lblFileInfo.Text = string.Format(LanguageManager.Instance.GetString("LogViewerForm.FileInfo"), sizeText);
+            lblFileInfo.Text = string.Format(LanguageManager.Instance.GetString("LogViewerForm_FileInfo"), sizeText);
         }
 
         /// <summary>
@@ -237,8 +237,8 @@ namespace ctwebplayer
         /// </summary>
         private async void BtnClear_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show(LanguageManager.Instance.GetString("LogViewerForm.ClearConfirmation"),
-                LanguageManager.Instance.GetString("LogViewerForm.ClearConfirmationTitle"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = MessageBox.Show(LanguageManager.Instance.GetString("LogViewerForm_ClearConfirmation"),
+                LanguageManager.Instance.GetString("LogViewerForm_ClearConfirmationTitle"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             
             if (result == DialogResult.Yes)
             {
@@ -249,11 +249,11 @@ namespace ctwebplayer
                     txtLogContent.Clear();
                     lastFilePosition = 0;
                     UpdateFileInfo(0);
-                    MessageBox.Show(LanguageManager.Instance.GetString("LogViewerForm.ClearSuccess"), LanguageManager.Instance.GetString("LogViewerForm.SuccessTitle"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(LanguageManager.Instance.GetString("LogViewerForm_ClearSuccess"), LanguageManager.Instance.GetString("LogViewerForm_SuccessTitle"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(string.Format(LanguageManager.Instance.GetString("LogViewerForm.ClearError"), ex.Message), LanguageManager.Instance.GetString("LogViewerForm.ErrorTitle"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(string.Format(LanguageManager.Instance.GetString("LogViewerForm_ClearError"), ex.Message), LanguageManager.Instance.GetString("LogViewerForm_ErrorTitle"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally
                 {

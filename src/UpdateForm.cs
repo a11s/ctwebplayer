@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -36,20 +36,20 @@ namespace ctwebplayer
         private void InitializeUI()
         {
             // 显示版本信息
-            lblCurrentVersion.Text = LanguageManager.Instance.GetString("UpdateForm.CurrentVersionLabel") + CTWebPlayer.Version.FullVersion;
-            lblNewVersion.Text = LanguageManager.Instance.GetString("UpdateForm.NewVersionLabel") + _updateInfo.Version;
-            lblReleaseDate.Text = LanguageManager.Instance.GetString("UpdateForm.ReleaseDateLabel") + _updateInfo.PublishedAt.ToString("yyyy-MM-dd HH:mm");
+            lblCurrentVersion.Text = LanguageManager.Instance.GetString("UpdateForm_grpVersionInfo_lblCurrentVersion") + CTWebPlayer.Version.FullVersion;
+            lblNewVersion.Text = LanguageManager.Instance.GetString("UpdateForm_grpVersionInfo_lblNewVersion") + _updateInfo.Version;
+            lblReleaseDate.Text = LanguageManager.Instance.GetString("UpdateForm_grpVersionInfo_lblReleaseDate") + _updateInfo.PublishedAt.ToString("yyyy-MM-dd HH:mm");
             
             // 显示文件信息
-            lblFileName.Text = LanguageManager.Instance.GetString("UpdateForm.FileNameLabel") + _updateInfo.FileName;
-            lblFileSize.Text = LanguageManager.Instance.GetString("UpdateForm.FileSizeLabel") + _updateInfo.GetFormattedFileSize();
+            lblFileName.Text = LanguageManager.Instance.GetString("UpdateForm_grpFileInfo_lblFileName") + _updateInfo.FileName;
+            lblFileSize.Text = LanguageManager.Instance.GetString("UpdateForm_grpFileInfo_lblFileSize") + _updateInfo.GetFormattedFileSize();
             
             // 显示更新说明
             txtReleaseNotes.Text = _updateInfo.ReleaseNotes;
             
             // 初始化进度条
             progressBar.Value = 0;
-            lblProgress.Text = LanguageManager.Instance.GetString("UpdateForm.ProgressPreparing");
+            lblProgress.Text = LanguageManager.Instance.GetString("UpdateForm_lblProgress_Ready");
             
             // 根据是否为强制更新设置按钮
             if (_updateInfo.IsUpdateMandatory())
@@ -80,8 +80,8 @@ namespace ctwebplayer
                 // 取消下载
                 _updateManager.CancelDownload();
                 _isDownloading = false;
-                btnDownload.Text = LanguageManager.Instance.GetString("UpdateForm.DownloadButton");
-                lblProgress.Text = LanguageManager.Instance.GetString("UpdateForm.DownloadCancelled");
+                btnDownload.Text = LanguageManager.Instance.GetString("UpdateForm_btnDownload");
+                lblProgress.Text = LanguageManager.Instance.GetString("UpdateForm_lblProgress_Cancelled");
                 progressBar.Value = 0;
                 return;
             }

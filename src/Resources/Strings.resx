@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,130 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
   <!-- Application Title -->
-  <data name="AppTitle" xml:space="preserve">
-    <value>CT Web Player</value>
-  </data>
-  
   <!-- Buttons -->
   <data name="Button_OK" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="Button_Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="Button_Apply" xml:space="preserve">
-    <value>Apply</value>
-  </data>
-  <data name="Button_Close" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="Button_Save" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="Button_Load" xml:space="preserve">
-    <value>Load</value>
-  </data>
-  <data name="Button_Browse" xml:space="preserve">
-    <value>Browse...</value>
-  </data>
-  
   <!-- Menu Items -->
-  <data name="Menu_Settings" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="Menu_Language" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="Menu_File" xml:space="preserve">
-    <value>File</value>
-  </data>
-  <data name="Menu_Edit" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="Menu_View" xml:space="preserve">
-    <value>View</value>
-  </data>
-  <data name="Menu_Help" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="Menu_About" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="Menu_Exit" xml:space="preserve">
-    <value>Exit</value>
-  </data>
-  
   <!-- Settings -->
-  <data name="Settings_Title" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="Settings_General" xml:space="preserve">
-    <value>General</value>
-  </data>
-  <data name="Settings_Advanced" xml:space="preserve">
-    <value>Advanced</value>
-  </data>
-  <data name="Settings_Proxy" xml:space="preserve">
-    <value>Proxy Settings</value>
-  </data>
-  <data name="Settings_Cache" xml:space="preserve">
-    <value>Cache Settings</value>
-  </data>
-  
   <!-- Messages -->
-  <data name="Message_Success" xml:space="preserve">
-    <value>Operation completed successfully.</value>
-  </data>
   <data name="Message_Error" xml:space="preserve">
     <value>An error occurred.</value>
-  </data>
-  <data name="Message_Warning" xml:space="preserve">
-    <value>Warning</value>
   </data>
   <data name="Message_Info" xml:space="preserve">
     <value>Information</value>
   </data>
-  <data name="Message_Confirm" xml:space="preserve">
-    <value>Are you sure you want to continue?</value>
-  </data>
-  
   <!-- Login -->
-  <data name="Login_Title" xml:space="preserve">
-    <value>Login</value>
-  </data>
-  <data name="Login_Username" xml:space="preserve">
-    <value>Username</value>
-  </data>
-  <data name="Login_Password" xml:space="preserve">
-    <value>Password</value>
-  </data>
-  <data name="Login_RememberMe" xml:space="preserve">
-    <value>Remember Me</value>
-  </data>
-  
   <!-- Common Labels -->
-  <data name="Label_Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="Label_Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Label_Version" xml:space="preserve">
-    <value>Version</value>
-  </data>
-  <data name="Label_Status" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="Label_Progress" xml:space="preserve">
-    <value>Progress</value>
-  </data>
   <!-- Form1 - Main Window -->
   <data name="Form1_Title" xml:space="preserve">
     <value>Unity3D WebPlayer Browser</value>
   </data>
-  
   <!-- Form1 - Navigation Buttons -->
   <data name="Form1_toolStrip1_btnHome" xml:space="preserve">
     <value>Home</value>
@@ -263,7 +159,6 @@
   <data name="Form1_toolStrip1_btnUtilities" xml:space="preserve">
     <value>Tools</value>
   </data>
-  
   <!-- Form1 - Menu Items -->
   <data name="Form1_toolStrip1_btnUtilities_toggleFullScreenMenuItem" xml:space="preserve">
     <value>Toggle Full Screen (F11)</value>
@@ -289,7 +184,6 @@
   <data name="Form1_toolStrip1_btnUtilities_checkUpdateMenuItem" xml:space="preserve">
     <value>Check for Updates</value>
   </data>
-  
   <!-- Form1 - Status Messages -->
   <data name="Form1_Status_InitializingBrowser" xml:space="preserve">
     <value>Initializing browser...</value>
@@ -301,6 +195,9 @@
     <value>Load complete</value>
   </data>
   <data name="Form1_Status_Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="Form1_statusStrip1_statusLabel" xml:space="preserve">
     <value>Ready</value>
   </data>
   <data name="Form1_Status_BrowserInitFailed" xml:space="preserve">
@@ -327,7 +224,6 @@
   <data name="Form1_Status_LogoutFailed" xml:space="preserve">
     <value>Logout failed</value>
   </data>
-  
   <!-- Form1 - Cache Status -->
   <data name="Form1_Cache_Status" xml:space="preserve">
     <value>Cache hits: {0} | Misses: {1} | Hit rate: {2}% | Cache size: {3}</value>
@@ -344,94 +240,17 @@
   <data name="Form1_Mute_Off" xml:space="preserve">
     <value>Mute: Off</value>
   </data>
-  
   <!-- Form1 - Messages -->
-  <data name="Form1_Msg_WebView2InitFailed" xml:space="preserve">
-    <value>WebView2 initialization failed: {0}
-
-Please ensure WebView2 Runtime is installed.</value>
-  </data>
-  <data name="Form1_Msg_NavigationFailed" xml:space="preserve">
-    <value>Cannot navigate to URL: {0}</value>
-  </data>
-  <data name="Form1_Msg_ConfirmClearCache" xml:space="preserve">
-    <value>Are you sure you want to clear all cache?
-
-This will delete all cached static resources.</value>
-  </data>
-  <data name="Form1_Msg_CacheCleared" xml:space="preserve">
-    <value>Cache has been cleared.</value>
-  </data>
-  <data name="Form1_Msg_ClearCacheError" xml:space="preserve">
-    <value>Error clearing cache: {0}</value>
-  </data>
-  <data name="Form1_Msg_ConfirmLogout" xml:space="preserve">
-    <value>Are you sure you want to logout?
-
-This will clear all cookies and return to the login page.</value>
-  </data>
-  <data name="Form1_Msg_LogoutError" xml:space="preserve">
-    <value>Error during logout: {0}</value>
-  </data>
-  <data name="Form1_Msg_CheckUpdateError" xml:space="preserve">
-    <value>Error checking for updates: {0}</value>
-  </data>
-  <data name="Form1_Msg_OpenForumError" xml:space="preserve">
-    <value>Error opening official forum: {0}</value>
-  </data>
-  <data name="Form1_Msg_OpenDiscordError" xml:space="preserve">
-    <value>Error opening official Discord: {0}</value>
-  </data>
-  <data name="Form1_Msg_OpenGitHubError" xml:space="preserve">
-    <value>Error opening GitHub: {0}</value>
-  </data>
-  <data name="Form1_Msg_OpenMobileDownloadError" xml:space="preserve">
-    <value>Error opening mobile download page: {0}</value>
-  </data>
-  
   <!-- Form1 - Fullscreen Tips -->
-  <data name="Form1_Tip_ExitFullScreen" xml:space="preserve">
-    <value>Press F11 to exit full screen</value>
-  </data>
-  <data name="Form1_Tip_MuteOn" xml:space="preserve">
-    <value>Mute enabled</value>
-  </data>
-  <data name="Form1_Tip_MuteOff" xml:space="preserve">
-    <value>Mute disabled</value>
-  </data>
-  
   <!-- Form1 - Cache Info Dialog -->
   <data name="Form1_CacheInfo_Title" xml:space="preserve">
     <value>Cache Information</value>
   </data>
-  <data name="Form1_CacheInfo_Message" xml:space="preserve">
-    <value>Cache Statistics:
-
-Cache directory: ./cache
-Cache size: {0}
-Cache hits: {1}
-Cache misses: {2}
-Hit rate: {3}%
-
-Cache Policy:
-- JavaScript and CSS files (with version): Long-term cache
-- Images and fonts: Long-term cache
-- API requests: No cache</value>
-  </data>
-  
   <!-- Form1 - Titles -->
-  <data name="Form1_Title_Format" xml:space="preserve">
-    <value>{0} - Unity3D WebPlayer Browser</value>
-  </data>
   <data name="Form1_Confirm_Title" xml:space="preserve">
     <value>Confirm</value>
   </data>
-  
   <!-- SettingsForm - Settings Window -->
-  <data name="SettingsForm" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  
   <!-- SettingsForm - Tabs -->
   <data name="SettingsForm_tabControl_tabNetwork" xml:space="preserve">
     <value>Network</value>
@@ -445,7 +264,6 @@ Cache Policy:
   <data name="SettingsForm_tabControl_tabLogin" xml:space="preserve">
     <value>Login Guide</value>
   </data>
-  
   <!-- SettingsForm - Network Tab -->
   <data name="SettingsForm_tabControl_tabNetwork_chkAutoIframeNav" xml:space="preserve">
     <value>Enable Auto Navigate to Iframe</value>
@@ -475,7 +293,6 @@ Restart the browser for proxy changes to take effect.</value>
   <data name="SettingsForm_tabControl_tabNetwork_linkLabel1" xml:space="preserve">
     <value>No proxy server?</value>
   </data>
-  
   <!-- SettingsForm - Logging Tab -->
   <data name="SettingsForm_tabControl_tabLogging_chkEnableLogging" xml:space="preserve">
     <value>Enable Logging</value>
@@ -498,7 +315,6 @@ Restart the browser for proxy changes to take effect.</value>
   <data name="SettingsForm_tabControl_tabLogging_lblMB" xml:space="preserve">
     <value>MB</value>
   </data>
-  
   <!-- SettingsForm - UI Tab -->
   <data name="SettingsForm_tabControl_tabInterface_lblWindowSize" xml:space="preserve">
     <value>Window Size</value>
@@ -516,6 +332,8 @@ Restart the browser for proxy changes to take effect.</value>
     <value>Reset to Default</value>
   </data>
   <data name="SettingsForm_tabControl_tabInterface_lblLanguage" xml:space="preserve">
+    <value>Language:</value>
+  </data>
   <data name="SettingsForm_tabControl_tabInterface_lblWidthPx" xml:space="preserve">
     <value>pixels</value>
   </data>
@@ -525,9 +343,6 @@ Restart the browser for proxy changes to take effect.</value>
   <data name="SettingsForm_tabControl_tabInterface_lblSizeNote" xml:space="preserve">
     <value>Note: Window size changes require application restart to take effect.</value>
   </data>
-    <value>Language:</value>
-  </data>
-  
   <!-- SettingsForm - Login Tab -->
   <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings" xml:space="preserve">
     <value>Login Guide Settings</value>
@@ -547,7 +362,6 @@ Restart the browser for proxy changes to take effect.</value>
   <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_lblRegisterUrl" xml:space="preserve">
     <value>Register URL:</value>
   </data>
-  
   <!-- SettingsForm - Buttons -->
   <data name="SettingsForm_btnSave" xml:space="preserve">
     <value>Save</value>
@@ -558,81 +372,62 @@ Restart the browser for proxy changes to take effect.</value>
   <data name="SettingsForm_btnCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  
-  <!-- SettingsForm - Validation Messages -->
-  <data name="SettingsForm_Network_InvalidBaseUrlFormat" xml:space="preserve">
+  <data name="SettingsForm_Msg_BaseURLEmpty" xml:space="preserve">
+    <value>Main site domain cannot be empty.</value>
+  </data>
+  <data name="SettingsForm_Msg_BaseURLInvalid" xml:space="preserve">
     <value>Main site domain format is incorrect.
 Example: https://game.ero-labs.live</value>
   </data>
-  <data name="SettingsForm_Network_BaseUrlCannotBeEmpty" xml:space="preserve">
-    <value>Main site domain cannot be empty.</value>
+  <data name="SettingsForm_Msg_ClearLogsError" xml:space="preserve">
+    <value>Error clearing log file: {0}</value>
   </data>
-  <data name="SettingsForm_Network_PleaseEnterProxyAddress" xml:space="preserve">
-    <value>Please provide at least one proxy server address.</value>
+  <data name="SettingsForm_Msg_ConfirmClearLogs" xml:space="preserve">
+    <value>Are you sure you want to clear all log files?
+
+All historical log records will be deleted.</value>
   </data>
-  <data name="SettingsForm_Network_InvalidHttpProxyFormat" xml:space="preserve">
+  <data name="SettingsForm_Msg_HttpProxyInvalid" xml:space="preserve">
     <value>HTTP proxy address format is incorrect.
 Example: http://127.0.0.1:7890</value>
   </data>
-  <data name="SettingsForm_Network_InvalidHttpsProxyFormat" xml:space="preserve">
+  <data name="SettingsForm_Msg_HttpsProxyInvalid" xml:space="preserve">
     <value>HTTPS proxy address format is incorrect.
 Example: http://127.0.0.1:7890</value>
   </data>
-  <data name="SettingsForm_Network_InvalidSocks5ProxyFormat" xml:space="preserve">
+  <data name="SettingsForm_Msg_InputError" xml:space="preserve">
+    <value>Input Error</value>
+  </data>
+  <data name="SettingsForm_Msg_LogsCleared" xml:space="preserve">
+    <value>Log files have been cleared.</value>
+  </data>
+  <data name="SettingsForm_Msg_SaveError" xml:space="preserve">
+    <value>Error saving settings: {0}</value>
+  </data>
+  <data name="SettingsForm_Msg_Socks5Invalid" xml:space="preserve">
     <value>SOCKS5 proxy address format is incorrect.
 Example: 127.0.0.1:7890</value>
   </data>
-  <data name="SettingsForm_Network_InputError" xml:space="preserve">
-    <value>Input Error</value>
-  </data>
-  
+  <!-- SettingsForm - Validation Messages -->
   <!-- SettingsForm - General Messages -->
-  <data name="SettingsForm_Logs_ConfirmClearMessage" xml:space="preserve">
-    <value>Are you sure you want to clear all log files?
-
-This will delete all historical log records.</value>
-  </data>
-  <data name="SettingsForm_Logs_ConfirmClearTitle" xml:space="preserve">
-    <value>Confirm Clear</value>
-  </data>
-  <data name="SettingsForm_Logs_ClearSuccess" xml:space="preserve">
-    <value>Log files have been cleared.</value>
-  </data>
-  <data name="SettingsForm_Logs_ClearFailed" xml:space="preserve">
-    <value>Error clearing log files: {0}</value>
-  </data>
-  <data name="SettingsForm_SaveFailed" xml:space="preserve">
-    <value>Settings save failed</value>
-  </data>
-  <data name="SettingsForm_Applied" xml:space="preserve">
-    <value>Settings applied.</value>
-  </data>
   <data name="SettingsForm_Msg_RestartRequired" xml:space="preserve">
     <value>The following settings require restarting the application to take effect:
 </value>
   </data>
-  <data name="SettingsForm_Tab_Network" xml:space="preserve">
-    <value>Network</value>
+  <data name="SettingsForm_Msg_Applied" xml:space="preserve">
+    <value>Settings applied.</value>
   </data>
-  <data name="SettingsForm_Tab_Display" xml:space="preserve">
-    <value>Display</value>
+  <data name="SettingsForm_Proxy_HelpMessage" xml:space="preserve">
+    <value>If you can access the ero-labs website normally, you don't need a proxy server. If ero-labs is blocked or slow in your region, consider purchasing a similar service.
+Do you need a purchase link?</value>
+  </data>
+  <data name="SettingsForm_Proxy_HelpTitle" xml:space="preserve">
+    <value>Redirect Notice</value>
   </data>
   <data name="SettingsForm_Msg_LanguageChanged" xml:space="preserve">
     <value>Language changed. Some UI elements will update after restart.</value>
   </data>
-  
   <!-- SettingsForm - Proxy Help -->
-  <data name="SettingsForm_Network_ProxyServiceHint" xml:space="preserve">
-    <value>If you can access the ero-labs website normally, you don't need a proxy server. If your region blocks ero-labs or the speed is slow, you may try purchasing a similar service.
-Do you need a purchase link?</value>
-  </data>
-  <data name="SettingsForm_NavigateHint" xml:space="preserve">
-    <value>Redirect Notice</value>
-  </data>
-  <data name="SettingsForm_Display_CurrentWindowSize" xml:space="preserve">
-    <value>Current window size</value>
-  </data>
-  
   <!-- LoginDialog - Login Guide Dialog -->
   <data name="LoginDialog_Title" xml:space="preserve">
     <value>Login Guide</value>
@@ -650,7 +445,6 @@ Do you have an account?</value>
   <data name="LoginDialog_btnSkip" xml:space="preserve">
     <value>Skip</value>
   </data>
-  
   <!-- UpdateForm - Update Window -->
   <data name="UpdateForm" xml:space="preserve">
     <value>Software Update</value>
@@ -759,11 +553,7 @@ You can check for updates again later.</value>
   <data name="UpdateForm_Msg_ConfirmCancelTitle" xml:space="preserve">
     <value>Cancel Download</value>
   </data>
-  
   <!-- LogViewerForm - Log Viewer -->
-  <data name="LogViewerForm" xml:space="preserve">
-    <value>Log Viewer</value>
-  </data>
   <data name="LogViewerForm_topPanel_lblLogLevel" xml:space="preserve">
     <value>Log Level:</value>
   </data>
@@ -811,19 +601,12 @@ This action cannot be undone.</value>
   <data name="LogViewerForm_Title" xml:space="preserve">
     <value>Log Viewer</value>
   </data>
-  
   <!-- AboutForm - About Window -->
-  <data name="AboutForm_Title" xml:space="preserve">
-    <value>About CTWebPlayer {0}</value>
-  </data>
   <data name="AboutForm_lblTitle" xml:space="preserve">
     <value>CTWebPlayer</value>
   </data>
   <data name="AboutForm_lblVersion" xml:space="preserve">
     <value>Unity3D WebPlayer Browser v{0}</value>
-  </data>
-  <data name="AboutForm_lblCopyright" xml:space="preserve">
-    <value>Copyright (c) 2025, CTWebPlayer Developers</value>
   </data>
   <data name="AboutForm_lblLicenseTitle" xml:space="preserve">
     <value>License:</value>
@@ -838,40 +621,6 @@ Please read the license terms below carefully.</value>
   <data name="AboutForm_btnOK" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="AboutForm_License_Text" xml:space="preserve">
-    <value>CTWebPlayer License
-Based on BSD 3-Clause License with modifications
-
-Copyright (c) 2025, CTWebPlayer Developers
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-
-3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-4. [IMPORTANT] Any modified version must:
-   - Use a different name, not "CTWebPlayer" or any similar name
-   - Clearly indicate that it is a modified version
-   - Not imply endorsement or warranty by the original author in any way
-   - Must prominently state "Based on CTWebPlayer but unrelated to the original author"
-
-5. This software may not be used for commercial purposes without written authorization.
-
-DISCLAIMER:
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-SPECIAL NOTICE:
-Any issues, damages, or legal liabilities arising from modified versions of this software are the sole responsibility of the modifier and are unrelated to the original author. Users should obtain this software from official sources to ensure its integrity and security.</value>
-  </data>
-  
-  <data name="RES_LanguageLabel" xml:space="preserve">
-    <value>Language:</value>
-  </data>
-  
   <!-- ProxySettingsForm -->
   <data name="ProxySettingsForm" xml:space="preserve">
     <value>Proxy Settings</value>
@@ -910,6 +659,9 @@ Restart the browser for proxy changes to take effect.</value>
   <data name="ProxySettingsForm_Msg_ProxyRequired" xml:space="preserve">
     <value>Please provide at least one proxy server address.</value>
   </data>
+  <data name="SettingsForm_Msg_ProxyRequired" xml:space="preserve">
+    <value>Please provide at least one proxy server address.</value>
+  </data>
   <data name="ProxySettingsForm_Msg_HttpProxyInvalid" xml:space="preserve">
     <value>HTTP proxy address format is incorrect.
 Example: http://127.0.0.1:7890</value>
@@ -943,5 +695,56 @@ Please restart the browser to apply the changes.</value>
   </data>
   <data name="ProxySettingsForm_Msg_Info" xml:space="preserve">
     <value>Information</value>
+  </data>
+  <data name="UpdateManager_DownloadingFile" xml:space="preserve">
+    <value>Downloading: {0}</value>
+  </data>
+  <data name="UpdateManager_ComputedHash" xml:space="preserve">
+    <value>Computed hash: {0}</value>
+  </data>
+  <data name="UpdateManager_NoHashSkipVerification" xml:space="preserve">
+    <value>No hash provided, skipping verification.</value>
+  </data>
+  <data name="UpdateManager_LatestVersionInfo" xml:space="preserve">
+    <value>Latest version: {0}</value>
+  </data>
+  <data name="UpdateManager_CurrentVersion" xml:space="preserve">
+    <value>You are using the latest version.</value>
+  </data>
+  <data name="UpdateManager_ApplyFailed" xml:space="preserve">
+    <value>Failed to apply update: {0}</value>
+  </data>
+  <data name="UpdateManager_BatchStarted" xml:space="preserve">
+    <value>Update batch file started.</value>
+  </data>
+  <data name="UpdateManager_CheckingUpdate" xml:space="preserve">
+    <value>Checking for updates...</value>
+  </data>
+  <data name="UpdateManager_ApplyingUpdate" xml:space="preserve">
+    <value>Applying update...</value>
+  </data>
+  <data name="UpdateManager_DownloadCancelled" xml:space="preserve">
+    <value>Download cancelled.</value>
+  </data>
+  <data name="UpdateManager_HashCalculationFailed" xml:space="preserve">
+    <value>Hash calculation failed: {0}</value>
+  </data>
+  <data name="UpdateManager_DownloadFailed" xml:space="preserve">
+    <value>Download failed: {0}</value>
+  </data>
+  <data name="UpdateManager_VerificationPassed" xml:space="preserve">
+    <value>Verification passed.</value>
+  </data>
+  <data name="UpdateManager_NewVersionFound" xml:space="preserve">
+    <value>New version found: {0} (current: {1})</value>
+  </data>
+  <data name="UpdateManager_ExpectedHash" xml:space="preserve">
+    <value>Expected hash: {0}</value>
+  </data>
+  <data name="UpdateManager_CheckFailed" xml:space="preserve">
+    <value>Update check failed: {0}</value>
+  </data>
+  <data name="UpdateManager_DownloadCompleteVerification" xml:space="preserve">
+    <value>Download complete, verifying...</value>
   </data>
 </root>
