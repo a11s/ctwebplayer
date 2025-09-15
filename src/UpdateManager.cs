@@ -43,7 +43,7 @@ namespace ctwebplayer
         /// </summary>
         /// <param name="showNoUpdateMessage">如果没有更新是否显示消息</param>
         /// <returns>更新信息，如果没有更新则返回 null</returns>
-        public async Task<CTWebPlayer.UpdateInfo> CheckForUpdatesAsync(bool showNoUpdateMessage = true)
+        public async Task<CTWebPlayer.UpdateInfo?> CheckForUpdatesAsync(bool showNoUpdateMessage = true)
         {
             try
             {

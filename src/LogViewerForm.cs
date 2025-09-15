@@ -29,7 +29,7 @@ namespace ctwebplayer
             LanguageManager.Instance.LanguageChanged += OnLanguageChanged;
         }
 
-        private void OnLanguageChanged(object sender, EventArgs e)
+        private void OnLanguageChanged(object? sender, EventArgs e)
         {
             LanguageManager.Instance.ApplyToForm(this);
         }
@@ -48,7 +48,7 @@ namespace ctwebplayer
         /// <summary>
         /// 定时器触发事件
         /// </summary>
-        private void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void RefreshTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
             if (InvokeRequired)
             {
@@ -210,7 +210,7 @@ namespace ctwebplayer
         /// <summary>
         /// 日志级别选择改变事件
         /// </summary>
-        private void CmbLogLevel_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbLogLevel_SelectedIndexChanged(object? sender, EventArgs e)
         {
             selectedLogLevel = (LogLevel)cmbLogLevel.SelectedIndex;
             LoadLogContent();
@@ -219,7 +219,7 @@ namespace ctwebplayer
         /// <summary>
         /// 自动刷新复选框改变事件
         /// </summary>
-        private void ChkAutoRefresh_CheckedChanged(object sender, EventArgs e)
+        private void ChkAutoRefresh_CheckedChanged(object? sender, EventArgs e)
         {
             refreshTimer.Enabled = chkAutoRefresh.Checked;
         }
@@ -227,7 +227,7 @@ namespace ctwebplayer
         /// <summary>
         /// 刷新按钮点击事件
         /// </summary>
-        private void BtnRefresh_Click(object sender, EventArgs e)
+        private void BtnRefresh_Click(object? sender, EventArgs e)
         {
             LoadLogContent();
         }
@@ -235,7 +235,7 @@ namespace ctwebplayer
         /// <summary>
         /// 清空日志按钮点击事件
         /// </summary>
-        private async void BtnClear_Click(object sender, EventArgs e)
+        private async void BtnClear_Click(object? sender, EventArgs e)
         {
             var result = MessageBox.Show(LanguageManager.Instance.GetString("LogViewerForm_ClearConfirmation"),
                 LanguageManager.Instance.GetString("LogViewerForm_ClearConfirmationTitle"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);

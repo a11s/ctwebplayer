@@ -302,7 +302,7 @@ namespace ctwebplayer
         /// <summary>
         /// 处理进程退出事件
         /// </summary>
-        private void OnProcessExit(object sender, EventArgs e)
+        private void OnProcessExit(object? sender, EventArgs e)
         {
             _isDisposing = true;
             
@@ -320,7 +320,7 @@ namespace ctwebplayer
         /// <summary>
         /// 处理未处理的异常
         /// </summary>
-        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void OnUnhandledException(object? sender, UnhandledExceptionEventArgs e)
         {
             if (e.ExceptionObject is Exception ex)
             {

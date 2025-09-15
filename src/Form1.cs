@@ -1328,7 +1328,7 @@ namespace ctwebplayer
                 // 再次尝试退出
                 Environment.Exit(0);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Environment.Exit(1);
             }

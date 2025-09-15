@@ -185,7 +185,7 @@ namespace ctwebplayer
         /// <summary>
         /// 启用代理复选框状态改变事件
         /// </summary>
-        private void ChkEnableProxy_CheckedChanged(object sender, EventArgs e)
+        private void ChkEnableProxy_CheckedChanged(object? sender, EventArgs e)
         {
             grpProxySettings.Enabled = chkEnableProxy.Checked;
         }
@@ -193,7 +193,7 @@ namespace ctwebplayer
         /// <summary>
         /// 保存按钮点击事件
         /// </summary>
-        private async void BtnSave_Click(object sender, EventArgs e)
+        private async void BtnSave_Click(object? sender, EventArgs e)
         {
             // 验证输入
             if (chkEnableProxy.Checked)

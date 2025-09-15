@@ -122,7 +122,7 @@ namespace ctwebplayer
         /// <summary>
         /// 启用代理复选框状态改变事件
         /// </summary>
-        private void ChkEnableProxy_CheckedChanged(object sender, EventArgs e)
+        private void ChkEnableProxy_CheckedChanged(object? sender, EventArgs e)
         {
             grpProxySettings.Enabled = chkEnableProxy.Checked;
         }
@@ -130,7 +130,7 @@ namespace ctwebplayer
         /// <summary>
         /// 启用日志复选框状态改变事件
         /// </summary>
-        private void ChkEnableLogging_CheckedChanged(object sender, EventArgs e)
+        private void ChkEnableLogging_CheckedChanged(object? sender, EventArgs e)
         {
             cmbLogLevel.Enabled = chkEnableLogging.Checked;
             numMaxFileSize.Enabled = chkEnableLogging.Checked;
@@ -141,7 +141,7 @@ namespace ctwebplayer
         /// <summary>
         /// 启用登录引导复选框状态改变事件
         /// </summary>
-        private void ChkEnableLogin_CheckedChanged(object sender, EventArgs e)
+        private void ChkEnableLogin_CheckedChanged(object? sender, EventArgs e)
         {
             chkShowSkipButton.Enabled = chkEnableLogin.Checked;
             txtCookieName.Enabled = chkEnableLogin.Checked;
@@ -152,7 +152,7 @@ namespace ctwebplayer
         /// <summary>
         /// 查看日志按钮点击事件
         /// </summary>
-        private void BtnViewLogs_Click(object sender, EventArgs e)
+        private void BtnViewLogs_Click(object? sender, EventArgs e)
         {
             using (var logViewerForm = new LogViewerForm())
             {
@@ -163,7 +163,7 @@ namespace ctwebplayer
         /// <summary>
         /// 清理日志按钮点击事件
         /// </summary>
-        private async void BtnClearLogs_Click(object sender, EventArgs e)
+        private async void BtnClearLogs_Click(object? sender, EventArgs e)
         {
             var result = MessageBox.Show(LanguageManager.Instance.GetString("SettingsForm_Msg_ConfirmClearLogs"),
                 LanguageManager.Instance.GetString("Form1_Confirm_Title"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -186,7 +186,7 @@ namespace ctwebplayer
         /// <summary>
         /// 重置窗口大小按钮点击事件
         /// </summary>
-        private void BtnResetSize_Click(object sender, EventArgs e)
+        private void BtnResetSize_Click(object? sender, EventArgs e)
         {
             numWindowWidth.Value = 1236;
             numWindowHeight.Value = 840;
@@ -428,7 +428,7 @@ namespace ctwebplayer
         /// <summary>
         /// 保存按钮点击事件
         /// </summary>
-        private async void BtnSave_Click(object sender, EventArgs e)
+        private async void BtnSave_Click(object? sender, EventArgs e)
         {
             if (await SaveSettings())
             {
@@ -440,7 +440,7 @@ namespace ctwebplayer
         /// <summary>
         /// 应用按钮点击事件
         /// </summary>
-        private async void BtnApply_Click(object sender, EventArgs e)
+        private async void BtnApply_Click(object? sender, EventArgs e)
         {
             if (await SaveSettings())
             {
@@ -466,7 +466,7 @@ namespace ctwebplayer
         /// <summary>
         /// 语言选择改变事件处理
         /// </summary>
-        private void CmbLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbLanguage_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (cmbLanguage.SelectedItem is string displayName && _languageMap.TryGetValue(displayName, out string code))
             {
@@ -475,13 +475,7 @@ namespace ctwebplayer
                     LanguageManager.Instance.LoadLanguage(code);
                     
                     // 应用到当前窗体
-                    LanguageManager.Instance.ApplyToForm(this);
-                    
-                    // 提示用户
-                    MessageBox.Show(LanguageManager.Instance.GetString("SettingsForm_Msg_LanguageChanged"),
-                        LanguageManager.Instance.GetString("Message_Info"),
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    LanguageManager.Instance.ApplyToForm(this);                    
                 }
                 catch (Exception ex)
                 {

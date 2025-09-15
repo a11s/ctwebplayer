@@ -114,7 +114,7 @@ namespace ctwebplayer
                 return dialog.UserChoice;
             }
         }
-        private void OnLanguageChanged(object sender, EventArgs e)
+        private void OnLanguageChanged(object? sender, EventArgs e)
         {
             LanguageManager.Instance.ApplyToForm(this);
         }

@@ -112,7 +112,7 @@ namespace ctwebplayer
         private string GetSavedLanguage()
         {
             // 从配置中获取语言设置
-            return _configManager?.Config?.Language;
+            return _configManager?.Config?.Language ?? "zh-CN";
         }
 
         /// <summary>

@@ -73,7 +73,7 @@ namespace ctwebplayer
         /// <summary>
         /// 下载按钮点击事件
         /// </summary>
-        private async void btnDownload_Click(object sender, EventArgs e)
+        private async void btnDownload_Click(object? sender, EventArgs e)
         {
             if (_isDownloading)
             {
@@ -137,7 +137,7 @@ namespace ctwebplayer
         /// <summary>
         /// 安装按钮点击事件
         /// </summary>
-        private void btnInstall_Click(object sender, EventArgs e)
+        private void btnInstall_Click(object? sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(_downloadedFilePath))
             {
@@ -179,7 +179,7 @@ namespace ctwebplayer
         /// <summary>
         /// 跳过按钮点击事件
         /// </summary>
-        private void btnSkip_Click(object sender, EventArgs e)
+        private void btnSkip_Click(object? sender, EventArgs e)
         {
             var result = MessageBox.Show(
                 LanguageManager.Instance.GetString("UpdateForm_Msg_ConfirmSkip"),
@@ -198,7 +198,7 @@ namespace ctwebplayer
         /// <summary>
         /// 关闭按钮点击事件
         /// </summary>
-        private void btnClose_Click(object sender, EventArgs e)
+        private void btnClose_Click(object? sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
             Close();
@@ -207,7 +207,7 @@ namespace ctwebplayer
         /// <summary>
         /// 下载进度变化事件处理
         /// </summary>
-        private void OnDownloadProgressChanged(object sender, DownloadProgressEventArgs e)
+        private void OnDownloadProgressChanged(object? sender, DownloadProgressEventArgs e)
         {
             // 在UI线程上更新进度
             if (InvokeRequired)
@@ -269,7 +269,7 @@ namespace ctwebplayer
             base.OnFormClosing(e);
         }
 
-        private void OnLanguageChanged(object sender, EventArgs e)
+        private void OnLanguageChanged(object? sender, EventArgs e)
         {
             LanguageManager.Instance.ApplyToForm(this);
         }

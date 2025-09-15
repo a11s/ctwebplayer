@@ -374,7 +374,7 @@ namespace ctwebplayer
         /// <param name="domain">域名</param>
         /// <param name="path">路径</param>
         /// <returns>设置是否成功</returns>
-        public async Task<bool> SetCookieAsync(string name, string value, string domain = null, string path = "/")
+        public async Task<bool> SetCookieAsync(string name, string value, string? domain = null, string path = "/")
         {
             try
             {

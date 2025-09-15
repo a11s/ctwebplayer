@@ -21,12 +21,12 @@ namespace ctwebplayer
             LanguageManager.Instance.LanguageChanged += OnLanguageChanged;
         }
 
-        private void OnLanguageChanged(object sender, EventArgs e)
+        private void OnLanguageChanged(object? sender, EventArgs e)
         {
             LanguageManager.Instance.ApplyToForm(this);
         }
 
-        private void AboutForm_Load(object sender, EventArgs e)
+        private void AboutForm_Load(object? sender, EventArgs e)
         {
             // 设置版本信息
             lblVersion.Text = string.Format(LanguageManager.Instance.GetString("AboutForm_lblVersion"), CTWebPlayer.Version.FullVersion);
@@ -55,7 +55,7 @@ namespace ctwebplayer
             }
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
+        private void btnOK_Click(object? sender, EventArgs e)
         {
             this.Close();
         }
