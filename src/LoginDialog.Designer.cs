@@ -7,19 +7,6 @@ namespace ctwebplayer
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -44,6 +31,7 @@ namespace ctwebplayer
             this.lblMessage.Size = new System.Drawing.Size(320, 60);
             this.lblMessage.TabIndex = 0;
             this.lblMessage.Text = "检测到您尚未登录。\r\n您是否已有账号？";
+            this.lblMessage.Tag = "LoginDialog_lblMessage";
             this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pictureBoxIcon
@@ -64,6 +52,7 @@ namespace ctwebplayer
             this.btnHasAccount.Size = new System.Drawing.Size(100, 35);
             this.btnHasAccount.TabIndex = 2;
             this.btnHasAccount.Text = "已有账号";
+            this.btnHasAccount.Tag = "LoginDialog_btnHasAccount";
             this.btnHasAccount.UseVisualStyleBackColor = true;
             // 
             // btnNoAccount
@@ -74,6 +63,7 @@ namespace ctwebplayer
             this.btnNoAccount.Size = new System.Drawing.Size(100, 35);
             this.btnNoAccount.TabIndex = 3;
             this.btnNoAccount.Text = "新注册";
+            this.btnNoAccount.Tag = "LoginDialog_btnNoAccount";
             this.btnNoAccount.UseVisualStyleBackColor = true;
             // 
             // btnSkip
@@ -84,6 +74,7 @@ namespace ctwebplayer
             this.btnSkip.Size = new System.Drawing.Size(80, 35);
             this.btnSkip.TabIndex = 4;
             this.btnSkip.Text = "跳过";
+            this.btnSkip.Tag = "LoginDialog_btnSkip";
             this.btnSkip.UseVisualStyleBackColor = true;
             // 
             // LoginDialog
@@ -103,6 +94,7 @@ namespace ctwebplayer
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "登录引导";
+            this.Tag = "LoginDialog_Title";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIcon)).EndInit();
             this.ResumeLayout(false);
 

@@ -1,0 +1,1031 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- アプリケーションタイトル -->
+  <data name="AppTitle" xml:space="preserve">
+    <value>CT ウェブプレイヤー</value>
+  </data>
+  
+  <!-- ボタン -->
+  <data name="Button_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="Button_Apply" xml:space="preserve">
+    <value>適用</value>
+  </data>
+  <data name="Button_Close" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Button_Load" xml:space="preserve">
+    <value>読み込み</value>
+  </data>
+  <data name="Button_Browse" xml:space="preserve">
+    <value>参照...</value>
+  </data>
+  
+  <!-- メニュー項目 -->
+  <data name="Menu_Settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="Menu_Language" xml:space="preserve">
+    <value>言語</value>
+  </data>
+  <data name="Menu_File" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="Menu_Edit" xml:space="preserve">
+    <value>編集</value>
+  </data>
+  <data name="Menu_View" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>ヘルプ</value>
+  </data>
+  <data name="Menu_About" xml:space="preserve">
+    <value>情報</value>
+  </data>
+  <data name="Menu_Exit" xml:space="preserve">
+    <value>終了</value>
+  </data>
+  
+  <!-- 設定 -->
+  <data name="Settings_Title" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>一般</value>
+  </data>
+  <data name="Settings_Advanced" xml:space="preserve">
+    <value>詳細</value>
+  </data>
+  <data name="Settings_Proxy" xml:space="preserve">
+    <value>プロキシ設定</value>
+  </data>
+  <data name="Settings_Cache" xml:space="preserve">
+    <value>キャッシュ設定</value>
+  </data>
+  
+  <!-- メッセージ -->
+  <data name="Message_Success" xml:space="preserve">
+    <value>操作が正常に完了しました。</value>
+  </data>
+  <data name="Message_Error" xml:space="preserve">
+    <value>エラーが発生しました。</value>
+  </data>
+  <data name="Message_Warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="Message_Info" xml:space="preserve">
+    <value>情報</value>
+  </data>
+  <data name="Message_Confirm" xml:space="preserve">
+    <value>続行してもよろしいですか？</value>
+  </data>
+  
+  <!-- ログイン -->
+  <data name="Login_Title" xml:space="preserve">
+    <value>ログイン</value>
+  </data>
+  <data name="Login_Username" xml:space="preserve">
+    <value>ユーザー名</value>
+  </data>
+  <data name="Login_Password" xml:space="preserve">
+    <value>パスワード</value>
+  </data>
+  <data name="Login_RememberMe" xml:space="preserve">
+    <value>ログイン情報を記憶</value>
+  </data>
+  
+  <!-- 共通ラベル -->
+  <data name="Label_Name" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="Label_Description" xml:space="preserve">
+    <value>説明</value>
+  </data>
+  <data name="Label_Version" xml:space="preserve">
+    <value>バージョン</value>
+  </data>
+  <data name="Label_Status" xml:space="preserve">
+    <value>ステータス</value>
+  </data>
+  <data name="Label_Progress" xml:space="preserve">
+    <value>進行状況</value>
+  </data>
+  <!-- Form1 - メインウィンドウ -->
+  <data name="Form1_Title" xml:space="preserve">
+    <value>Unity3D WebPlayer 専用ブラウザ</value>
+  </data>
+  
+  <!-- Form1 - ナビゲーションボタン -->
+  <data name="Form1_toolStrip1_btnHome" xml:space="preserve">
+    <value>ホーム</value>
+  </data>
+  <data name="Form1_toolStrip1_btnBack" xml:space="preserve">
+    <value>戻る</value>
+  </data>
+  <data name="Form1_toolStrip1_btnForward" xml:space="preserve">
+    <value>進む</value>
+  </data>
+  <data name="Form1_toolStrip1_btnRefresh" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="Form1_toolStrip1_btnGo" xml:space="preserve">
+    <value>移動</value>
+  </data>
+  <data name="Form1_toolStrip1_btnSettings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities" xml:space="preserve">
+    <value>ツール</value>
+  </data>
+  
+  <!-- Form1 - メニュー項目 -->
+  <data name="Form1_toolStrip1_btnUtilities_toggleFullScreenMenuItem" xml:space="preserve">
+    <value>全画面表示切替 (F11)</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_toggleMuteMenuItem" xml:space="preserve">
+    <value>ミュート切替 (F4)</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_logoutMenuItem" xml:space="preserve">
+    <value>ログアウト</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_forumMenuItem" xml:space="preserve">
+    <value>公式フォーラム</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_discordMenuItem" xml:space="preserve">
+    <value>公式Discord</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_githubMenuItem" xml:space="preserve">
+    <value>GitHubソース</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_mobileDownloadMenuItem" xml:space="preserve">
+    <value>モバイル版</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_checkUpdateMenuItem" xml:space="preserve">
+    <value>更新の確認</value>
+  </data>
+  
+  <!-- Form1 - ステータスメッセージ -->
+  <data name="Form1_Status_InitializingBrowser" xml:space="preserve">
+    <value>ブラウザを初期化しています...</value>
+  </data>
+  <data name="Form1_Status_Loading" xml:space="preserve">
+    <value>読み込み中...</value>
+  </data>
+  <data name="Form1_Status_LoadComplete" xml:space="preserve">
+    <value>読み込み完了</value>
+  </data>
+  <data name="Form1_statusStrip1_statusLabel" xml:space="preserve">
+    <value>準備完了</value>
+  </data>
+  <data name="Form1_Status_Ready" xml:space="preserve">
+    <value>準備完了</value>
+  </data>
+  <data name="Form1_Status_BrowserInitFailed" xml:space="preserve">
+    <value>ブラウザの初期化に失敗しました</value>
+  </data>
+  <data name="Form1_Status_LoadFailed" xml:space="preserve">
+    <value>読み込みに失敗しました: {0}</value>
+  </data>
+  <data name="Form1_Status_Downloading" xml:space="preserve">
+    <value>ダウンロード中: {0}</value>
+  </data>
+  <data name="Form1_Status_CheckingUpdate" xml:space="preserve">
+    <value>更新を確認しています...</value>
+  </data>
+  <data name="Form1_Status_CheckUpdateFailed" xml:space="preserve">
+    <value>更新の確認に失敗しました</value>
+  </data>
+  <data name="Form1_Status_LoggingOut" xml:space="preserve">
+    <value>ログアウトしています...</value>
+  </data>
+  <data name="Form1_Status_LoggedOut" xml:space="preserve">
+    <value>ログアウトしました</value>
+  </data>
+  <data name="Form1_Status_LogoutFailed" xml:space="preserve">
+    <value>ログアウトに失敗しました</value>
+  </data>
+  
+  <!-- Form1 - キャッシュステータス -->
+  <data name="Form1_Cache_Status" xml:space="preserve">
+    <value>キャッシュヒット：{0} | ミス：{1} | ヒット率：{2}% | キャッシュサイズ：{3}</value>
+  </data>
+  <data name="Form1_Proxy_Enabled" xml:space="preserve">
+    <value>プロキシ：有効</value>
+  </data>
+  <data name="Form1_Proxy_Disabled" xml:space="preserve">
+    <value>プロキシ：無効</value>
+  </data>
+  <data name="Form1_Mute_On" xml:space="preserve">
+    <value>ミュート：オン</value>
+  </data>
+  <data name="Form1_Mute_Off" xml:space="preserve">
+    <value>ミュート：オフ</value>
+  </data>
+  
+  <!-- Form1 - メッセージ -->
+  <data name="Form1_Msg_WebView2InitFailed" xml:space="preserve">
+    <value>WebView2の初期化に失敗しました: {0}
+
+WebView2ランタイムがインストールされていることを確認してください。</value>
+  </data>
+  <data name="Form1_Msg_NavigationFailed" xml:space="preserve">
+    <value>URLへのナビゲーションに失敗しました: {0}</value>
+  </data>
+  <data name="Form1_Msg_ConfirmClearCache" xml:space="preserve">
+    <value>すべてのキャッシュをクリアしてもよろしいですか？
+
+キャッシュされたすべての静的リソースが削除されます。</value>
+  </data>
+  <data name="Form1_Msg_CacheCleared" xml:space="preserve">
+    <value>キャッシュがクリアされました。</value>
+  </data>
+  <data name="Form1_Msg_ClearCacheError" xml:space="preserve">
+    <value>キャッシュのクリア中にエラーが発生しました：{0}</value>
+  </data>
+  <data name="Form1_Msg_ConfirmLogout" xml:space="preserve">
+    <value>ログアウトしてもよろしいですか？
+
+すべてのCookieがクリアされ、ログインページに戻ります。</value>
+  </data>
+  <data name="Form1_Msg_LogoutError" xml:space="preserve">
+    <value>ログアウト中にエラーが発生しました：{0}</value>
+  </data>
+  <data name="Form1_Msg_CheckUpdateError" xml:space="preserve">
+    <value>更新の確認中にエラーが発生しました：{0}</value>
+  </data>
+  <data name="Form1_Msg_OpenForumError" xml:space="preserve">
+    <value>公式フォーラムを開く際にエラーが発生しました：{0}</value>
+  </data>
+  <data name="Form1_Msg_OpenDiscordError" xml:space="preserve">
+    <value>公式Discordを開く際にエラーが発生しました：{0}</value>
+  </data>
+  <data name="Form1_Msg_OpenGitHubError" xml:space="preserve">
+    <value>GitHubを開く際にエラーが発生しました：{0}</value>
+  </data>
+  <data name="Form1_Msg_OpenMobileDownloadError" xml:space="preserve">
+    <value>モバイル版ダウンロードページを開く際にエラーが発生しました：{0}</value>
+  </data>
+  
+  <!-- Form1 - フルスクリーンヒント -->
+  <data name="Form1_Tip_ExitFullScreen" xml:space="preserve">
+    <value>F11キーで全画面表示を終了</value>
+  </data>
+  <data name="Form1_Tip_MuteOn" xml:space="preserve">
+    <value>ミュートが有効になりました</value>
+  </data>
+  <data name="Form1_Tip_MuteOff" xml:space="preserve">
+    <value>ミュートが無効になりました</value>
+  </data>
+  
+  <!-- Form1 - キャッシュ情報ダイアログ -->
+  <data name="Form1_CacheInfo_Title" xml:space="preserve">
+    <value>キャッシュ情報</value>
+  </data>
+  <data name="Form1_CacheInfo_Message" xml:space="preserve">
+    <value>キャッシュ統計：
+
+キャッシュディレクトリ：./cache
+キャッシュサイズ：{0}
+キャッシュヒット数：{1}
+キャッシュミス数：{2}
+ヒット率：{3}%
+
+キャッシュポリシー：
+- JavaScript・CSSファイル（バージョン付き）：長期キャッシュ
+- 画像・フォントファイル：長期キャッシュ
+- APIリクエスト：キャッシュなし</value>
+  </data>
+  
+  <!-- Form1 - タイトル -->
+  <data name="Form1_Title_Format" xml:space="preserve">
+    <value>{0} - Unity3D WebPlayer 専用ブラウザ</value>
+  </data>
+  
+  <!-- SettingsForm - 设置窗口 -->
+  <data name="SettingsForm" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  
+  <data name="SettingsForm_Applied" xml:space="preserve">
+    <value>設定が適用されました。</value>
+  </data>
+  <data name="SettingsForm_Display_CurrentWindowSize" xml:space="preserve">
+    <value>現在のウィンドウサイズ</value>
+  </data>
+  <data name="SettingsForm_Logs_ClearFailed" xml:space="preserve">
+    <value>ログファイルのクリア中にエラーが発生しました：{0}</value>
+  </data>
+  <data name="SettingsForm_Logs_ClearSuccess" xml:space="preserve">
+    <value>ログファイルがクリアされました。</value>
+  </data>
+  <data name="SettingsForm_Logs_ConfirmClearMessage" xml:space="preserve">
+    <value>すべてのログファイルをクリアしてもよろしいですか？
+
+すべての履歴ログレコードが削除されます。</value>
+  </data>
+  <data name="SettingsForm_Logs_ConfirmClearTitle" xml:space="preserve">
+    <value>クリアの確認</value>
+  </data>
+  <data name="SettingsForm_NavigateHint" xml:space="preserve">
+    <value>リダイレクト通知</value>
+  </data>
+  <data name="SettingsForm_Network_BaseUrlCannotBeEmpty" xml:space="preserve">
+    <value>メインサイトドメインは空にできません。</value>
+  </data>
+  <data name="SettingsForm_Network_InputError" xml:space="preserve">
+    <value>入力エラー</value>
+  </data>
+  <data name="SettingsForm_Network_InvalidBaseUrlFormat" xml:space="preserve">
+    <value>メインサイトドメインの形式が正しくありません。
+例：https://game.ero-labs.live</value>
+  </data>
+  <data name="SettingsForm_Network_InvalidHttpProxyFormat" xml:space="preserve">
+    <value>HTTPプロキシアドレスの形式が正しくありません。
+例：http://127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Network_InvalidHttpsProxyFormat" xml:space="preserve">
+    <value>HTTPSプロキシアドレスの形式が正しくありません。
+例：http://127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Network_InvalidSocks5ProxyFormat" xml:space="preserve">
+    <value>SOCKS5プロキシアドレスの形式が正しくありません。
+例：127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Network_PleaseEnterProxyAddress" xml:space="preserve">
+    <value>少なくとも1つのプロキシサーバーアドレスを入力してください。</value>
+  </data>
+  <data name="SettingsForm_Network_ProxyServiceHint" xml:space="preserve">
+    <value>ero-labsのウェブサイトに正常にアクセスできる場合は、プロキシサーバーは必要ありません。お住まいの地域でero-labsがブロックされているか、速度が遅い場合は、同様のサービスを購入することをご検討ください。
+購入リンクが必要ですか？</value>
+  </data>
+  <data name="SettingsForm_SaveFailed" xml:space="preserve">
+    <value>設定の保存に失敗しました</value>
+  </data>
+  <data name="SettingsForm_Tab_Display" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="SettingsForm_Tab_Network" xml:space="preserve">
+    <value>ネットワーク</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings" xml:space="preserve">
+    <value>ログインガイド設定</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_chkEnableLogin" xml:space="preserve">
+    <value>ログインガイドを有効にする</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_chkShowSkipButton" xml:space="preserve">
+    <value>スキップボタンを表示</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_lblCookieName" xml:space="preserve">
+    <value>Cookie名：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_lblLoginUrl" xml:space="preserve">
+    <value>ログインURLパス：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_lblRegisterUrl" xml:space="preserve">
+    <value>登録URL：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings_lblProxyNote" xml:space="preserve">
+    <value>注意：SOCKS5プロキシが優先され、次にHTTP/HTTPSプロキシが使用されます。
+プロキシ設定を変更した後は、ブラウザを再起動する必要があります。</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_linkLabel1" xml:space="preserve">
+    <value>プロキシサーバーがありませんか？</value>
+  </data>
+  <data name="Form1_Confirm_Title" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  
+  <!-- SettingsForm - 設定ウィンドウ -->
+  <data name="SettingsForm_Title" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  
+  <!-- SettingsForm - タブ -->
+  <data name="SettingsForm_tabControl_tabNetwork" xml:space="preserve">
+    <value>ネットワーク</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging" xml:space="preserve">
+    <value>ログ</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface" xml:space="preserve">
+    <value>インターフェース</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin" xml:space="preserve">
+    <value>ログインガイド</value>
+  </data>
+  
+  <!-- SettingsForm - ネットワークタブ -->
+  <data name="SettingsForm_tabControl_tabNetwork_chkAutoIframeNav" xml:space="preserve">
+    <value>iframeへの自動ナビゲーションを有効にする</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_lblBaseURL" xml:space="preserve">
+    <value>メインサイトドメイン：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_chkEnableProxy" xml:space="preserve">
+    <value>プロキシサーバーを有効にする</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings" xml:space="preserve">
+    <value>プロキシ設定</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings_lblHttpProxy" xml:space="preserve">
+    <value>HTTPプロキシ：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings_lblHttpsProxy" xml:space="preserve">
+    <value>HTTPSプロキシ：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings_lblSocks5" xml:space="preserve">
+    <value>SOCKS5プロキシ：</value>
+  </data>
+  
+  <!-- SettingsForm - ログタブ -->
+  <data name="SettingsForm_tabControl_tabLogging_chkEnableLogging" xml:space="preserve">
+    <value>ログ記録を有効にする</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_lblLogLevel" xml:space="preserve">
+    <value>ログレベル：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_lblMaxFileSize" xml:space="preserve">
+    <value>最大ファイルサイズ (MB)：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_chkDebugMode" xml:space="preserve">
+    <value>デバッグモードを有効にする</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_btnViewLogs" xml:space="preserve">
+    <value>ログを表示</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_btnClearLogs" xml:space="preserve">
+    <value>ログをクリア</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_lblMB" xml:space="preserve">
+    <value>MB</value>
+  </data>
+  
+  <!-- SettingsForm - UIタブ -->
+  <data name="SettingsForm_tabControl_tabInterface_lblWindowSize" xml:space="preserve">
+    <value>ウィンドウサイズ</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblWidth" xml:space="preserve">
+    <value>幅：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblHeight" xml:space="preserve">
+    <value>高さ：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblCurrentSize" xml:space="preserve">
+    <value>現在のウィンドウサイズ: {0} x {1}</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblWidthPx" xml:space="preserve">
+    <value>ピクセル</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblHeightPx" xml:space="preserve">
+    <value>ピクセル</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblSizeNote" xml:space="preserve">
+    <value>注意：ウィンドウサイズの変更は、アプリケーションの再起動後に有効になります。</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_btnResetSize" xml:space="preserve">
+    <value>デフォルトにリセット</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblLanguage" xml:space="preserve">
+    <value>言語：</value>
+  </data>
+  
+  <!-- SettingsForm - ログインタブ -->
+  <data name="SettingsForm_tabControl_tabLogin_chkEnableLogin" xml:space="preserve">
+    <value>ログインガイドを有効にする</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_chkShowSkipButton" xml:space="preserve">
+    <value>スキップボタンを表示</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_lblCookieName" xml:space="preserve">
+    <value>Cookie名：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_lblLoginURL" xml:space="preserve">
+    <value>ログインURLパス：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_lblRegisterURL" xml:space="preserve">
+    <value>登録URL：</value>
+  </data>
+  
+  <!-- SettingsForm - ボタン -->
+  <data name="SettingsForm_btnSave" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="SettingsForm_btnApply" xml:space="preserve">
+    <value>適用</value>
+  </data>
+  <data name="SettingsForm_btnCancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  
+  <!-- SettingsForm - 検証メッセージ -->
+  <data name="SettingsForm_Msg_BaseURLInvalid" xml:space="preserve">
+    <value>メインサイトドメインの形式が正しくありません。
+例：https://game.ero-labs.live</value>
+  </data>
+  <data name="SettingsForm_Msg_BaseURLEmpty" xml:space="preserve">
+    <value>メインサイトドメインを入力してください。</value>
+  </data>
+  <data name="SettingsForm_Msg_ProxyRequired" xml:space="preserve">
+    <value>少なくとも1つのプロキシサーバーアドレスを入力してください。</value>
+  </data>
+  <data name="SettingsForm_Msg_HttpProxyInvalid" xml:space="preserve">
+    <value>HTTPプロキシアドレスの形式が正しくありません。
+例：http://127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Msg_HttpsProxyInvalid" xml:space="preserve">
+    <value>HTTPSプロキシアドレスの形式が正しくありません。
+例：http://127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Msg_Socks5Invalid" xml:space="preserve">
+    <value>SOCKS5プロキシアドレスの形式が正しくありません。
+例：127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Msg_InputError" xml:space="preserve">
+    <value>入力エラー</value>
+  </data>
+  
+  <!-- SettingsForm - 一般メッセージ -->
+  <data name="SettingsForm_Msg_ConfirmClearLogs" xml:space="preserve">
+    <value>すべてのログファイルをクリアしてもよろしいですか？
+
+すべての履歴ログレコードが削除されます。</value>
+  </data>
+  <data name="SettingsForm_Msg_LogsCleared" xml:space="preserve">
+    <value>ログファイルがクリアされました。</value>
+  </data>
+  <data name="SettingsForm_Msg_ClearLogsError" xml:space="preserve">
+    <value>ログファイルのクリア中にエラーが発生しました：{0}</value>
+  </data>
+  <data name="SettingsForm_Msg_Saved" xml:space="preserve">
+    <value>設定が保存されました</value>
+  </data>
+  <data name="SettingsForm_Msg_SaveError" xml:space="preserve">
+    <value>設定の保存中にエラーが発生しました：{0}</value>
+  </data>
+  <data name="SettingsForm_Msg_Applied" xml:space="preserve">
+    <value>設定が適用されました。</value>
+  </data>
+  <data name="SettingsForm_Msg_RestartRequired" xml:space="preserve">
+    <value>以下の設定は、アプリケーションを再起動して有効になります：
+</value>
+  </data>
+  <data name="SettingsForm_Msg_RestartProxy" xml:space="preserve">
+    <value>- プロキシ設定
+</value>
+  </data>
+  <data name="SettingsForm_Msg_RestartWindowSize" xml:space="preserve">
+    <value>- ウィンドウサイズ設定
+</value>
+  </data>
+  
+  <!-- SettingsForm - プロキシヘルプ -->
+  <data name="SettingsForm_Proxy_HelpMessage" xml:space="preserve">
+    <value>ero-labsのウェブサイトに正常にアクセスできる場合は、プロキシサーバーは必要ありません。お住まいの地域でero-labsがブロックされているか、速度が遅い場合は、同様のサービスを購入することをご検討ください。
+購入リンクが必要ですか？</value>
+  </data>
+  <data name="SettingsForm_Proxy_HelpTitle" xml:space="preserve">
+    <value>リダイレクト通知</value>
+  </data>
+  <data name="SettingsForm_Msg_LanguageChanged" xml:space="preserve">
+    <value>言語が変更されました。一部のUI要素は再起動後に更新されます。</value>
+  </data>
+  
+  <!-- LoginDialog - ログインガイドダイアログ -->
+  <data name="LoginDialog_Title" xml:space="preserve">
+    <value>ログインガイド</value>
+  </data>
+  <data name="LoginDialog_lblMessage" xml:space="preserve">
+    <value>ログインしていないことが検出されました。
+アカウントをお持ちですか？</value>
+  </data>
+  <data name="LoginDialog_btnHasAccount" xml:space="preserve">
+    <value>はい、アカウントを持っています</value>
+  </data>
+  <data name="LoginDialog_btnNoAccount" xml:space="preserve">
+    <value>いいえ、登録が必要です</value>
+  </data>
+  <data name="LoginDialog_btnSkip" xml:space="preserve">
+    <value>スキップ</value>
+  </data>
+  
+  <!-- UpdateForm - 更新ウィンドウ -->
+  <data name="UpdateForm" xml:space="preserve">
+    <value>ソフトウェア更新</value>
+  </data>
+  <data name="UpdateForm_lblTitle" xml:space="preserve">
+    <value>新しいバージョンが利用可能</value>
+  </data>
+  <data name="UpdateForm_grpVersionInfo" xml:space="preserve">
+    <value>バージョン情報</value>
+  </data>
+  <data name="UpdateForm_grpVersionInfo_lblCurrentVersion" xml:space="preserve">
+    <value>現在のバージョン: </value>
+  </data>
+  <data name="UpdateForm_grpVersionInfo_lblNewVersion" xml:space="preserve">
+    <value>最新バージョン: </value>
+  </data>
+  <data name="UpdateForm_grpVersionInfo_lblReleaseDate" xml:space="preserve">
+    <value>リリース日: </value>
+  </data>
+  <data name="UpdateForm_grpFileInfo" xml:space="preserve">
+    <value>ファイル情報</value>
+  </data>
+  <data name="UpdateForm_grpFileInfo_lblFileName" xml:space="preserve">
+    <value>ファイル名: </value>
+  </data>
+  <data name="UpdateForm_grpFileInfo_lblFileSize" xml:space="preserve">
+    <value>ファイルサイズ: </value>
+  </data>
+  <data name="UpdateForm_grpReleaseNotes" xml:space="preserve">
+    <value>リリースノート</value>
+  </data>
+  <data name="UpdateForm_lblMandatory" xml:space="preserve">
+    <value>これは必須アップデートです。続行するにはインストールする必要があります。</value>
+  </data>
+  <data name="UpdateForm_btnDownload" xml:space="preserve">
+    <value>更新をダウンロード</value>
+  </data>
+  <data name="UpdateForm_btnDownload_Cancel" xml:space="preserve">
+    <value>ダウンロードをキャンセル</value>
+  </data>
+  <data name="UpdateForm_btnInstall" xml:space="preserve">
+    <value>更新をインストール</value>
+  </data>
+  <data name="UpdateForm_btnSkip" xml:space="preserve">
+    <value>スキップ</value>
+  </data>
+  <data name="UpdateForm_btnClose" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Ready" xml:space="preserve">
+    <value>ダウンロード準備中...</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Downloading" xml:space="preserve">
+    <value>ダウンロード中...</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Progress" xml:space="preserve">
+    <value>ダウンロード中... {0} / {1} ({2}%)</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Complete" xml:space="preserve">
+    <value>ダウンロード完了！</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Cancelled" xml:space="preserve">
+    <value>ダウンロードがキャンセルされました</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Failed" xml:space="preserve">
+    <value>ダウンロード失敗</value>
+  </data>
+  <data name="UpdateForm_Msg_DownloadComplete" xml:space="preserve">
+    <value>更新がダウンロードされました！
+「更新をインストール」をクリックして続行してください。</value>
+  </data>
+  <data name="UpdateForm_Msg_DownloadCompleteTitle" xml:space="preserve">
+    <value>ダウンロード完了</value>
+  </data>
+  <data name="UpdateForm_Msg_DownloadError" xml:space="preserve">
+    <value>更新のダウンロードに失敗しました：
+{0}</value>
+  </data>
+  <data name="UpdateForm_Msg_ErrorTitle" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="UpdateForm_Msg_NoFile" xml:space="preserve">
+    <value>ダウンロードされた更新ファイルが見つかりません。</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmInstall" xml:space="preserve">
+    <value>更新をインストールすると、アプリケーションが閉じられて再起動されます。
+続行しますか？</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmInstallTitle" xml:space="preserve">
+    <value>インストールの確認</value>
+  </data>
+  <data name="UpdateForm_Msg_InstallError" xml:space="preserve">
+    <value>更新のインストールに失敗しました：
+{0}</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmSkip" xml:space="preserve">
+    <value>この更新をスキップしてもよろしいですか？
+後で更新を確認できます。</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmSkipTitle" xml:space="preserve">
+    <value>更新をスキップ</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmCancel" xml:space="preserve">
+    <value>ダウンロード中です。キャンセルしてもよろしいですか？</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmCancelTitle" xml:space="preserve">
+    <value>ダウンロードをキャンセル</value>
+  </data>
+  
+  <!-- LogViewerForm - ログビューア -->
+  <data name="LogViewerForm" xml:space="preserve">
+    <value>ログビューア</value>
+  </data>
+  <data name="LogViewerForm_topPanel_lblLogLevel" xml:space="preserve">
+    <value>ログレベル：</value>
+  </data>
+  <data name="LogViewerForm_topPanel_chkAutoRefresh" xml:space="preserve">
+    <value>自動更新</value>
+  </data>
+  <data name="LogViewerForm_topPanel_btnRefresh" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="LogViewerForm_topPanel_btnClear" xml:space="preserve">
+    <value>クリア</value>
+  </data>
+  <data name="LogViewerForm_bottomPanel_btnClose" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="LogViewerForm_Title" xml:space="preserve">
+    <value>ログビューア</value>
+  </data>
+  <data name="LogViewerForm_FileInfo" xml:space="preserve">
+    <value>ファイルサイズ: {0}</value>
+  </data>
+  <data name="LogViewerForm_NoFile" xml:space="preserve">
+    <value>ログファイルが存在しません。</value>
+  </data>
+  <data name="LogViewerForm_ReadError" xml:space="preserve">
+    <value>ログファイルの読み取り中にエラーが発生しました：{0}</value>
+  </data>
+  <data name="LogViewerForm_ClearConfirmation" xml:space="preserve">
+    <value>ログファイルをクリアしてもよろしいですか？
+
+この操作は元に戻せません。</value>
+  </data>
+  <data name="LogViewerForm_ClearSuccess" xml:space="preserve">
+    <value>ログがクリアされました。</value>
+  </data>
+  <data name="LogViewerForm_ClearError" xml:space="preserve">
+    <value>ログのクリア中にエラーが発生しました：{0}</value>
+  </data>
+  <data name="LogViewerForm_ClearConfirmationTitle" xml:space="preserve">
+    <value>クリアの確認</value>
+  </data>
+  <data name="LogViewerForm_SuccessTitle" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="LogViewerForm_ErrorTitle" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  
+  <!-- AboutForm - 情報ウィンドウ -->
+  <data name="AboutForm_Title" xml:space="preserve">
+    <value>CTWebPlayer {0} について</value>
+  </data>
+  <data name="AboutForm_lblTitle" xml:space="preserve">
+    <value>CTWebPlayer</value>
+  </data>
+  <data name="AboutForm_lblVersion" xml:space="preserve">
+    <value>Unity3D WebPlayer 専用ブラウザ v{0}</value>
+  </data>
+  <data name="AboutForm_lblCopyright" xml:space="preserve">
+    <value>Copyright (c) 2025, CTWebPlayer 開発者</value>
+  </data>
+  <data name="AboutForm_lblLicenseTitle" xml:space="preserve">
+    <value>ライセンス：</value>
+  </data>
+  <data name="AboutForm_lblImportantNotice" xml:space="preserve">
+    <value>⚠️ 重要：修正版は必ず名前を変更し、元の作者と無関係であることを宣言する必要があります！
+詳細は以下のライセンス条項をご確認ください。</value>
+  </data>
+  <data name="AboutForm_LicenseLoadError" xml:space="preserve">
+    <value>ライセンスファイルを読み込めません：{0}</value>
+  </data>
+  <data name="AboutForm_btnOK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="AboutForm_License_Text" xml:space="preserve">
+    <value>CTWebPlayer ライセンス
+BSD 3-Clause License の修正版に基づく
+
+Copyright (c) 2025, CTWebPlayer 開発者
+All rights reserved.
+
+以下の条件を満たす場合に限り、ソースコードおよびバイナリ形式での再配布および使用を、変更の有無を問わず許可します：
+
+1. ソースコードを再配布する場合は、上記の著作権表示、この条件リスト、および以下の免責条項を保持する必要があります。
+
+2. バイナリ形式で再配布する場合は、配布物に含まれるドキュメントおよび/またはその他の資料に、上記の著作権表示、この条件リスト、および以下の免責条項を複製する必要があります。
+
+3. 書面による特別な許可なしに、著作権者の名前またはその貢献者の名前を、このソフトウェアから派生した製品の推奨または宣伝に使用することはできません。
+
+4. 【重要】すべての修正版は以下を満たす必要があります：
+   - 「CTWebPlayer」または類似の名前ではなく、異なる名前を使用すること
+   - 修正版であることを明確に示すこと
+   - いかなる方法でも元の作者による承認や保証を暗示しないこと
+   - 「CTWebPlayerに基づいているが、元の作者とは無関係である」ことを目立つ場所に明記すること
+
+5. 書面による許可なく、このソフトウェアを商業目的で使用することはできません。
+
+免責条項：
+このソフトウェアは著作権者および貢献者によって「現状のまま」提供されており、明示的または暗黙的な保証（商品性および特定目的への適合性の暗黙的な保証を含むがこれに限定されない）は一切ありません。いかなる場合においても、著作権者または貢献者は、このソフトウェアの使用または使用不能から生じる直接的、間接的、偶発的、特別、典型的、または結果的な損害（代替品またはサービスの調達、使用の喪失、データまたは利益の喪失、または事業の中断を含むがこれに限定されない）について、たとえそのような損害の可能性について知らされていたとしても、契約上、厳格責任、または不法行為（過失またはその他を含む）のいずれの理論においても、一切責任を負いません。
+
+特別通知：
+このソフトウェアの修正版から生じるすべての問題、損害、または法的責任は、修正者の単独の責任であり、元の作者とは無関係です。ユーザーは、ソフトウェアの完全性とセキュリティを確保するために、公式ソースからこのソフトウェアを入手する必要があります。</value>
+  </data>
+  
+  <data name="RES_LanguageLabel" xml:space="preserve">
+    <value>言語：</value>
+  </data>
+  
+  <!-- ProxySettingsForm -->
+  <data name="ProxySettingsForm" xml:space="preserve">
+    <value>プロキシ設定</value>
+  </data>
+  <data name="ProxySettingsForm_chkEnableProxy" xml:space="preserve">
+    <value>プロキシサーバーを有効にする</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings" xml:space="preserve">
+    <value>プロキシサーバー設定</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblHttpProxy" xml:space="preserve">
+    <value>HTTPプロキシ：</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblHttpsProxy" xml:space="preserve">
+    <value>HTTPSプロキシ：</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblSocks5" xml:space="preserve">
+    <value>SOCKS5プロキシ：</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblNote" xml:space="preserve">
+    <value>注意：SOCKS5プロキシが優先され、次にHTTP/HTTPSプロキシが使用されます。
+プロキシ設定を変更した後は、ブラウザを再起動する必要があります。</value>
+  </data>
+  <data name="ProxySettingsForm_btnSave" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="ProxySettingsForm_btnCancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="ProxySettingsForm_PlaceholderHttp" xml:space="preserve">
+    <value>例: http://127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_PlaceholderSocks5" xml:space="preserve">
+    <value>例: 127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_ProxyRequired" xml:space="preserve">
+    <value>少なくとも1つのプロキシサーバーアドレスを入力してください。</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_HttpProxyInvalid" xml:space="preserve">
+    <value>HTTPプロキシアドレスの形式が正しくありません。
+形式例：http://127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_HttpsProxyInvalid" xml:space="preserve">
+    <value>HTTPSプロキシアドレスの形式が正しくありません。
+形式例：http://127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_Socks5Invalid" xml:space="preserve">
+    <value>SOCKS5プロキシアドレスの形式が正しくありません。
+形式例：127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_InputError" xml:space="preserve">
+    <value>入力エラー</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_SavedWithRestart" xml:space="preserve">
+    <value>プロキシ設定を保存しました。
+
+新しいプロキシ設定を適用するには、ブラウザを再起動してください。</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_ProxyDisabledWithRestart" xml:space="preserve">
+    <value>プロキシを無効にしました。
+
+変更を適用するには、ブラウザを再起動してください。</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_SaveError" xml:space="preserve">
+    <value>設定の保存中にエラーが発生しました：{0}</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_Error" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_Info" xml:space="preserve">
+    <value>情報</value>
+  </data>
+</root>

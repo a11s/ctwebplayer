@@ -34,7 +34,9 @@ namespace ctwebplayer
         {
             _skipEnabled = skipEnabled;
             InitializeComponent();
+            LanguageManager.Instance.ApplyToForm(this);
             InitializeUI();
+            LanguageManager.Instance.LanguageChanged += OnLanguageChanged;
         }
 
         /// <summary>
@@ -43,7 +45,6 @@ namespace ctwebplayer
         private void InitializeUI()
         {
             // 设置窗体属性
-            this.Text = "登录引导";
             this.StartPosition = FormStartPosition.CenterParent;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -113,5 +114,19 @@ namespace ctwebplayer
                 return dialog.UserChoice;
             }
         }
+        private void OnLanguageChanged(object sender, EventArgs e)
+        {
+            LanguageManager.Instance.ApplyToForm(this);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                LanguageManager.Instance.LanguageChanged -= OnLanguageChanged;
+            }
+            base.Dispose(disposing);
+        }
+
     }
 }

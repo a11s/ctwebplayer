@@ -75,6 +75,7 @@ namespace ctwebplayer
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(180, 22);
             this.lblTitle.Text = "发现新版本";
+            this.lblTitle.Tag = "UpdateForm_lblTitle";
             
             // grpVersionInfo
             this.grpVersionInfo.Controls.Add(this.lblCurrentVersion);
@@ -86,6 +87,7 @@ namespace ctwebplayer
             this.grpVersionInfo.TabIndex = 1;
             this.grpVersionInfo.TabStop = false;
             this.grpVersionInfo.Text = "版本信息";
+            this.grpVersionInfo.Tag = "UpdateForm_grpVersionInfo";
             
             // lblCurrentVersion
             this.lblCurrentVersion.AutoSize = true;
@@ -93,6 +95,7 @@ namespace ctwebplayer
             this.lblCurrentVersion.Name = "lblCurrentVersion";
             this.lblCurrentVersion.Size = new System.Drawing.Size(100, 17);
             this.lblCurrentVersion.Text = "当前版本: ";
+            this.lblCurrentVersion.Tag = "UpdateForm_grpVersionInfo_lblCurrentVersion";
             
             // lblNewVersion
             this.lblNewVersion.AutoSize = true;
@@ -100,6 +103,7 @@ namespace ctwebplayer
             this.lblNewVersion.Name = "lblNewVersion";
             this.lblNewVersion.Size = new System.Drawing.Size(100, 17);
             this.lblNewVersion.Text = "最新版本: ";
+            this.lblNewVersion.Tag = "UpdateForm_grpVersionInfo_lblNewVersion";
             
             // lblReleaseDate
             this.lblReleaseDate.AutoSize = true;
@@ -107,6 +111,7 @@ namespace ctwebplayer
             this.lblReleaseDate.Name = "lblReleaseDate";
             this.lblReleaseDate.Size = new System.Drawing.Size(100, 17);
             this.lblReleaseDate.Text = "发布时间: ";
+            this.lblReleaseDate.Tag = "UpdateForm_grpVersionInfo_lblReleaseDate";
             
             // grpFileInfo
             this.grpFileInfo.Controls.Add(this.lblFileName);
@@ -117,6 +122,7 @@ namespace ctwebplayer
             this.grpFileInfo.TabIndex = 2;
             this.grpFileInfo.TabStop = false;
             this.grpFileInfo.Text = "文件信息";
+            this.grpFileInfo.Tag = "UpdateForm_grpFileInfo";
             
             // lblFileName
             this.lblFileName.AutoSize = true;
@@ -124,6 +130,7 @@ namespace ctwebplayer
             this.lblFileName.Name = "lblFileName";
             this.lblFileName.Size = new System.Drawing.Size(100, 17);
             this.lblFileName.Text = "文件名: ";
+            this.lblFileName.Tag = "UpdateForm_grpFileInfo_lblFileName";
             
             // lblFileSize
             this.lblFileSize.AutoSize = true;
@@ -131,6 +138,7 @@ namespace ctwebplayer
             this.lblFileSize.Name = "lblFileSize";
             this.lblFileSize.Size = new System.Drawing.Size(100, 17);
             this.lblFileSize.Text = "文件大小: ";
+            this.lblFileSize.Tag = "UpdateForm_grpFileInfo_lblFileSize";
             
             // grpReleaseNotes
             this.grpReleaseNotes.Controls.Add(this.txtReleaseNotes);
@@ -140,6 +148,7 @@ namespace ctwebplayer
             this.grpReleaseNotes.TabIndex = 3;
             this.grpReleaseNotes.TabStop = false;
             this.grpReleaseNotes.Text = "更新说明";
+            this.grpReleaseNotes.Tag = "UpdateForm_grpReleaseNotes";
             
             // txtReleaseNotes
             this.txtReleaseNotes.Location = new System.Drawing.Point(10, 25);
@@ -149,12 +158,14 @@ namespace ctwebplayer
             this.txtReleaseNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtReleaseNotes.Size = new System.Drawing.Size(540, 185);
             this.txtReleaseNotes.TabIndex = 0;
+            this.txtReleaseNotes.Tag = "UpdateForm_grpReleaseNotes_txtReleaseNotes";
             
             // progressBar
             this.progressBar.Location = new System.Drawing.Point(12, 500);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(560, 23);
             this.progressBar.TabIndex = 4;
+            this.progressBar.Tag = "UpdateForm_progressBar";
             
             // lblProgress
             this.lblProgress.AutoSize = true;
@@ -162,6 +173,7 @@ namespace ctwebplayer
             this.lblProgress.Name = "lblProgress";
             this.lblProgress.Size = new System.Drawing.Size(100, 17);
             this.lblProgress.Text = "准备下载...";
+            this.lblProgress.Tag = "UpdateForm_lblProgress";
             
             // lblMandatory
             this.lblMandatory.AutoSize = true;
@@ -170,6 +182,7 @@ namespace ctwebplayer
             this.lblMandatory.Name = "lblMandatory";
             this.lblMandatory.Size = new System.Drawing.Size(300, 17);
             this.lblMandatory.Text = "这是一个强制更新，必须安装后才能继续使用。";
+            this.lblMandatory.Tag = "UpdateForm_lblMandatory";
             this.lblMandatory.Visible = false;
             
             // btnDownload
@@ -178,6 +191,7 @@ namespace ctwebplayer
             this.btnDownload.Size = new System.Drawing.Size(100, 30);
             this.btnDownload.TabIndex = 5;
             this.btnDownload.Text = "下载更新";
+            this.btnDownload.Tag = "UpdateForm_btnDownload";
             this.btnDownload.UseVisualStyleBackColor = true;
             this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             
@@ -187,6 +201,7 @@ namespace ctwebplayer
             this.btnInstall.Size = new System.Drawing.Size(100, 30);
             this.btnInstall.TabIndex = 6;
             this.btnInstall.Text = "安装更新";
+            this.btnInstall.Tag = "UpdateForm_btnInstall";
             this.btnInstall.UseVisualStyleBackColor = true;
             this.btnInstall.Visible = false;
             this.btnInstall.Click += new System.EventHandler(this.btnInstall_Click);
@@ -197,6 +212,7 @@ namespace ctwebplayer
             this.btnSkip.Size = new System.Drawing.Size(100, 30);
             this.btnSkip.TabIndex = 7;
             this.btnSkip.Text = "稍后提醒";
+            this.btnSkip.Tag = "UpdateForm_btnSkip";
             this.btnSkip.UseVisualStyleBackColor = true;
             this.btnSkip.Click += new System.EventHandler(this.btnSkip_Click);
             
@@ -206,6 +222,7 @@ namespace ctwebplayer
             this.btnClose.Size = new System.Drawing.Size(100, 30);
             this.btnClose.TabIndex = 8;
             this.btnClose.Text = "关闭";
+            this.btnClose.Tag = "UpdateForm_btnClose";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Visible = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -232,6 +249,7 @@ namespace ctwebplayer
             this.Name = "UpdateForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "软件更新";
+            this.Tag = "UpdateForm";
             
             this.grpVersionInfo.ResumeLayout(false);
             this.grpVersionInfo.PerformLayout();

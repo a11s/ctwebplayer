@@ -44,6 +44,7 @@
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(146, 26);
             this.lblTitle.TabIndex = 0;
+            this.lblTitle.Tag = "AboutForm_lblTitle";
             this.lblTitle.Text = "CTWebPlayer";
             //
             // lblVersion
@@ -53,6 +54,7 @@
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(222, 13);
             this.lblVersion.TabIndex = 1;
+            this.lblVersion.Tag = "AboutForm_lblVersion";
             this.lblVersion.Text = "Unity3D WebPlayer 专属浏览器 v1.0.0";
             //
             // txtLicense
@@ -65,6 +67,7 @@
             this.txtLicense.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtLicense.Size = new System.Drawing.Size(560, 250);
             this.txtLicense.TabIndex = 2;
+            this.txtLicense.Tag = "AboutForm_txtLicense";
             //
             // btnOK
             //
@@ -72,6 +75,7 @@
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 3;
+            this.btnOK.Tag = "AboutForm_btnOK";
             this.btnOK.Text = "确定";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -84,6 +88,7 @@
             this.lblLicenseTitle.Name = "lblLicenseTitle";
             this.lblLicenseTitle.Size = new System.Drawing.Size(65, 17);
             this.lblLicenseTitle.TabIndex = 4;
+            this.lblLicenseTitle.Tag = "AboutForm_lblLicenseTitle";
             this.lblLicenseTitle.Text = "许可证：";
             //
             // lblImportantNotice
@@ -95,6 +100,7 @@
             this.lblImportantNotice.Name = "lblImportantNotice";
             this.lblImportantNotice.Size = new System.Drawing.Size(377, 30);
             this.lblImportantNotice.TabIndex = 5;
+            this.lblImportantNotice.Tag = "AboutForm_lblImportantNotice";
             this.lblImportantNotice.Text = "⚠️ 重要提示：任何修改版本必须改名并声明与原作者无关！\r\n" +
                 "详情请仔细阅读下方许可证条款。";
             //
@@ -114,6 +120,7 @@
             this.MinimizeBox = false;
             this.Name = "AboutForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Tag = "AboutForm";
             this.Text = "关于 CTWebPlayer";
             this.Load += new System.EventHandler(this.AboutForm_Load);
             this.ResumeLayout(false);

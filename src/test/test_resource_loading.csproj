@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <StartupObject>ctwebplayer.test.TestResourceLoading</StartupObject>
+    <RootNamespace>ctwebplayer</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="test_resource_loading.cs" />
+    <Compile Include="../LanguageManager.cs" />
+    <Compile Include="../ConfigManager.cs" />
+    <Compile Include="../LogManager.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="../Resources/Strings.resx" />
+    <EmbeddedResource Include="../Resources/Strings.zh-CN.resx" />
+    <EmbeddedResource Include="../Resources/Strings.zh-TW.resx" />
+    <EmbeddedResource Include="../Resources/Strings.ja.resx" />
+    <EmbeddedResource Include="../Resources/Strings.ko.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>

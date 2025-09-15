@@ -17,15 +17,19 @@ namespace ctwebplayer
         public AboutForm()
         {
             InitializeComponent();
+            LanguageManager.Instance.ApplyToForm(this);
+            LanguageManager.Instance.LanguageChanged += OnLanguageChanged;
+        }
+
+        private void OnLanguageChanged(object sender, EventArgs e)
+        {
+            LanguageManager.Instance.ApplyToForm(this);
         }
 
         private void AboutForm_Load(object sender, EventArgs e)
         {
             // 设置版本信息
-            lblVersion.Text = $"{CTWebPlayer.Version.Description} v{CTWebPlayer.Version.FullVersion}";
-            
-            // 设置窗口标题
-            this.Text = $"关于 CTWebPlayer {CTWebPlayer.Version.FullVersion}";
+            lblVersion.Text = string.Format(LanguageManager.Instance.GetString("AboutForm_lblVersion"), CTWebPlayer.Version.FullVersion);
             
             // 加载许可证文本
             try
@@ -47,7 +51,7 @@ namespace ctwebplayer
             }
             catch (Exception ex)
             {
-                txtLicense.Text = $"无法加载许可证文件：{ex.Message}\r\n\r\n" + GetEmbeddedLicenseText();
+                txtLicense.Text = string.Format(LanguageManager.Instance.GetString("AboutForm_LicenseLoadError"), ex.Message) + "\r\n\r\n" + GetEmbeddedLicenseText();
             }
         }
 
@@ -55,6 +59,13 @@ namespace ctwebplayer
         {
             this.Close();
         }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            LanguageManager.Instance.LanguageChanged -= OnLanguageChanged;
+            base.OnFormClosed(e);
+        }
+
 
         private string GetEmbeddedLicenseText()
         {

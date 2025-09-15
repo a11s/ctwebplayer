@@ -86,6 +86,15 @@ namespace ctwebplayer
             // 初始化配置管理器
             _configManager = new ConfigManager();
             
+            // 设置 LanguageManager 使用相同的 ConfigManager 实例
+            LanguageManager.SetConfigManager(_configManager);
+            
+            // 初始化语言管理器
+            LanguageManager.Instance.Initialize();
+            
+            // 应用语言设置
+            LanguageManager.Instance.ApplyToForm(this);
+            
             // 应用窗口大小设置
             ApplyWindowSize();
             
@@ -127,7 +136,7 @@ namespace ctwebplayer
                 LogManager.Instance.Info("应用程序启动");
                 
                 // 设置状态
-                statusLabel.Text = "正在初始化浏览器...";
+                statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_InitializingBrowser");
                 
                 // 配置管理器已在构造函数中初始化
                 LogManager.Instance.Info("配置管理器已初始化");
@@ -231,9 +240,9 @@ namespace ctwebplayer
             catch (Exception ex)
             {
                 LogManager.Instance.Error("WebView2初始化失败", ex);
-                MessageBox.Show($"WebView2初始化失败: {ex.Message}\n\n请确保已安装WebView2运行时。",
-                    "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                statusLabel.Text = "浏览器初始化失败";
+                MessageBox.Show($"{LanguageManager.Instance.GetString("Form1_Error_WebView2InitFailed")}: {ex.Message}\n\n{LanguageManager.Instance.GetString("Form1_Error_EnsureWebView2Installed")}",
+                    LanguageManager.Instance.GetString("Message_Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_BrowserInitFailed");
             }
         }
 
@@ -458,12 +467,20 @@ namespace ctwebplayer
                 : "0";
             
             // 获取代理状态
-            var proxyStatus = _configManager.Config.Proxy?.Enabled == true ? " | 代理：已启用" : " | 代理：已禁用";
+            var proxyStatus = _configManager.Config.Proxy?.Enabled == true
+                ? $" | {LanguageManager.Instance.GetString("Form1_Proxy_Enabled")}"
+                : $" | {LanguageManager.Instance.GetString("Form1_Proxy_Disabled")}";
             
             // 获取静音状态
-            var muteStatus = _isMuted ? " | 静音：开启" : " | 静音：关闭";
+            var muteStatus = _isMuted
+                ? $" | {LanguageManager.Instance.GetString("Form1_Mute_On")}"
+                : $" | {LanguageManager.Instance.GetString("Form1_Mute_Off")}";
+
+            // 使用格式化字符串
+            var cacheStatusText = string.Format(LanguageManager.Instance.GetString("Form1_Cache_Status"),
+                _cacheHits, _cacheMisses, hitRate, cacheSizeText);
             
-            statusLabel.Text = $"缓存命中：{_cacheHits} | 未命中：{_cacheMisses} | 命中率：{hitRate}% | 缓存大小：{cacheSizeText}{proxyStatus}{muteStatus}";
+            statusLabel.Text = $"{cacheStatusText}{proxyStatus}{muteStatus}";
         }
 
         /// <summary>
@@ -490,7 +507,7 @@ namespace ctwebplayer
             // 显示进度条
             progressBar.Visible = true;
             progressBar.Style = ProgressBarStyle.Marquee;
-            statusLabel.Text = "正在加载...";
+            statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_Loading");
             
             LogManager.Instance.Info($"开始导航到：{e.Uri}");
             
@@ -508,7 +525,7 @@ namespace ctwebplayer
             
             if (e.IsSuccess)
             {
-                statusLabel.Text = "加载完成";
+                statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_LoadComplete");
                 LogManager.Instance.Info($"页面加载完成：{webView2.Source}");
                 
                 // 注入 CORS 处理脚本
@@ -590,7 +607,7 @@ namespace ctwebplayer
             }
             else
             {
-                statusLabel.Text = $"加载失败: {e.WebErrorStatus}";
+                statusLabel.Text = $"{LanguageManager.Instance.GetString("Form1_Status_LoadFailed")}: {e.WebErrorStatus}";
                 LogManager.Instance.Warning($"页面加载失败：{webView2.Source}，错误：{e.WebErrorStatus}");
             }
             
@@ -1004,7 +1021,7 @@ namespace ctwebplayer
                 if (result == "true")
                 {
                     LogManager.Instance.Info("检测到Unity canvas元素，已应用全屏样式");
-                    statusLabel.Text = "Unity canvas已全屏显示";
+                    statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_UnityCanvasFullscreen");
                 }
             }
             catch (Exception ex)
@@ -1031,11 +1048,11 @@ namespace ctwebplayer
             string title = webView2.CoreWebView2.DocumentTitle;
             if (!string.IsNullOrEmpty(title))
             {
-                this.Text = $"{title} - Unity3D WebPlayer 专属浏览器";
+                this.Text = $"{title} - {LanguageManager.Instance.GetString("Form1_Title")}";
             }
             else
             {
-                this.Text = "Unity3D WebPlayer 专属浏览器";
+                this.Text = LanguageManager.Instance.GetString("Form1_Title");
             }
         }
 
@@ -1045,7 +1062,7 @@ namespace ctwebplayer
         private void CoreWebView2_DownloadStarting(object? sender, CoreWebView2DownloadStartingEventArgs e)
         {
             // 可以在这里处理下载逻辑
-            statusLabel.Text = $"正在下载: {e.DownloadOperation.Uri}";
+            statusLabel.Text = $"{LanguageManager.Instance.GetString("Form1_Status_Downloading")}: {e.DownloadOperation.Uri}";
             LogManager.Instance.Info($"开始下载资源：{e.DownloadOperation.Uri}");
         }
 
@@ -1145,7 +1162,7 @@ namespace ctwebplayer
             catch (Exception ex)
             {
                 LogManager.Instance.Error($"无法导航到URL：{url}", ex);
-                MessageBox.Show($"无法导航到URL: {ex.Message}", "错误",
+                MessageBox.Show($"{LanguageManager.Instance.GetString("Form1_Error_NavigateUrlFailed")}: {ex.Message}", LanguageManager.Instance.GetString("Message_Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1178,18 +1195,18 @@ namespace ctwebplayer
                 ? (_cacheHits * 100.0 / (_cacheHits + _cacheMisses)).ToString("F1")
                 : "0";
             
-            var message = $"缓存统计信息：\n\n" +
-                         $"缓存目录：./cache\n" +
-                         $"缓存大小：{cacheSizeText}\n" +
-                         $"缓存命中次数：{_cacheHits}\n" +
-                         $"缓存未命中次数：{_cacheMisses}\n" +
-                         $"缓存命中率：{hitRate}%\n\n" +
-                         $"缓存策略：\n" +
-                         $"- JavaScript和CSS文件（带版本号）：长期缓存\n" +
-                         $"- 图片和字体文件：长期缓存\n" +
-                         $"- API请求：不缓存";
-            
-            MessageBox.Show(message, "缓存信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var message = $"{LanguageManager.Instance.GetString("Form1_CacheInfo_Statistics")}:\n\n" +
+                         $"{LanguageManager.Instance.GetString("Form1_CacheInfo_Directory")}: ./cache\n" +
+                         $"{LanguageManager.Instance.GetString("Form1_CacheInfo_Size")}: {cacheSizeText}\n" +
+                         $"{LanguageManager.Instance.GetString("Form1_CacheInfo_HitCount")}: {_cacheHits}\n" +
+                         $"{LanguageManager.Instance.GetString("Form1_CacheInfo_MissCount")}: {_cacheMisses}\n" +
+                         $"{LanguageManager.Instance.GetString("Form1_CacheInfo_HitRate")}: {hitRate}%\n\n" +
+                         $"{LanguageManager.Instance.GetString("Form1_CacheInfo_Policy")}:\n" +
+                         $"- {LanguageManager.Instance.GetString("Form1_CacheInfo_PolicyJS")}\n" +
+                         $"- {LanguageManager.Instance.GetString("Form1_CacheInfo_PolicyImages")}\n" +
+                         $"- {LanguageManager.Instance.GetString("Form1_CacheInfo_PolicyAPI")}";
+
+            MessageBox.Show(message, LanguageManager.Instance.GetString("Form1_CacheInfo_Title"), MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
@@ -1197,8 +1214,8 @@ namespace ctwebplayer
         /// </summary>
         private async Task ClearCache()
         {
-            var result = MessageBox.Show("确定要清理所有缓存吗？\n\n这将删除所有已缓存的静态资源。",
-                "确认清理", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = MessageBox.Show(LanguageManager.Instance.GetString("Form1_ClearCache_ConfirmMessage"),
+                LanguageManager.Instance.GetString("Form1_ClearCache_ConfirmTitle"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             
             if (result == DialogResult.Yes)
             {
@@ -1209,12 +1226,12 @@ namespace ctwebplayer
                     _cacheMisses = 0;
                     UpdateCacheStatus();
                     LogManager.Instance.Info("缓存已清理");
-                    MessageBox.Show("缓存已清理完成。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(LanguageManager.Instance.GetString("Form1_ClearCache_Success"), LanguageManager.Instance.GetString("Message_Info"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
                     LogManager.Instance.Error("清理缓存时出错", ex);
-                    MessageBox.Show($"清理缓存时出错：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"{LanguageManager.Instance.GetString("Form1_ClearCache_Failed")}: {ex.Message}", LanguageManager.Instance.GetString("Message_Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -1340,7 +1357,7 @@ namespace ctwebplayer
         {
             try
             {
-                statusLabel.Text = "正在检查更新...";
+                statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_CheckingUpdate");
                 
                 var updateManager = new UpdateManager();
                 var updateInfo = await updateManager.CheckForUpdatesAsync();
@@ -1354,14 +1371,14 @@ namespace ctwebplayer
                     }
                 }
                 
-                statusLabel.Text = "就绪";
+                statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_Ready");
             }
             catch (Exception ex)
             {
                 LogManager.Instance.Error("检查更新时出错", ex);
-                MessageBox.Show($"检查更新时出错：{ex.Message}", "错误",
+                MessageBox.Show($"{LanguageManager.Instance.GetString("Form1_CheckUpdate_Failed")}: {ex.Message}", LanguageManager.Instance.GetString("Message_Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                statusLabel.Text = "检查更新失败";
+                statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_CheckUpdateFailed");
             }
         }
 
@@ -1383,12 +1400,12 @@ namespace ctwebplayer
         {
             try
             {
-                var result = MessageBox.Show("确定要退出登录吗？\n\n这将清除所有 Cookies 并返回登录页面。",
-                    "确认退出登录", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var result = MessageBox.Show(LanguageManager.Instance.GetString("Form1_Logout_ConfirmMessage"),
+                    LanguageManager.Instance.GetString("Form1_Logout_ConfirmTitle"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
-                    statusLabel.Text = "正在退出登录...";
+                    statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_LoggingOut");
                     LogManager.Instance.Info("用户选择退出登录");
 
                     // 清除所有 cookies
@@ -1405,16 +1422,16 @@ namespace ctwebplayer
                     var loginUrl = _configManager.Config.BaseURL.TrimEnd('/') + _configManager.Config.Login.LoginUrl;
                     webView2.CoreWebView2.Navigate(loginUrl);
                     
-                    statusLabel.Text = "已退出登录";
+                    statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_LoggedOut");
                     LogManager.Instance.Info($"已导航到登录页面：{loginUrl}");
                 }
             }
             catch (Exception ex)
             {
                 LogManager.Instance.Error("退出登录时出错", ex);
-                MessageBox.Show($"退出登录时出错：{ex.Message}", "错误",
+                MessageBox.Show($"{LanguageManager.Instance.GetString("Form1_Logout_Failed")}: {ex.Message}", LanguageManager.Instance.GetString("Message_Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                statusLabel.Text = "退出登录失败";
+                statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_LogoutFailed");
             }
         }
 
@@ -1445,12 +1462,12 @@ namespace ctwebplayer
                     UseShellExecute = true
                 });
                 
-                statusLabel.Text = "已打开官方讨论区";
+                statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_OpenedForum");
             }
             catch (Exception ex)
             {
                 LogManager.Instance.Error("打开官方讨论区时出错", ex);
-                MessageBox.Show($"打开官方讨论区时出错：{ex.Message}", "错误",
+                MessageBox.Show($"{LanguageManager.Instance.GetString("Form1_OpenForum_Failed")}: {ex.Message}", LanguageManager.Instance.GetString("Message_Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1473,12 +1490,12 @@ namespace ctwebplayer
                     UseShellExecute = true
                 });
                 
-                statusLabel.Text = "已打开官方Discord";
+                statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_OpenedDiscord");
             }
             catch (Exception ex)
             {
                 LogManager.Instance.Error("打开官方Discord时出错", ex);
-                MessageBox.Show($"打开官方Discord时出错：{ex.Message}", "错误",
+                MessageBox.Show($"{LanguageManager.Instance.GetString("Form1_OpenDiscord_Failed")}: {ex.Message}", LanguageManager.Instance.GetString("Message_Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1501,12 +1518,12 @@ namespace ctwebplayer
                     UseShellExecute = true
                 });
                 
-                statusLabel.Text = "已打开GitHub源码";
+                statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_OpenedGitHub");
             }
             catch (Exception ex)
             {
                 LogManager.Instance.Error("打开GitHub时出错", ex);
-                MessageBox.Show($"打开GitHub时出错：{ex.Message}", "错误",
+                MessageBox.Show($"{LanguageManager.Instance.GetString("Form1_OpenGitHub_Failed")}: {ex.Message}", LanguageManager.Instance.GetString("Message_Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1529,12 +1546,12 @@ namespace ctwebplayer
                     UseShellExecute = true
                 });
                 
-                statusLabel.Text = "已打开手机版下载页面";
+                statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_OpenedMobileDownload");
             }
             catch (Exception ex)
             {
                 LogManager.Instance.Error("打开手机版下载页面时出错", ex);
-                MessageBox.Show($"打开手机版下载页面时出错：{ex.Message}", "错误",
+                MessageBox.Show($"{LanguageManager.Instance.GetString("Form1_OpenMobileDownload_Failed")}: {ex.Message}", LanguageManager.Instance.GetString("Message_Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1676,19 +1693,22 @@ namespace ctwebplayer
         {
             try
             {
+                // 获取提示文本并转义单引号
+                var tipText = LanguageManager.Instance.GetString("Form1_Tip_PressF11ToExitFullscreen").Replace("'", "\\'");
+                
                 // 在网页中显示提示
-                var script = @"
-                    (function() {
+                var script = $@"
+                    (function() {{
                         // 检查是否已经存在提示
                         var existingTip = document.getElementById('fullscreen-tip');
-                        if (existingTip) {
+                        if (existingTip) {{
                             existingTip.remove();
-                        }
+                        }}
                         
                         // 创建提示元素
                         var tip = document.createElement('div');
                         tip.id = 'fullscreen-tip';
-                        tip.innerHTML = '按 F11 退出全屏';
+                        tip.innerHTML = '{tipText}';
                         tip.style.cssText = `
                             position: fixed;
                             top: 20px;
@@ -1706,13 +1726,13 @@ namespace ctwebplayer
                         document.body.appendChild(tip);
                         
                         // 3秒后淡出
-                        setTimeout(function() {
+                        setTimeout(function() {{
                             tip.style.opacity = '0';
-                            setTimeout(function() {
+                            setTimeout(function() {{
                                 tip.remove();
-                            }, 500);
-                        }, 3000);
-                    })();
+                            }}, 500);
+                        }}, 3000);
+                    }})();
                 ";
                 
                 await webView2.CoreWebView2.ExecuteScriptAsync(script);
@@ -1891,7 +1911,7 @@ namespace ctwebplayer
             catch (Exception ex)
             {
                 LogManager.Instance.Error("切换静音状态时出错", ex);
-                MessageBox.Show($"切换静音状态时出错：{ex.Message}", "错误",
+                MessageBox.Show($"{LanguageManager.Instance.GetString("Form1_ToggleMute_Failed")}: {ex.Message}", LanguageManager.Instance.GetString("Message_Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1956,7 +1976,7 @@ namespace ctwebplayer
         {
             try
             {
-                var message = isMuted ? "静音已开启" : "静音已关闭";
+                var message = isMuted ? LanguageManager.Instance.GetString("Form1_Notification_MuteOn") : LanguageManager.Instance.GetString("Form1_Notification_MuteOff");
                 var icon = isMuted ? "🔇" : "🔊";
                 
                 var script = $@"

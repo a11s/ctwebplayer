@@ -75,6 +75,8 @@
     <Content Include="..\res\c001_01_Icon_Texture.ico" />
   </ItemGroup>
 
+  <!-- 多语言资源文件已经被 .NET SDK 自动包含，无需显式声明 -->
+
   <ItemGroup>
     <PackageReference Include="Flurl" Version="4.0.0" />
     <PackageReference Include="Flurl.Http" Version="4.0.0" />

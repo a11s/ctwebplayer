@@ -13,6 +13,7 @@ namespace ctwebplayer
     public partial class SettingsForm : Form
     {
         private ConfigManager _configManager;
+        private readonly Dictionary<string, string> _languageMap;
 
         /// <summary>
         /// 构造函数
@@ -21,6 +22,23 @@ namespace ctwebplayer
         {
             _configManager = configManager;
             InitializeComponent();
+
+            // 初始化语言映射
+            _languageMap = new Dictionary<string, string>
+            {
+                { "简体中文", "zh-CN" },
+                { "English", "en-US" },
+                { "繁體中文", "zh-TW" },
+                { "日本語", "ja" },
+                { "한국어", "ko" }
+            };
+
+            // 订阅语言选择事件
+            cmbLanguage.SelectedIndexChanged += CmbLanguage_SelectedIndexChanged;
+            
+            // 应用语言设置
+            LanguageManager.Instance.ApplyToForm(this);
+            
             LoadCurrentSettings();
         }
 
@@ -74,6 +92,20 @@ namespace ctwebplayer
 
             // 更新当前窗口大小显示
             UpdateCurrentSizeLabel();
+
+            // 设置语言选择
+            string currentLang = _configManager.Config.Language ?? string.Empty;
+            string displayName = LanguageManager.SupportedLanguages.TryGetValue(currentLang, out var langName)
+                ? langName
+                : LanguageManager.SupportedLanguages["zh-CN"];
+            if (cmbLanguage.Items.Contains(displayName))
+            {
+                cmbLanguage.SelectedItem = displayName;
+            }
+            else
+            {
+                cmbLanguage.SelectedIndex = 0; // 默认简体中文
+            }
         }
 
         /// <summary>
@@ -83,7 +115,7 @@ namespace ctwebplayer
         {
             if (this.Owner != null)
             {
-                lblCurrentSize.Text = $"当前窗口大小: {this.Owner.Width} x {this.Owner.Height}";
+                lblCurrentSize.Text = $"{LanguageManager.Instance.GetString("SettingsForm_tabControl_tabInterface_lblCurrentSize")}: {this.Owner.Width} x {this.Owner.Height}";
             }
         }
 
@@ -133,20 +165,20 @@ namespace ctwebplayer
         /// </summary>
         private async void BtnClearLogs_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("确定要清理所有日志文件吗？\n\n这将删除所有历史日志记录。",
-                "确认清理", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = MessageBox.Show(LanguageManager.Instance.GetString("SettingsForm_Msg_ConfirmClearLogs"),
+                LanguageManager.Instance.GetString("Form1_Confirm_Title"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
                 try
                 {
                     await LogManager.Instance.ClearLogsAsync();
-                    MessageBox.Show("日志文件已清理完成。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(LanguageManager.Instance.GetString("SettingsForm_Msg_LogsCleared"), LanguageManager.Instance.GetString("Message_Info"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
                     LogManager.Instance.Error("清理日志文件时出错", ex);
-                    MessageBox.Show($"清理日志文件时出错：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"{LanguageManager.Instance.GetString("SettingsForm_Msg_ClearLogsError")}: {ex.Message}", LanguageManager.Instance.GetString("Message_Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -170,8 +202,8 @@ namespace ctwebplayer
             {
                 if (!IsValidUrl(txtBaseURL.Text))
                 {
-                    MessageBox.Show("主站域名格式不正确。\n格式示例：https://game.ero-labs.live",
-                        "输入错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(LanguageManager.Instance.GetString("SettingsForm_Msg_BaseURLInvalid"),
+                        LanguageManager.Instance.GetString("SettingsForm_Msg_InputError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     tabControl.SelectedIndex = 0; // 切换到网络标签页
                     txtBaseURL.Focus();
                     return false;
@@ -179,8 +211,8 @@ namespace ctwebplayer
             }
             else
             {
-                MessageBox.Show("主站域名不能为空。",
-                    "输入错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(LanguageManager.Instance.GetString("SettingsForm_Msg_BaseURLEmpty"),
+                    LanguageManager.Instance.GetString("SettingsForm_Msg_InputError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 tabControl.SelectedIndex = 0; // 切换到网络标签页
                 txtBaseURL.Focus();
                 return false;
@@ -193,8 +225,8 @@ namespace ctwebplayer
                     string.IsNullOrWhiteSpace(txtHttpsProxy.Text) &&
                     string.IsNullOrWhiteSpace(txtSocks5.Text))
                 {
-                    MessageBox.Show("请至少填写一个代理服务器地址。",
-                        "输入错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(LanguageManager.Instance.GetString("SettingsForm_Msg_ProxyRequired"),
+                        LanguageManager.Instance.GetString("SettingsForm_Msg_InputError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     tabControl.SelectedIndex = 0; // 切换到网络标签页
                     return false;
                 }
@@ -204,8 +236,8 @@ namespace ctwebplayer
                 {
                     if (!IsValidProxyFormat(txtHttpProxy.Text, true))
                     {
-                        MessageBox.Show("HTTP代理地址格式不正确。\n格式示例：http://127.0.0.1:7890",
-                            "输入错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(LanguageManager.Instance.GetString("SettingsForm_Msg_HttpProxyInvalid"),
+                            LanguageManager.Instance.GetString("SettingsForm_Msg_InputError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         tabControl.SelectedIndex = 0;
                         txtHttpProxy.Focus();
                         return false;
@@ -217,8 +249,8 @@ namespace ctwebplayer
                 {
                     if (!IsValidProxyFormat(txtHttpsProxy.Text, true))
                     {
-                        MessageBox.Show("HTTPS代理地址格式不正确。\n格式示例：http://127.0.0.1:7890",
-                            "输入错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(LanguageManager.Instance.GetString("SettingsForm_Msg_HttpsProxyInvalid"),
+                            LanguageManager.Instance.GetString("SettingsForm_Msg_InputError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         tabControl.SelectedIndex = 0;
                         txtHttpsProxy.Focus();
                         return false;
@@ -230,8 +262,8 @@ namespace ctwebplayer
                 {
                     if (!IsValidProxyFormat(txtSocks5.Text, false))
                     {
-                        MessageBox.Show("SOCKS5代理地址格式不正确。\n格式示例：127.0.0.1:7890",
-                            "输入错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(LanguageManager.Instance.GetString("SettingsForm_Msg_Socks5Invalid"),
+                            LanguageManager.Instance.GetString("SettingsForm_Msg_InputError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         tabControl.SelectedIndex = 0;
                         txtSocks5.Focus();
                         return false;
@@ -334,6 +366,16 @@ namespace ctwebplayer
                     RegisterUrl = txtRegisterUrl.Text.Trim()
                 });
 
+                // 保存语言设置
+                if (cmbLanguage.SelectedItem is string selectedDisplay && _languageMap.TryGetValue(selectedDisplay, out string langCode))
+                {
+                    _configManager.Config.Language = langCode;
+                }
+                else
+                {
+                    _configManager.Config.Language = "zh-CN"; // 默认
+                }
+
                 // 保存配置
                 await _configManager.SaveConfigAsync();
 
@@ -354,23 +396,23 @@ namespace ctwebplayer
 
                 // 提示需要重启的设置
                 var needRestart = false;
-                var restartMessage = "以下设置需要重启应用程序才能生效：\n";
+                var restartMessage = LanguageManager.Instance.GetString("SettingsForm_Msg_RestartRequired") + "\n";
 
                 if (chkEnableProxy.Checked)
                 {
                     needRestart = true;
-                    restartMessage += "- 代理设置\n";
+                    restartMessage += "- " + LanguageManager.Instance.GetString("SettingsForm_tabControl_tabNetwork") + "\n";
                 }
 
                 if (_configManager.Config.Ui != null)
                 {
                     needRestart = true;
-                    restartMessage += "- 窗口大小设置\n";
+                    restartMessage += "- " + LanguageManager.Instance.GetString("SettingsForm_tabControl_tabInterface") + "\n";
                 }
 
                 if (needRestart)
                 {
-                    MessageBox.Show(restartMessage, "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(restartMessage, LanguageManager.Instance.GetString("Message_Info"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
                 return true;
@@ -378,7 +420,7 @@ namespace ctwebplayer
             catch (Exception ex)
             {
                 LogManager.Instance.Error("保存设置时出错", ex);
-                MessageBox.Show($"保存设置时出错：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"{LanguageManager.Instance.GetString("SettingsForm_Msg_SaveError")}: {ex.Message}", LanguageManager.Instance.GetString("Message_Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
@@ -403,21 +445,52 @@ namespace ctwebplayer
             if (await SaveSettings())
             {
                 btnApply.Enabled = false;
-                MessageBox.Show("设置已应用。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(LanguageManager.Instance.GetString("SettingsForm_Msg_Applied"), LanguageManager.Instance.GetString("Message_Info"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 btnApply.Enabled = true;
             }
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var result = MessageBox.Show("如果你能正常打开ero-labs网站就不需要代理服务器。如果您所处的地区屏蔽了ero-labs或者速度很慢，那么您可以尝试购买一个类似的服务\n需要我提供一个购买地址吗？", "跳转提示", MessageBoxButtons.OKCancel);
+            var result = MessageBox.Show(LanguageManager.Instance.GetString("SettingsForm_Proxy_HelpMessage"), LanguageManager.Instance.GetString("SettingsForm_Proxy_HelpTitle"), MessageBoxButtons.OKCancel);
             if (result == DialogResult.Yes)
             {
                 string url = "https://zfj.so/auth/register?code=e913e45e0f";
                 Process.Start(new ProcessStartInfo(url)
-                {                    
+                {
                     UseShellExecute = true
                 });
+            }
+        }
+
+        /// <summary>
+        /// 语言选择改变事件处理
+        /// </summary>
+        private void CmbLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbLanguage.SelectedItem is string displayName && _languageMap.TryGetValue(displayName, out string code))
+            {
+                try
+                {
+                    LanguageManager.Instance.LoadLanguage(code);
+                    
+                    // 应用到当前窗体
+                    LanguageManager.Instance.ApplyToForm(this);
+                    
+                    // 提示用户
+                    MessageBox.Show(LanguageManager.Instance.GetString("SettingsForm_Msg_LanguageChanged"),
+                        LanguageManager.Instance.GetString("Message_Info"),
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    LogManager.Instance.Error($"切换语言失败: {ex.Message}", ex);
+                    MessageBox.Show($"{LanguageManager.Instance.GetString("Message_Error")}: {ex.Message}",
+                        LanguageManager.Instance.GetString("Message_Error"),
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
         }
     }

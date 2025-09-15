@@ -1,0 +1,1195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- 애플리케이션 제목 -->
+  <data name="AppTitle" xml:space="preserve">
+    <value>CT 웹 플레이어</value>
+  </data>
+  
+  <!-- 버튼 -->
+  <data name="Button_OK" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="Button_Apply" xml:space="preserve">
+    <value>적용</value>
+  </data>
+  <data name="Button_Close" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="Button_Load" xml:space="preserve">
+    <value>불러오기</value>
+  </data>
+  <data name="Button_Browse" xml:space="preserve">
+    <value>찾아보기...</value>
+  </data>
+  
+  <!-- 메뉴 항목 -->
+  <data name="Menu_Settings" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="Menu_Language" xml:space="preserve">
+    <value>언어</value>
+  </data>
+  <data name="Menu_File" xml:space="preserve">
+    <value>파일</value>
+  </data>
+  <data name="Menu_Edit" xml:space="preserve">
+    <value>편집</value>
+  </data>
+  <data name="Menu_View" xml:space="preserve">
+    <value>보기</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>도움말</value>
+  </data>
+  <data name="Menu_About" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  <data name="Menu_Exit" xml:space="preserve">
+    <value>종료</value>
+  </data>
+  
+  <!-- 설정 -->
+  <data name="Settings_Title" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>일반</value>
+  </data>
+  <data name="Settings_Advanced" xml:space="preserve">
+    <value>고급</value>
+  </data>
+  <data name="Settings_Proxy" xml:space="preserve">
+    <value>프록시 설정</value>
+  </data>
+  <data name="Settings_Cache" xml:space="preserve">
+    <value>캐시 설정</value>
+  </data>
+  
+  <!-- 메시지 -->
+  <data name="Message_Success" xml:space="preserve">
+    <value>작업이 성공적으로 완료되었습니다.</value>
+  </data>
+  <data name="Message_Error" xml:space="preserve">
+    <value>오류가 발생했습니다.</value>
+  </data>
+  <data name="Message_Warning" xml:space="preserve">
+    <value>경고</value>
+  </data>
+  <data name="Message_Info" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  <data name="Message_Confirm" xml:space="preserve">
+    <value>계속하시겠습니까?</value>
+  </data>
+  
+  <!-- 로그인 -->
+  <data name="Login_Title" xml:space="preserve">
+    <value>로그인</value>
+  </data>
+  <data name="Login_Username" xml:space="preserve">
+    <value>사용자 이름</value>
+  </data>
+  <data name="Login_Password" xml:space="preserve">
+    <value>비밀번호</value>
+  </data>
+  <data name="Login_RememberMe" xml:space="preserve">
+    <value>로그인 정보 저장</value>
+  </data>
+  
+  <!-- 공통 레이블 -->
+  <data name="Label_Name" xml:space="preserve">
+    <value>이름</value>
+  </data>
+  <data name="Label_Description" xml:space="preserve">
+    <value>설명</value>
+  </data>
+  <data name="Label_Version" xml:space="preserve">
+    <value>버전</value>
+  </data>
+  <data name="Label_Status" xml:space="preserve">
+    <value>상태</value>
+  </data>
+  <data name="Label_Progress" xml:space="preserve">
+    <value>진행률</value>
+  </data>
+  <!-- Form1 - 메인 창 -->
+  <data name="Form1_Title" xml:space="preserve">
+    <value>Unity3D WebPlayer 전용 브라우저</value>
+  </data>
+  
+  <!-- Form1 - 탐색 버튼 -->
+  <data name="Form1_toolStrip1_btnHome" xml:space="preserve">
+    <value>홈</value>
+  </data>
+  <data name="Form1_toolStrip1_btnBack" xml:space="preserve">
+    <value>뒤로</value>
+  </data>
+  <data name="Form1_toolStrip1_btnForward" xml:space="preserve">
+    <value>앞으로</value>
+  </data>
+  <data name="Form1_toolStrip1_btnRefresh" xml:space="preserve">
+    <value>새로고침</value>
+  </data>
+  <data name="Form1_toolStrip1_btnGo" xml:space="preserve">
+    <value>이동</value>
+  </data>
+  <data name="Form1_toolStrip1_btnSettings" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities" xml:space="preserve">
+    <value>도구</value>
+  </data>
+  
+  <!-- Form1 - 메뉴 항목 -->
+  <data name="Form1_toolStrip1_btnUtilities_toggleFullScreenMenuItem" xml:space="preserve">
+    <value>전체 화면 전환 (F11)</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_toggleMuteMenuItem" xml:space="preserve">
+    <value>음소거 전환 (F4)</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_logoutMenuItem" xml:space="preserve">
+    <value>로그아웃</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_forumMenuItem" xml:space="preserve">
+    <value>공식 포럼</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_discordMenuItem" xml:space="preserve">
+    <value>공식 Discord</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_githubMenuItem" xml:space="preserve">
+    <value>GitHub 소스</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_mobileDownloadMenuItem" xml:space="preserve">
+    <value>모바일 버전</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_checkUpdateMenuItem" xml:space="preserve">
+    <value>업데이트 확인</value>
+  </data>
+  
+  <!-- Form1 - 상태 메시지 -->
+  <data name="Form1_Status_InitializingBrowser" xml:space="preserve">
+    <value>브라우저를 초기화하는 중...</value>
+  </data>
+  <data name="Form1_Status_Loading" xml:space="preserve">
+    <value>로드 중...</value>
+  </data>
+  <data name="Form1_Status_LoadComplete" xml:space="preserve">
+    <value>로드 완료</value>
+  </data>
+  <data name="Form1_statusStrip1_statusLabel" xml:space="preserve">
+    <value>준비</value>
+  </data>
+  <data name="Form1_Status_Ready" xml:space="preserve">
+    <value>준비됨</value>
+  </data>
+  <data name="Form1_Status_BrowserInitFailed" xml:space="preserve">
+    <value>브라우저 초기화 실패</value>
+  </data>
+  <data name="Form1_Status_LoadFailed" xml:space="preserve">
+    <value>로드 실패: {0}</value>
+  </data>
+  <data name="Form1_Status_Downloading" xml:space="preserve">
+    <value>다운로드 중: {0}</value>
+  </data>
+  <data name="Form1_Status_CheckingUpdate" xml:space="preserve">
+    <value>업데이트를 확인하는 중...</value>
+  </data>
+  <data name="Form1_Status_CheckUpdateFailed" xml:space="preserve">
+    <value>업데이트 확인 실패</value>
+  </data>
+  <data name="Form1_Status_LoggingOut" xml:space="preserve">
+    <value>로그아웃 중...</value>
+  </data>
+  <data name="Form1_Status_LoggedOut" xml:space="preserve">
+    <value>로그아웃됨</value>
+  </data>
+  <data name="Form1_Status_LogoutFailed" xml:space="preserve">
+    <value>로그아웃 실패</value>
+  </data>
+  
+  <!-- Form1 - 캐시 상태 -->
+  <data name="Form1_Cache_Status" xml:space="preserve">
+    <value>캐시 적중: {0} | 실패: {1} | 적중률: {2}% | 캐시 크기: {3}</value>
+  </data>
+  <data name="Form1_Proxy_Enabled" xml:space="preserve">
+    <value>프록시: 활성화</value>
+  </data>
+  <data name="Form1_Proxy_Disabled" xml:space="preserve">
+    <value>프록시: 비활성화</value>
+  </data>
+  <data name="Form1_Mute_On" xml:space="preserve">
+    <value>음소거: 켜짐</value>
+  </data>
+  <data name="Form1_Mute_Off" xml:space="preserve">
+    <value>음소거: 꺼짐</value>
+  </data>
+  
+  <!-- Form1 - 메시지 -->
+  <data name="Form1_Msg_WebView2InitFailed" xml:space="preserve">
+    <value>WebView2 초기화 실패: {0}
+
+WebView2 런타임이 설치되어 있는지 확인하세요.</value>
+  </data>
+  <data name="Form1_Msg_NavigationFailed" xml:space="preserve">
+    <value>URL로 이동할 수 없습니다: {0}</value>
+  </data>
+  <data name="Form1_Msg_ConfirmClearCache" xml:space="preserve">
+    <value>모든 캐시를 지우시겠습니까?
+
+캐시된 모든 정적 리소스가 삭제됩니다.</value>
+  </data>
+  <data name="Form1_Msg_CacheCleared" xml:space="preserve">
+    <value>캐시가 지워졌습니다.</value>
+  </data>
+  <data name="Form1_Msg_ClearCacheError" xml:space="preserve">
+    <value>캐시 지우기 오류: {0}</value>
+  </data>
+  <data name="Form1_Msg_ConfirmLogout" xml:space="preserve">
+    <value>로그아웃하시겠습니까?
+
+모든 쿠키가 삭제되고 로그인 페이지로 돌아갑니다.</value>
+  </data>
+  <data name="Form1_Msg_LogoutError" xml:space="preserve">
+    <value>로그아웃 중 오류 발생: {0}</value>
+  </data>
+  <data name="Form1_Msg_CheckUpdateError" xml:space="preserve">
+    <value>업데이트 확인 중 오류 발생: {0}</value>
+  </data>
+  <data name="Form1_Msg_OpenForumError" xml:space="preserve">
+    <value>공식 포럼 열기 오류: {0}</value>
+  </data>
+  <data name="Form1_Msg_OpenDiscordError" xml:space="preserve">
+    <value>공식 Discord 열기 오류: {0}</value>
+  </data>
+  <data name="Form1_Msg_OpenGitHubError" xml:space="preserve">
+    <value>GitHub 열기 오류: {0}</value>
+  </data>
+  <data name="Form1_Msg_OpenMobileDownloadError" xml:space="preserve">
+    <value>모바일 다운로드 페이지 열기 오류: {0}</value>
+  </data>
+  
+  <!-- Form1 - 전체화면 팁 -->
+  <data name="Form1_Tip_ExitFullScreen" xml:space="preserve">
+    <value>F11을 눌러 전체 화면 종료</value>
+  </data>
+  <data name="Form1_Tip_MuteOn" xml:space="preserve">
+    <value>음소거 활성화됨</value>
+  </data>
+  <data name="Form1_Tip_MuteOff" xml:space="preserve">
+    <value>음소거 비활성화됨</value>
+  </data>
+  
+  <!-- Form1 - 캐시 정보 대화상자 -->
+  <data name="Form1_CacheInfo_Title" xml:space="preserve">
+    <value>캐시 정보</value>
+  </data>
+  <data name="Form1_CacheInfo_Message" xml:space="preserve">
+    <value>캐시 통계:
+
+캐시 디렉토리: ./cache
+캐시 크기: {0}
+캐시 적중 횟수: {1}
+캐시 실패 횟수: {2}
+적중률: {3}%
+
+캐시 정책:
+- JavaScript 및 CSS 파일(버전 포함): 장기 캐시
+- 이미지 및 글꼴: 장기 캐시
+- API 요청: 캐시 없음</value>
+  </data>
+  
+  <!-- Form1 - 제목 -->
+  <data name="Form1_Title_Format" xml:space="preserve">
+    <value>{0} - Unity3D WebPlayer 전용 브라우저</value>
+  </data>
+  
+  <!-- SettingsForm - 设置窗口 -->
+  <data name="SettingsForm" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="SettingsForm_Applied" xml:space="preserve">
+    <value>설정이 적용되었습니다.</value>
+  </data>
+  <data name="SettingsForm_Display_CurrentWindowSize" xml:space="preserve">
+    <value>현재 창 크기</value>
+  </data>
+  <data name="SettingsForm_Logs_ClearFailed" xml:space="preserve">
+    <value>로그 파일 지우기 오류: {0}</value>
+  </data>
+  <data name="SettingsForm_Logs_ClearSuccess" xml:space="preserve">
+    <value>로그 파일이 지워졌습니다.</value>
+  </data>
+  <data name="SettingsForm_Logs_ConfirmClearMessage" xml:space="preserve">
+    <value>모든 로그 파일을 지우시겠습니까?
+
+모든 기록 로그 레코드가 삭제됩니다.</value>
+  </data>
+  <data name="SettingsForm_Logs_ConfirmClearTitle" xml:space="preserve">
+    <value>지우기 확인</value>
+  </data>
+  <data name="SettingsForm_NavigateHint" xml:space="preserve">
+    <value>리디렉션 안내</value>
+  </data>
+  <data name="SettingsForm_Network_BaseUrlCannotBeEmpty" xml:space="preserve">
+    <value>메인 사이트 도메인은 비워둘 수 없습니다.</value>
+  </data>
+  <data name="SettingsForm_Network_InputError" xml:space="preserve">
+    <value>입력 오류</value>
+  </data>
+  <data name="SettingsForm_Network_InvalidBaseUrlFormat" xml:space="preserve">
+    <value>메인 사이트 도메인 형식이 올바르지 않습니다.
+예: https://game.ero-labs.live</value>
+  </data>
+  <data name="SettingsForm_Network_InvalidHttpProxyFormat" xml:space="preserve">
+    <value>HTTP 프록시 주소 형식이 올바르지 않습니다.
+예: http://127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Network_InvalidHttpsProxyFormat" xml:space="preserve">
+    <value>HTTPS 프록시 주소 형식이 올바르지 않습니다.
+예: http://127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Network_InvalidSocks5ProxyFormat" xml:space="preserve">
+    <value>SOCKS5 프록시 주소 형식이 올바르지 않습니다.
+예: 127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Network_PleaseEnterProxyAddress" xml:space="preserve">
+    <value>적어도 하나의 프록시 서버 주소를 제공하세요.</value>
+  </data>
+  <data name="SettingsForm_Network_ProxyServiceHint" xml:space="preserve">
+    <value>ero-labs 웹사이트에 정상적으로 접속할 수 있다면 프록시 서버가 필요하지 않습니다. 귀하의 지역에서 ero-labs가 차단되거나 속도가 느린 경우 유사한 서비스 구매를 시도해 볼 수 있습니다.
+구매 링크가 필요하신가요?</value>
+  </data>
+  <data name="SettingsForm_SaveFailed" xml:space="preserve">
+    <value>설정 저장 실패</value>
+  </data>
+  <data name="SettingsForm_Tab_Display" xml:space="preserve">
+    <value>표시</value>
+  </data>
+  <data name="SettingsForm_Tab_Network" xml:space="preserve">
+    <value>네트워크</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings" xml:space="preserve">
+    <value>로그인 가이드 설정</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_chkEnableLogin" xml:space="preserve">
+    <value>로그인 가이드 활성화</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_chkShowSkipButton" xml:space="preserve">
+    <value>건너뛰기 버튼 표시</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_lblCookieName" xml:space="preserve">
+    <value>쿠키 이름:</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_lblLoginUrl" xml:space="preserve">
+    <value>로그인 URL 경로:</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_lblRegisterUrl" xml:space="preserve">
+    <value>등록 URL:</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings_lblProxyNote" xml:space="preserve">
+    <value>참고: SOCKS5 프록시가 우선적으로 사용되며, 그 다음 HTTP/HTTPS 프록시가 사용됩니다.
+프록시 설정 변경 후 브라우저를 다시 시작해야 합니다.</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_linkLabel1" xml:space="preserve">
+    <value>프록시 서버가 없나요?</value>
+  </data>
+  <data name="Form1_Confirm_Title" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  
+  <!-- SettingsForm - 설정 창 -->
+  <data name="SettingsForm_Title" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  
+  <!-- SettingsForm - 탭 -->
+  <data name="SettingsForm_tabControl_tabNetwork" xml:space="preserve">
+    <value>네트워크</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging" xml:space="preserve">
+    <value>로그</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface" xml:space="preserve">
+    <value>인터페이스</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin" xml:space="preserve">
+    <value>로그인 가이드</value>
+  </data>
+  
+  <!-- SettingsForm - 네트워크 탭 -->
+  <data name="SettingsForm_tabControl_tabNetwork_chkAutoIframeNav" xml:space="preserve">
+    <value>iframe으로 자동 이동 활성화</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_lblBaseURL" xml:space="preserve">
+    <value>메인 사이트 도메인:</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_chkEnableProxy" xml:space="preserve">
+    <value>프록시 서버 활성화</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings" xml:space="preserve">
+    <value>프록시 설정</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings_lblHttpProxy" xml:space="preserve">
+    <value>HTTP 프록시:</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings_lblHttpsProxy" xml:space="preserve">
+    <value>HTTPS 프록시:</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings_lblSocks5" xml:space="preserve">
+    <value>SOCKS5 프록시:</value>
+  </data>
+  
+  <!-- SettingsForm - 로그 탭 -->
+  <data name="SettingsForm_tabControl_tabLogging_chkEnableLogging" xml:space="preserve">
+    <value>로그 기록 활성화</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_lblLogLevel" xml:space="preserve">
+    <value>로그 레벨:</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_lblMaxFileSize" xml:space="preserve">
+    <value>최대 파일 크기 (MB):</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_chkDebugMode" xml:space="preserve">
+    <value>디버그 모드 활성화</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_btnViewLogs" xml:space="preserve">
+    <value>로그 보기</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_btnClearLogs" xml:space="preserve">
+    <value>로그 지우기</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_lblMB" xml:space="preserve">
+    <value>MB</value>
+  </data>
+  
+  <!-- SettingsForm - UI 탭 -->
+  <data name="SettingsForm_tabControl_tabInterface_lblWindowSize" xml:space="preserve">
+    <value>창 크기</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblWidth" xml:space="preserve">
+    <value>너비:</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblHeight" xml:space="preserve">
+    <value>높이:</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblCurrentSize" xml:space="preserve">
+    <value>현재 창 크기: {0} x {1}</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblWidthPx" xml:space="preserve">
+    <value>픽셀</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblHeightPx" xml:space="preserve">
+    <value>픽셀</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblSizeNote" xml:space="preserve">
+    <value>참고: 창 크기 변경은 애플리케이션을 다시 시작해야 적용됩니다.</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_btnResetSize" xml:space="preserve">
+    <value>기본값으로 재설정</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblLanguage" xml:space="preserve">
+    <value>언어:</value>
+  </data>
+  
+  <!-- SettingsForm - 로그인 탭 -->
+  <data name="SettingsForm_tabControl_tabLogin_chkEnableLogin" xml:space="preserve">
+    <value>로그인 가이드 활성화</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_chkShowSkipButton" xml:space="preserve">
+    <value>건너뛰기 버튼 표시</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_lblCookieName" xml:space="preserve">
+    <value>쿠키 이름:</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_lblLoginURL" xml:space="preserve">
+    <value>로그인 URL 경로:</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_lblRegisterURL" xml:space="preserve">
+    <value>등록 URL:</value>
+  </data>
+  
+  <!-- SettingsForm - 버튼 -->
+  <data name="SettingsForm_btnSave" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="SettingsForm_btnApply" xml:space="preserve">
+    <value>적용</value>
+  </data>
+  <data name="SettingsForm_btnCancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  
+  <!-- UpdateForm - 更新窗口 -->
+  <data name="UpdateForm" xml:space="preserve">
+    <value>소프트웨어 업데이트</value>
+  </data>
+  <data name="UpdateForm_btnClose" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="UpdateForm_btnDownload" xml:space="preserve">
+    <value>업데이트 다운로드</value>
+  </data>
+  <data name="UpdateForm_btnDownload_Cancel" xml:space="preserve">
+    <value>다운로드 취소</value>
+  </data>
+  <data name="UpdateForm_btnInstall" xml:space="preserve">
+    <value>업데이트 설치</value>
+  </data>
+  <data name="UpdateForm_btnSkip" xml:space="preserve">
+    <value>건너뛰기</value>
+  </data>
+  <data name="UpdateForm_grpFileInfo" xml:space="preserve">
+    <value>파일 정보</value>
+  </data>
+  <data name="UpdateForm_grpFileInfo_lblFileName" xml:space="preserve">
+    <value>파일 이름: </value>
+  </data>
+  <data name="UpdateForm_grpFileInfo_lblFileSize" xml:space="preserve">
+    <value>파일 크기: </value>
+  </data>
+  <data name="UpdateForm_grpReleaseNotes" xml:space="preserve">
+    <value>릴리스 노트</value>
+  </data>
+  <data name="UpdateForm_grpVersionInfo" xml:space="preserve">
+    <value>버전 정보</value>
+  </data>
+  <data name="UpdateForm_grpVersionInfo_lblCurrentVersion" xml:space="preserve">
+    <value>현재 버전: </value>
+  </data>
+  <data name="UpdateForm_grpVersionInfo_lblNewVersion" xml:space="preserve">
+    <value>최신 버전: </value>
+  </data>
+  <data name="UpdateForm_grpVersionInfo_lblReleaseDate" xml:space="preserve">
+    <value>릴리스 날짜: </value>
+  </data>
+  <data name="UpdateForm_lblMandatory" xml:space="preserve">
+    <value>이것은 필수 업데이트입니다. 계속 사용하려면 설치해야 합니다.</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Cancelled" xml:space="preserve">
+    <value>다운로드 취소됨</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Complete" xml:space="preserve">
+    <value>다운로드 완료!</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Downloading" xml:space="preserve">
+    <value>다운로드 중...</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Failed" xml:space="preserve">
+    <value>다운로드 실패</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Progress" xml:space="preserve">
+    <value>다운로드 중... {0} / {1} ({2}%)</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Ready" xml:space="preserve">
+    <value>다운로드 준비 중...</value>
+  </data>
+  <data name="UpdateForm_lblTitle" xml:space="preserve">
+    <value>새 버전 사용 가능</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmCancel" xml:space="preserve">
+    <value>다운로드가 진행 중입니다. 취소하시겠습니까?</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmCancelTitle" xml:space="preserve">
+    <value>다운로드 취소</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmInstall" xml:space="preserve">
+    <value>업데이트를 설치하면 애플리케이션이 닫히고 다시 시작됩니다.
+계속하시겠습니까?</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmInstallTitle" xml:space="preserve">
+    <value>설치 확인</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmSkip" xml:space="preserve">
+    <value>이 업데이트를 건너뛰시겠습니까?
+나중에 다시 업데이트를 확인할 수 있습니다.</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmSkipTitle" xml:space="preserve">
+    <value>업데이트 건너뛰기</value>
+  </data>
+  <data name="UpdateForm_Msg_DownloadComplete" xml:space="preserve">
+    <value>업데이트가 성공적으로 다운로드되었습니다!
+'업데이트 설치'를 클릭하여 설치를 진행하세요.</value>
+  </data>
+  <data name="UpdateForm_Msg_DownloadCompleteTitle" xml:space="preserve">
+    <value>다운로드 완료</value>
+  </data>
+  <data name="UpdateForm_Msg_DownloadError" xml:space="preserve">
+    <value>업데이트 다운로드 실패:
+{0}</value>
+  </data>
+  <data name="UpdateForm_Msg_ErrorTitle" xml:space="preserve">
+    <value>오류</value>
+  </data>
+  <data name="UpdateForm_Msg_InstallError" xml:space="preserve">
+    <value>업데이트 설치 실패:
+{0}</value>
+  </data>
+  <data name="UpdateForm_Msg_NoFile" xml:space="preserve">
+    <value>다운로드된 업데이트 파일을 찾을 수 없습니다.</value>
+  </data>
+  
+  <!-- SettingsForm - 유효성 검사 메시지 -->
+  <data name="SettingsForm_Msg_BaseURLInvalid" xml:space="preserve">
+    <value>메인 사이트 도메인 형식이 올바르지 않습니다.
+예: https://game.ero-labs.live</value>
+  </data>
+  <data name="SettingsForm_Msg_BaseURLEmpty" xml:space="preserve">
+    <value>메인 사이트 도메인은 비워둘 수 없습니다.</value>
+  </data>
+  <data name="SettingsForm_Msg_ProxyRequired" xml:space="preserve">
+    <value>적어도 하나의 프록시 서버 주소를 제공하세요.</value>
+  </data>
+  <data name="SettingsForm_Msg_HttpProxyInvalid" xml:space="preserve">
+    <value>HTTP 프록시 주소 형식이 올바르지 않습니다.
+예: http://127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Msg_HttpsProxyInvalid" xml:space="preserve">
+    <value>HTTPS 프록시 주소 형식이 올바르지 않습니다.
+예: http://127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Msg_Socks5Invalid" xml:space="preserve">
+    <value>SOCKS5 프록시 주소 형식이 올바르지 않습니다.
+예: 127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Msg_InputError" xml:space="preserve">
+    <value>입력 오류</value>
+  </data>
+  
+  <!-- SettingsForm - 일반 메시지 -->
+  <data name="SettingsForm_Msg_ConfirmClearLogs" xml:space="preserve">
+    <value>모든 로그 파일을 지우시겠습니까?
+
+모든 기록 로그 레코드가 삭제됩니다.</value>
+  </data>
+  <data name="SettingsForm_Msg_LogsCleared" xml:space="preserve">
+    <value>로그 파일이 지워졌습니다.</value>
+  </data>
+  <data name="SettingsForm_Msg_ClearLogsError" xml:space="preserve">
+    <value>로그 파일 지우기 오류: {0}</value>
+  </data>
+  <data name="SettingsForm_Msg_Saved" xml:space="preserve">
+    <value>설정이 저장되었습니다</value>
+  </data>
+  <data name="SettingsForm_Msg_SaveError" xml:space="preserve">
+    <value>설정 저장 오류: {0}</value>
+  </data>
+  <data name="SettingsForm_Msg_Applied" xml:space="preserve">
+    <value>설정이 적용되었습니다.</value>
+  </data>
+  <data name="SettingsForm_Msg_RestartRequired" xml:space="preserve">
+    <value>다음 설정은 애플리케이션을 다시 시작해야 적용됩니다:
+</value>
+  </data>
+  <data name="SettingsForm_Msg_RestartProxy" xml:space="preserve">
+    <value>- 프록시 설정
+</value>
+  </data>
+  <data name="SettingsForm_Msg_RestartWindowSize" xml:space="preserve">
+    <value>- 창 크기 설정
+</value>
+  </data>
+  
+  <!-- SettingsForm - 프록시 도움말 -->
+  <data name="SettingsForm_Proxy_HelpMessage" xml:space="preserve">
+    <value>ero-labs 웹사이트에 정상적으로 접속할 수 있다면 프록시 서버가 필요하지 않습니다. 귀하의 지역에서 ero-labs가 차단되거나 속도가 느린 경우 유사한 서비스 구매를 시도해 볼 수 있습니다.
+구매 링크가 필요하신가요?</value>
+  </data>
+  <data name="SettingsForm_Proxy_HelpTitle" xml:space="preserve">
+    <value>리디렉션 안내</value>
+  </data>
+  <data name="SettingsForm_Msg_LanguageChanged" xml:space="preserve">
+    <value>언어가 변경되었습니다. 일부 UI 요소는 재시작 후 업데이트됩니다.</value>
+  </data>
+  
+  <!-- LoginDialog - 로그인 가이드 대화상자 -->
+  <data name="LoginDialog_Title" xml:space="preserve">
+    <value>로그인 가이드</value>
+  </data>
+  <data name="LoginDialog_lblMessage" xml:space="preserve">
+    <value>로그인되지 않은 것이 감지되었습니다.
+계정이 있으신가요?</value>
+  </data>
+  <data name="LoginDialog_btnHasAccount" xml:space="preserve">
+    <value>예, 계정이 있습니다</value>
+  </data>
+  <data name="LoginDialog_btnNoAccount" xml:space="preserve">
+    <value>아니요, 등록이 필요합니다</value>
+  </data>
+  <data name="LoginDialog_btnSkip" xml:space="preserve">
+    <value>건너뛰기</value>
+  </data>
+  
+  <!-- UpdateForm - 업데이트 창 -->
+  <data name="Update_Form_Title" xml:space="preserve">
+    <value>소프트웨어 업데이트</value>
+  </data>
+  <data name="Update_CurrentVersion" xml:space="preserve">
+    <value>현재 버전: {0}</value>
+  </data>
+  <data name="Update_NewVersion" xml:space="preserve">
+    <value>최신 버전: {0}</value>
+  </data>
+  <data name="Update_ReleaseDate" xml:space="preserve">
+    <value>릴리스 날짜: {0:yyyy-MM-dd HH:mm}</value>
+  </data>
+  <data name="Update_FileName" xml:space="preserve">
+    <value>파일 이름: {0}</value>
+  </data>
+  <data name="Update_FileSize" xml:space="preserve">
+    <value>파일 크기: {0}</value>
+  </data>
+  <data name="Update_ReleaseNotes" xml:space="preserve">
+    <value>릴리스 노트</value>
+  </data>
+  <data name="Update_Mandatory" xml:space="preserve">
+    <value>이것은 필수 업데이트입니다. 계속 사용하려면 설치해야 합니다.</value>
+  </data>
+  <data name="Update_Button_Download" xml:space="preserve">
+    <value>업데이트 다운로드</value>
+  </data>
+  <data name="Update_Button_CancelDownload" xml:space="preserve">
+    <value>다운로드 취소</value>
+  </data>
+  <data name="Update_Button_Install" xml:space="preserve">
+    <value>업데이트 설치</value>
+  </data>
+  <data name="Update_Button_Skip" xml:space="preserve">
+    <value>건너뛰기</value>
+  </data>
+  <data name="Update_Button_Close" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="Update_Status_Ready" xml:space="preserve">
+    <value>다운로드 준비 중...</value>
+  </data>
+  <data name="Update_Status_Downloading" xml:space="preserve">
+    <value>다운로드 중...</value>
+  </data>
+  <data name="Update_Status_Progress" xml:space="preserve">
+    <value>다운로드 중... {0} / {1} ({2}%)</value>
+  </data>
+  <data name="Update_Status_Complete" xml:space="preserve">
+    <value>다운로드 완료!</value>
+  </data>
+  <data name="Update_Status_Cancelled" xml:space="preserve">
+    <value>다운로드 취소됨</value>
+  </data>
+  <data name="Update_Status_Failed" xml:space="preserve">
+    <value>다운로드 실패</value>
+  </data>
+  <data name="Update_Msg_DownloadComplete" xml:space="preserve">
+    <value>업데이트가 성공적으로 다운로드되었습니다!
+
+"업데이트 설치" 버튼을 클릭하여 애플리케이션을 다시 시작하고 업데이트를 적용하세요.</value>
+  </data>
+  <data name="Update_Msg_DownloadError" xml:space="preserve">
+    <value>업데이트 다운로드 실패:
+{0}</value>
+  </data>
+  <data name="Update_Msg_NoFile" xml:space="preserve">
+    <value>다운로드된 업데이트 파일을 찾을 수 없습니다.</value>
+  </data>
+  <data name="Update_Msg_ConfirmInstall" xml:space="preserve">
+    <value>업데이트를 설치하면 애플리케이션이 닫히고 다시 시작됩니다.
+
+계속하시겠습니까?</value>
+  </data>
+  <data name="Update_Msg_InstallError" xml:space="preserve">
+    <value>업데이트 설치 실패:
+{0}</value>
+  </data>
+  <data name="Update_Msg_ConfirmSkip" xml:space="preserve">
+    <value>이 업데이트를 건너뛰시겠습니까?
+
+나중에 메뉴에서 다시 업데이트를 확인할 수 있습니다.</value>
+  </data>
+  <data name="Update_Msg_ConfirmCancel" xml:space="preserve">
+    <value>다운로드가 진행 중입니다. 취소하시겠습니까?</value>
+  </data>
+  
+  <!-- LogViewerForm - 로그 뷰어 -->
+  <data name="LogViewerForm" xml:space="preserve">
+    <value>로그 뷰어</value>
+  </data>
+  <data name="LogViewerForm_topPanel_lblLogLevel" xml:space="preserve">
+    <value>로그 레벨:</value>
+  </data>
+  <data name="LogViewerForm_topPanel_chkAutoRefresh" xml:space="preserve">
+    <value>자동 새로고침</value>
+  </data>
+  <data name="LogViewerForm_topPanel_btnRefresh" xml:space="preserve">
+    <value>새로고침</value>
+  </data>
+  <data name="LogViewerForm_topPanel_btnClear" xml:space="preserve">
+    <value>지우기</value>
+  </data>
+  <data name="LogViewerForm_bottomPanel_btnClose" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="LogViewerForm_Title" xml:space="preserve">
+    <value>로그 뷰어</value>
+  </data>
+  <data name="LogViewerForm_FileInfo" xml:space="preserve">
+    <value>파일 크기: {0}</value>
+  </data>
+  <data name="LogViewerForm_NoFile" xml:space="preserve">
+    <value>로그 파일이 존재하지 않습니다.</value>
+  </data>
+  <data name="LogViewerForm_ReadError" xml:space="preserve">
+    <value>로그 파일 읽기 오류: {0}</value>
+  </data>
+  <data name="LogViewerForm_ClearConfirmation" xml:space="preserve">
+    <value>로그 파일을 지우시겠습니까?
+
+이 작업은 실행 취소할 수 없습니다.</value>
+  </data>
+  <data name="LogViewerForm_ClearSuccess" xml:space="preserve">
+    <value>로그가 지워졌습니다.</value>
+  </data>
+  <data name="LogViewerForm_ClearError" xml:space="preserve">
+    <value>로그 지우기 오류: {0}</value>
+  </data>
+  <data name="LogViewerForm_ClearConfirmationTitle" xml:space="preserve">
+    <value>지우기 확인</value>
+  </data>
+  <data name="LogViewerForm_SuccessTitle" xml:space="preserve">
+    <value>성공</value>
+  </data>
+  <data name="LogViewerForm_ErrorTitle" xml:space="preserve">
+    <value>오류</value>
+  </data>
+  
+  <!-- AboutForm - 정보 창 -->
+  <data name="AboutForm_Title" xml:space="preserve">
+    <value>CTWebPlayer {0} 정보</value>
+  </data>
+  <data name="AboutForm_lblTitle" xml:space="preserve">
+    <value>CTWebPlayer</value>
+  </data>
+  <data name="AboutForm_lblVersion" xml:space="preserve">
+    <value>Unity3D WebPlayer 전용 브라우저 v{0}</value>
+  </data>
+  <data name="AboutForm_lblCopyright" xml:space="preserve">
+    <value>Copyright (c) 2025, CTWebPlayer 개발자</value>
+  </data>
+  <data name="AboutForm_lblLicenseTitle" xml:space="preserve">
+    <value>라이선스：</value>
+  </data>
+  <data name="AboutForm_lblImportantNotice" xml:space="preserve">
+    <value>⚠️ 중요: 수정된 버전은 반드시 이름을 변경하고 원저자와 무관함을 선언해야 합니다!
+자세한 내용은 아래 라이선스 조항을 참조하세요.</value>
+  </data>
+  <data name="AboutForm_LicenseLoadError" xml:space="preserve">
+    <value>라이선스 파일을 로드할 수 없습니다: {0}</value>
+  </data>
+  <data name="AboutForm_btnOK" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="AboutForm_License_Text" xml:space="preserve">
+    <value>CTWebPlayer 라이선스
+수정된 BSD 3-Clause License 기반
+
+Copyright (c) 2025, CTWebPlayer 개발자
+모든 권리 보유.
+
+다음 조건을 충족하는 경우 수정 여부에 관계없이 소스 및 바이너리 형식으로 재배포 및 사용이 허용됩니다:
+
+1. 소스 코드의 재배포는 위의 저작권 표시, 이 조건 목록 및 다음 면책 조항을 유지해야 합니다.
+
+2. 바이너리 형식으로 재배포할 때는 배포와 함께 제공되는 문서 및/또는 기타 자료에 위의 저작권 표시,
+   이 조건 목록 및 다음 면책 조항을 재현해야 합니다.
+
+3. 특정 사전 서면 허가 없이 저작권 소유자의 이름이나 기여자의 이름을 이 소프트웨어에서 파생된
+   제품을 보증하거나 홍보하는 데 사용할 수 없습니다.
+
+4. [중요] 모든 수정 버전은 다음을 충족해야 합니다:
+   - "CTWebPlayer" 또는 유사한 이름이 아닌 다른 이름을 사용해야 합니다
+   - 수정된 버전임을 명확히 표시해야 합니다
+   - 어떤 방식으로든 원저자의 보증이나 승인을 암시해서는 안 됩니다
+   - "CTWebPlayer를 기반으로 하지만 원저자와는 무관합니다"라고 눈에 띄는 위치에 명시해야 합니다
+
+5. 서면 승인 없이 이 소프트웨어를 상업적 목적으로 사용할 수 없습니다.
+
+면책 조항:
+이 소프트웨어는 저작권 소유자 및 기여자에 의해 "있는 그대로" 제공되며, 상품성 및 특정 목적에의
+적합성에 대한 묵시적 보증을 포함하되 이에 국한되지 않는 명시적 또는 묵시적 보증은 부인됩니다.
+어떠한 경우에도 저작권 소유자 또는 기여자는 계약, 엄격한 책임 또는 불법 행위(과실 또는 기타 포함)의
+어떤 이론 하에서든 이 소프트웨어의 사용 또는 사용 불능으로 인해 발생하는 직접적, 간접적, 우발적,
+특수, 예시적 또는 결과적 손해(대체 상품 또는 서비스의 조달, 사용, 데이터 또는 이익의 손실 또는
+사업 중단을 포함하되 이에 국한되지 않음)에 대해 책임을 지지 않습니다.
+
+특별 고지:
+이 소프트웨어의 수정된 버전에서 발생하는 모든 문제, 손해 또는 법적 책임은 전적으로 수정자의
+책임이며 원저자와는 무관합니다. 사용자는 소프트웨어의 무결성과 보안을 보장하기 위해 공식 소스에서
+이 소프트웨어를 얻어야 합니다.</value>
+  </data>
+  
+  <!-- ProxySettingsForm -->
+  <data name="ProxySettingsForm" xml:space="preserve">
+    <value>프록시 설정</value>
+  </data>
+  <data name="ProxySettingsForm_btnCancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="ProxySettingsForm_btnSave" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="ProxySettingsForm_chkEnableProxy" xml:space="preserve">
+    <value>프록시 서버 활성화</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings" xml:space="preserve">
+    <value>프록시 서버 설정</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblHttpProxy" xml:space="preserve">
+    <value>HTTP 프록시:</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblHttpsProxy" xml:space="preserve">
+    <value>HTTPS 프록시:</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblNote" xml:space="preserve">
+    <value>참고: SOCKS5 프록시가 우선적으로 사용되며, 그 다음 HTTP/HTTPS 프록시가 사용됩니다.
+프록시 설정 변경 후 브라우저를 다시 시작해야 합니다.</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblSocks5" xml:space="preserve">
+    <value>SOCKS5 프록시:</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_Error" xml:space="preserve">
+    <value>오류</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_HttpProxyInvalid" xml:space="preserve">
+    <value>HTTP 프록시 주소 형식이 올바르지 않습니다.
+예: http://127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_HttpsProxyInvalid" xml:space="preserve">
+    <value>HTTPS 프록시 주소 형식이 올바르지 않습니다.
+예: http://127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_Info" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_InputError" xml:space="preserve">
+    <value>입력 오류</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_ProxyDisabledWithRestart" xml:space="preserve">
+    <value>프록시가 비활성화되었습니다.
+
+변경 사항을 적용하려면 브라우저를 다시 시작하세요.</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_ProxyRequired" xml:space="preserve">
+    <value>적어도 하나의 프록시 서버 주소를 제공하세요.</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_SavedWithRestart" xml:space="preserve">
+    <value>프록시 설정이 저장되었습니다.
+
+새 프록시 설정을 적용하려면 브라우저를 다시 시작하세요.</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_SaveError" xml:space="preserve">
+    <value>구성 저장 중 오류 발생: {0}</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_Socks5Invalid" xml:space="preserve">
+    <value>SOCKS5 프록시 주소 형식이 올바르지 않습니다.
+예: 127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_PlaceholderHttp" xml:space="preserve">
+    <value>예: http://127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_PlaceholderSocks5" xml:space="preserve">
+    <value>예: 127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_chkEnableProxy" xml:space="preserve">
+    <value>프록시 서버 활성화</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings" xml:space="preserve">
+    <value>프록시 서버 설정</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblHttpProxy" xml:space="preserve">
+    <value>HTTP 프록시:</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblHttpsProxy" xml:space="preserve">
+    <value>HTTPS 프록시:</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblSocks5" xml:space="preserve">
+    <value>SOCKS5 프록시:</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblNote" xml:space="preserve">
+    <value>참고: SOCKS5 프록시가 우선적으로 사용되며, 그 다음 HTTP/HTTPS 프록시가 사용됩니다.
+프록시 설정 변경 후 브라우저를 다시 시작해야 합니다.</value>
+  </data>
+  <data name="ProxySettingsForm_btnSave" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="ProxySettingsForm_btnCancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="ProxySettingsForm_PlaceholderHttp" xml:space="preserve">
+    <value>예: http://127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_PlaceholderSocks5" xml:space="preserve">
+    <value>예: 127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_ProxyRequired" xml:space="preserve">
+    <value>적어도 하나의 프록시 서버 주소를 제공하세요.</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_HttpProxyInvalid" xml:space="preserve">
+    <value>HTTP 프록시 주소 형식이 올바르지 않습니다.
+형식 예: http://127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_HttpsProxyInvalid" xml:space="preserve">
+    <value>HTTPS 프록시 주소 형식이 올바르지 않습니다.
+형식 예: http://127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_Socks5Invalid" xml:space="preserve">
+    <value>SOCKS5 프록시 주소 형식이 올바르지 않습니다.
+형식 예: 127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_InputError" xml:space="preserve">
+    <value>입력 오류</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_SavedWithRestart" xml:space="preserve">
+    <value>프록시 설정이 저장되었습니다.
+
+새 프록시 설정을 적용하려면 브라우저를 다시 시작하세요.</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_ProxyDisabledWithRestart" xml:space="preserve">
+    <value>프록시가 비활성화되었습니다.
+
+변경 사항을 적용하려면 브라우저를 다시 시작하세요.</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_SaveError" xml:space="preserve">
+    <value>구성 저장 중 오류 발생: {0}</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_Error" xml:space="preserve">
+    <value>오류</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_Info" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  
+  <data name="RES_LanguageLabel" xml:space="preserve">
+    <value>언어：</value>
+  </data>
+</root>

@@ -39,7 +39,8 @@ namespace ctwebplayer
         /// </summary>
         private void InitializeComponent()
         {
-            this.Text = "代理设置";
+            this.Text = LanguageManager.Instance.GetString("ProxySettingsForm");
+            this.Tag = "ProxySettingsForm";
             this.Size = new Size(450, 350);
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -49,7 +50,8 @@ namespace ctwebplayer
             // 启用代理复选框
             chkEnableProxy = new CheckBox
             {
-                Text = "启用代理服务器",
+                Text = LanguageManager.Instance.GetString("ProxySettingsForm_chkEnableProxy"),
+                Tag = "ProxySettingsForm_chkEnableProxy",
                 Location = new Point(20, 20),
                 Size = new Size(150, 25),
                 Checked = false
@@ -59,7 +61,8 @@ namespace ctwebplayer
             // 代理设置组
             grpProxySettings = new GroupBox
             {
-                Text = "代理服务器设置",
+                Text = LanguageManager.Instance.GetString("ProxySettingsForm_grpProxySettings"),
+                Tag = "ProxySettingsForm_grpProxySettings",
                 Location = new Point(20, 55),
                 Size = new Size(400, 180),
                 Enabled = false
@@ -68,7 +71,8 @@ namespace ctwebplayer
             // HTTP代理
             lblHttpProxy = new Label
             {
-                Text = "HTTP 代理:",
+                Text = LanguageManager.Instance.GetString("ProxySettingsForm_grpProxySettings_lblHttpProxy"),
+                Tag = "ProxySettingsForm_grpProxySettings_lblHttpProxy",
                 Location = new Point(20, 30),
                 Size = new Size(80, 25),
                 TextAlign = ContentAlignment.MiddleRight
@@ -77,16 +81,18 @@ namespace ctwebplayer
 
             txtHttpProxy = new TextBox
             {
+                Tag = "ProxySettingsForm_grpProxySettings_txtHttpProxy",
                 Location = new Point(105, 30),
                 Size = new Size(270, 25),
-                PlaceholderText = "例如: http://127.0.0.1:7890"
+                PlaceholderText = LanguageManager.Instance.GetString("ProxySettingsForm_PlaceholderHttp")
             };
             grpProxySettings.Controls.Add(txtHttpProxy);
 
             // HTTPS代理
             lblHttpsProxy = new Label
             {
-                Text = "HTTPS 代理:",
+                Text = LanguageManager.Instance.GetString("ProxySettingsForm_grpProxySettings_lblHttpsProxy"),
+                Tag = "ProxySettingsForm_grpProxySettings_lblHttpsProxy",
                 Location = new Point(20, 65),
                 Size = new Size(80, 25),
                 TextAlign = ContentAlignment.MiddleRight
@@ -95,16 +101,18 @@ namespace ctwebplayer
 
             txtHttpsProxy = new TextBox
             {
+                Tag = "ProxySettingsForm_grpProxySettings_txtHttpsProxy",
                 Location = new Point(105, 65),
                 Size = new Size(270, 25),
-                PlaceholderText = "例如: http://127.0.0.1:7890"
+                PlaceholderText = LanguageManager.Instance.GetString("ProxySettingsForm_PlaceholderHttp")
             };
             grpProxySettings.Controls.Add(txtHttpsProxy);
 
             // SOCKS5代理
             lblSocks5 = new Label
             {
-                Text = "SOCKS5 代理:",
+                Text = LanguageManager.Instance.GetString("ProxySettingsForm_grpProxySettings_lblSocks5"),
+                Tag = "ProxySettingsForm_grpProxySettings_lblSocks5",
                 Location = new Point(20, 100),
                 Size = new Size(80, 25),
                 TextAlign = ContentAlignment.MiddleRight
@@ -113,16 +121,18 @@ namespace ctwebplayer
 
             txtSocks5 = new TextBox
             {
+                Tag = "ProxySettingsForm_grpProxySettings_txtSocks5",
                 Location = new Point(105, 100),
                 Size = new Size(270, 25),
-                PlaceholderText = "例如: 127.0.0.1:7890"
+                PlaceholderText = LanguageManager.Instance.GetString("ProxySettingsForm_PlaceholderSocks5")
             };
             grpProxySettings.Controls.Add(txtSocks5);
 
             // 说明标签
             lblNote = new Label
             {
-                Text = "注意：优先使用SOCKS5代理，其次是HTTP/HTTPS代理。\n更改代理设置后需要重启浏览器才能生效。",
+                Text = LanguageManager.Instance.GetString("ProxySettingsForm_grpProxySettings_lblNote"),
+                Tag = "ProxySettingsForm_grpProxySettings_lblNote",
                 Location = new Point(20, 140),
                 Size = new Size(360, 35),
                 ForeColor = Color.Gray
@@ -132,7 +142,8 @@ namespace ctwebplayer
             // 保存按钮
             btnSave = new Button
             {
-                Text = "保存",
+                Text = LanguageManager.Instance.GetString("ProxySettingsForm_btnSave"),
+                Tag = "ProxySettingsForm_btnSave",
                 Location = new Point(245, 250),
                 Size = new Size(80, 30),
                 DialogResult = DialogResult.OK
@@ -142,7 +153,8 @@ namespace ctwebplayer
             // 取消按钮
             btnCancel = new Button
             {
-                Text = "取消",
+                Text = LanguageManager.Instance.GetString("ProxySettingsForm_btnCancel"),
+                Tag = "ProxySettingsForm_btnCancel",
                 Location = new Point(340, 250),
                 Size = new Size(80, 30),
                 DialogResult = DialogResult.Cancel
@@ -219,13 +231,13 @@ namespace ctwebplayer
                 // 提示用户需要重启
                 if (chkEnableProxy.Checked)
                 {
-                    MessageBox.Show("代理设置已保存。\n\n请重启浏览器以应用新的代理设置。",
-                        "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(LanguageManager.Instance.GetString("ProxySettingsForm_Msg_SavedWithRestart"),
+                        LanguageManager.Instance.GetString("ProxySettingsForm_Msg_Info"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    MessageBox.Show("代理已禁用。\n\n请重启浏览器以应用更改。",
-                        "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(LanguageManager.Instance.GetString("ProxySettingsForm_Msg_ProxyDisabledWithRestart"),
+                        LanguageManager.Instance.GetString("ProxySettingsForm_Msg_Info"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
                 this.DialogResult = DialogResult.OK;
@@ -234,8 +246,8 @@ namespace ctwebplayer
             catch (Exception ex)
             {
                 LogManager.Instance.Error("保存代理配置时出错", ex);
-                MessageBox.Show($"保存配置时出错：{ex.Message}",
-                    "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(string.Format(LanguageManager.Instance.GetString("ProxySettingsForm_Msg_SaveError"), ex.Message),
+                    LanguageManager.Instance.GetString("ProxySettingsForm_Msg_Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -249,8 +261,8 @@ namespace ctwebplayer
                 string.IsNullOrWhiteSpace(txtHttpsProxy.Text) &&
                 string.IsNullOrWhiteSpace(txtSocks5.Text))
             {
-                MessageBox.Show("请至少填写一个代理服务器地址。",
-                    "输入错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(LanguageManager.Instance.GetString("ProxySettingsForm_Msg_ProxyRequired"),
+                    LanguageManager.Instance.GetString("ProxySettingsForm_Msg_InputError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -259,8 +271,8 @@ namespace ctwebplayer
             {
                 if (!IsValidProxyFormat(txtHttpProxy.Text, true))
                 {
-                    MessageBox.Show("HTTP代理地址格式不正确。\n格式示例：http://127.0.0.1:7890",
-                        "输入错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(LanguageManager.Instance.GetString("ProxySettingsForm_Msg_HttpProxyInvalid"),
+                        LanguageManager.Instance.GetString("ProxySettingsForm_Msg_InputError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtHttpProxy.Focus();
                     return false;
                 }
@@ -271,8 +283,8 @@ namespace ctwebplayer
             {
                 if (!IsValidProxyFormat(txtHttpsProxy.Text, true))
                 {
-                    MessageBox.Show("HTTPS代理地址格式不正确。\n格式示例：http://127.0.0.1:7890",
-                        "输入错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(LanguageManager.Instance.GetString("ProxySettingsForm_Msg_HttpsProxyInvalid"),
+                        LanguageManager.Instance.GetString("ProxySettingsForm_Msg_InputError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtHttpsProxy.Focus();
                     return false;
                 }
@@ -283,8 +295,8 @@ namespace ctwebplayer
             {
                 if (!IsValidProxyFormat(txtSocks5.Text, false))
                 {
-                    MessageBox.Show("SOCKS5代理地址格式不正确。\n格式示例：127.0.0.1:7890",
-                        "输入错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(LanguageManager.Instance.GetString("ProxySettingsForm_Msg_Socks5Invalid"),
+                        LanguageManager.Instance.GetString("ProxySettingsForm_Msg_InputError"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtSocks5.Focus();
                     return false;
                 }

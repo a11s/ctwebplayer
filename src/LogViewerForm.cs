@@ -23,8 +23,15 @@ namespace ctwebplayer
         public LogViewerForm()
         {
             InitializeComponent();
+            LanguageManager.Instance.ApplyToForm(this);
             LoadLogContent();
             SetupRefreshTimer();
+            LanguageManager.Instance.LanguageChanged += OnLanguageChanged;
+        }
+
+        private void OnLanguageChanged(object sender, EventArgs e)
+        {
+            LanguageManager.Instance.ApplyToForm(this);
         }
 
         /// <summary>
@@ -63,7 +70,7 @@ namespace ctwebplayer
                 var logFilePath = LogManager.Instance.GetLogFilePath();
                 if (!File.Exists(logFilePath))
                 {
-                    txtLogContent.Text = "日志文件不存在。";
+                    txtLogContent.Text = LanguageManager.Instance.GetString("LogViewerForm_NoFile");
                     UpdateFileInfo(0);
                     return;
                 }
@@ -85,7 +92,7 @@ namespace ctwebplayer
             }
             catch (Exception ex)
             {
-                txtLogContent.Text = $"读取日志文件时出错：{ex.Message}";
+                txtLogContent.Text = string.Format(LanguageManager.Instance.GetString("LogViewerForm_ReadError"), ex.Message);
             }
         }
 
@@ -181,7 +188,7 @@ namespace ctwebplayer
         private void UpdateFileInfo(long fileSize)
         {
             var sizeText = FormatFileSize(fileSize);
-            lblFileInfo.Text = $"文件大小: {sizeText}";
+            lblFileInfo.Text = string.Format(LanguageManager.Instance.GetString("LogViewerForm.FileInfo"), sizeText);
         }
 
         /// <summary>
@@ -230,8 +237,8 @@ namespace ctwebplayer
         /// </summary>
         private async void BtnClear_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("确定要清空日志文件吗？\n\n此操作不可恢复。",
-                "确认清空", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = MessageBox.Show(LanguageManager.Instance.GetString("LogViewerForm.ClearConfirmation"),
+                LanguageManager.Instance.GetString("LogViewerForm.ClearConfirmationTitle"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             
             if (result == DialogResult.Yes)
             {
@@ -242,11 +249,11 @@ namespace ctwebplayer
                     txtLogContent.Clear();
                     lastFilePosition = 0;
                     UpdateFileInfo(0);
-                    MessageBox.Show("日志已清空。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(LanguageManager.Instance.GetString("LogViewerForm.ClearSuccess"), LanguageManager.Instance.GetString("LogViewerForm.SuccessTitle"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"清空日志时出错：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(string.Format(LanguageManager.Instance.GetString("LogViewerForm.ClearError"), ex.Message), LanguageManager.Instance.GetString("LogViewerForm.ErrorTitle"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally
                 {
@@ -260,6 +267,7 @@ namespace ctwebplayer
         /// </summary>
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
+            LanguageManager.Instance.LanguageChanged -= OnLanguageChanged;
             base.OnFormClosed(e);
             refreshTimer?.Stop();
             refreshTimer?.Dispose();

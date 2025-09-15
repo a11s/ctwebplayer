@@ -15,8 +15,9 @@
     "windowWidth": 1236,
     "windowHeight": 740
   },
+  "baseURL": "https://mg.ero-labs.live",
+  "language": "en-US",
   "debugMode": false,
-  "baseURL": "https://game.ero-labs.live",
   "login": {
     "enabled": true,
     "skipEnabled": true,

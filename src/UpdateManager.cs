@@ -47,7 +47,7 @@ namespace ctwebplayer
         {
             try
             {
-                _logger.Info("开始检查更新...");
+                _logger.Info(LanguageManager.Instance.GetString("UpdateManager.CheckingUpdate"));
 
                 // 配置 Flurl 请求
                 var response = await GITHUB_API_URL
@@ -62,12 +62,12 @@ namespace ctwebplayer
                 }
                 _latestUpdate = CTWebPlayer.UpdateInfo.FromGitHubRelease(json);
 
-                _logger.Info($"获取到最新版本信息: {_latestUpdate.Version}");
+                _logger.Info(string.Format(LanguageManager.Instance.GetString("UpdateManager.LatestVersionInfo"), _latestUpdate.Version));
 
                 // 检查是否需要更新
                 if (_latestUpdate.IsUpdateRequired())
                 {
-                    _logger.Info($"发现新版本: {_latestUpdate.Version} (当前版本: {CTWebPlayer.Version.FullVersion})");
+                    _logger.Info(string.Format(LanguageManager.Instance.GetString("UpdateManager.NewVersionFound"), _latestUpdate.Version, CTWebPlayer.Version.FullVersion));
                     UpdateCheckCompleted?.Invoke(this, new UpdateCheckCompletedEventArgs
                     {
                         UpdateAvailable = true,
@@ -77,7 +77,7 @@ namespace ctwebplayer
                 }
                 else
                 {
-                    _logger.Info("当前已是最新版本");
+                    _logger.Info(LanguageManager.Instance.GetString("UpdateManager.CurrentVersion"));
                     if (showNoUpdateMessage)
                     {
                         MessageBox.Show(
@@ -97,7 +97,7 @@ namespace ctwebplayer
             }
             catch (Exception ex)
             {
-                _logger.Error($"检查更新失败: {ex.Message}", ex);
+                _logger.Error(string.Format(LanguageManager.Instance.GetString("UpdateManager.CheckFailed"), ex.Message), ex);
                 
                 if (showNoUpdateMessage)
                 {
@@ -137,7 +137,7 @@ namespace ctwebplayer
 
             try
             {
-                _logger.Info($"开始下载更新文件: {updateInfo.DownloadUrl}");
+                _logger.Info(string.Format(LanguageManager.Instance.GetString("UpdateManager.DownloadingFile"), updateInfo.DownloadUrl));
 
                 // 删除旧的临时文件
                 if (File.Exists(tempFile))
@@ -177,7 +177,7 @@ namespace ctwebplayer
                     }
                 }
 
-                _logger.Info("下载完成，开始验证文件...");
+                _logger.Info(LanguageManager.Instance.GetString("UpdateManager.DownloadCompleteVerification"));
 
                 // 验证文件完整性
                 if (!string.IsNullOrEmpty(updateInfo.SHA256Hash))
@@ -186,18 +186,18 @@ namespace ctwebplayer
                     {
                         throw new Exception("文件完整性验证失败");
                     }
-                    _logger.Info("文件完整性验证通过");
+                    _logger.Info(LanguageManager.Instance.GetString("UpdateManager.VerificationPassed"));
                 }
                 else
                 {
-                    _logger.Warning("更新信息中没有提供 SHA256 哈希值，跳过完整性验证");
+                    _logger.Warning(LanguageManager.Instance.GetString("UpdateManager.NoHashSkipVerification"));
                 }
 
                 return tempFile;
             }
             catch (Exception ex)
             {
-                _logger.Error($"下载更新失败: {ex.Message}", ex);
+                _logger.Error(string.Format(LanguageManager.Instance.GetString("UpdateManager.DownloadFailed"), ex.Message), ex);
                 
                 // 清理临时文件
                 if (File.Exists(tempFile))
@@ -215,7 +215,7 @@ namespace ctwebplayer
         public void CancelDownload()
         {
             _downloadCancellation?.Cancel();
-            _logger.Info("下载已取消");
+            _logger.Info(LanguageManager.Instance.GetString("UpdateManager.DownloadCancelled"));
         }
 
         /// <summary>
@@ -233,15 +233,15 @@ namespace ctwebplayer
                         var hash = sha256.ComputeHash(stream);
                         var hashString = BitConverter.ToString(hash).Replace("-", "").ToUpper();
                         
-                        _logger.Debug($"计算的哈希值: {hashString}");
-                        _logger.Debug($"期望的哈希值: {expectedHash}");
+                        _logger.Debug(string.Format(LanguageManager.Instance.GetString("UpdateManager.ComputedHash"), hashString));
+                        _logger.Debug(string.Format(LanguageManager.Instance.GetString("UpdateManager.ExpectedHash"), expectedHash));
                         
                         return hashString.Equals(expectedHash, StringComparison.OrdinalIgnoreCase);
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error($"计算文件哈希值失败: {ex.Message}", ex);
+                    _logger.Error(string.Format(LanguageManager.Instance.GetString("UpdateManager.HashCalculationFailed"), ex.Message), ex);
                     return false;
                 }
             });
@@ -260,7 +260,7 @@ namespace ctwebplayer
 
             try
             {
-                _logger.Info("准备应用更新...");
+                _logger.Info(LanguageManager.Instance.GetString("UpdateManager.ApplyingUpdate"));
 
                 // 获取当前程序路径
                 string currentExePath = Application.ExecutablePath;
@@ -311,14 +311,14 @@ exit
 
                 Process.Start(processInfo);
 
-                _logger.Info("更新批处理已启动，程序即将退出...");
+                _logger.Info(LanguageManager.Instance.GetString("UpdateManager.BatchStarted"));
 
                 // 退出当前程序
                 Application.Exit();
             }
             catch (Exception ex)
             {
-                _logger.Error($"应用更新失败: {ex.Message}", ex);
+                _logger.Error(string.Format(LanguageManager.Instance.GetString("UpdateManager.ApplyFailed"), ex.Message), ex);
                 throw;
             }
         }

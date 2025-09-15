@@ -76,6 +76,7 @@
             btnHome.Name = "btnHome";
             btnHome.Size = new Size(36, 22);
             btnHome.Text = "主页";
+            btnHome.Tag = "Form1_toolStrip1_btnHome";
             btnHome.Click += btnHome_Click;
             // 
             // btnBack
@@ -84,6 +85,7 @@
             btnBack.Name = "btnBack";
             btnBack.Size = new Size(36, 22);
             btnBack.Text = "后退";
+            btnBack.Tag = "Form1_toolStrip1_btnBack";
             btnBack.Click += btnBack_Click;
             // 
             // btnForward
@@ -92,6 +94,7 @@
             btnForward.Name = "btnForward";
             btnForward.Size = new Size(36, 22);
             btnForward.Text = "前进";
+            btnForward.Tag = "Form1_toolStrip1_btnForward";
             btnForward.Click += btnForward_Click;
             // 
             // btnRefresh
@@ -100,6 +103,7 @@
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(36, 22);
             btnRefresh.Text = "刷新";
+            btnRefresh.Tag = "Form1_toolStrip1_btnRefresh";
             btnRefresh.Click += btnRefresh_Click;
             // 
             // toolStripSeparator1
@@ -108,10 +112,11 @@
             toolStripSeparator1.Size = new Size(6, 25);
             // 
             // txtAddress
-            // 
+            //
             txtAddress.AutoSize = false;
             txtAddress.Name = "txtAddress";
             txtAddress.Size = new Size(600, 25);
+            txtAddress.Tag = "Form1_toolStrip1_txtAddress";
             txtAddress.KeyDown += txtAddress_KeyDown;
             // 
             // btnGo
@@ -120,6 +125,7 @@
             btnGo.Name = "btnGo";
             btnGo.Size = new Size(36, 22);
             btnGo.Text = "转到";
+            btnGo.Tag = "Form1_toolStrip1_btnGo";
             btnGo.Click += btnGo_Click;
             // 
             // toolStripSeparator2
@@ -133,6 +139,7 @@
             btnSettings.Name = "btnSettings";
             btnSettings.Size = new Size(36, 22);
             btnSettings.Text = "设置";
+            btnSettings.Tag = "Form1_toolStrip1_btnSettings";
             btnSettings.Click += btnSettings_Click;
             //
             // btnUtilities
@@ -142,6 +149,7 @@
             btnUtilities.Name = "btnUtilities";
             btnUtilities.Size = new Size(69, 22);
             btnUtilities.Text = "实用工具";
+            btnUtilities.Tag = "Form1_toolStrip1_btnUtilities";
             //
             // toggleFullScreenMenuItem
             //
@@ -149,6 +157,7 @@
             toggleFullScreenMenuItem.ShortcutKeys = Keys.F11;
             toggleFullScreenMenuItem.Size = new Size(171, 22);
             toggleFullScreenMenuItem.Text = "全屏切换 (F11)";
+            toggleFullScreenMenuItem.Tag = "Form1_toolStrip1_btnUtilities_toggleFullScreenMenuItem";
             toggleFullScreenMenuItem.Click += toggleFullScreenMenuItem_Click;
             //
             // toggleMuteMenuItem
@@ -157,6 +166,7 @@
             toggleMuteMenuItem.ShortcutKeys = Keys.F4;
             toggleMuteMenuItem.Size = new Size(171, 22);
             toggleMuteMenuItem.Text = "静音切换 (F4)";
+            toggleMuteMenuItem.Tag = "Form1_toolStrip1_btnUtilities_toggleMuteMenuItem";
             toggleMuteMenuItem.Click += toggleMuteMenuItem_Click;
             //
             // toolStripSeparator3
@@ -169,6 +179,7 @@
             logoutMenuItem.Name = "logoutMenuItem";
             logoutMenuItem.Size = new Size(171, 22);
             logoutMenuItem.Text = "退出登录";
+            logoutMenuItem.Tag = "Form1_toolStrip1_btnUtilities_logoutMenuItem";
             logoutMenuItem.Click += logoutMenuItem_Click;
             //
             // forumMenuItem
@@ -176,6 +187,7 @@
             forumMenuItem.Name = "forumMenuItem";
             forumMenuItem.Size = new Size(171, 22);
             forumMenuItem.Text = "官方讨论区";
+            forumMenuItem.Tag = "Form1_toolStrip1_btnUtilities_forumMenuItem";
             forumMenuItem.Click += forumMenuItem_Click;
             //
             // discordMenuItem
@@ -183,6 +195,7 @@
             discordMenuItem.Name = "discordMenuItem";
             discordMenuItem.Size = new Size(171, 22);
             discordMenuItem.Text = "官方Discord";
+            discordMenuItem.Tag = "Form1_toolStrip1_btnUtilities_discordMenuItem";
             discordMenuItem.Click += discordMenuItem_Click;
             //
             // githubMenuItem
@@ -190,6 +203,7 @@
             githubMenuItem.Name = "githubMenuItem";
             githubMenuItem.Size = new Size(171, 22);
             githubMenuItem.Text = "GitHub 源码";
+            githubMenuItem.Tag = "Form1_toolStrip1_btnUtilities_githubMenuItem";
             githubMenuItem.Click += githubMenuItem_Click;
             //
             // mobileDownloadMenuItem
@@ -197,6 +211,7 @@
             mobileDownloadMenuItem.Name = "mobileDownloadMenuItem";
             mobileDownloadMenuItem.Size = new Size(171, 22);
             mobileDownloadMenuItem.Text = "手机版下载";
+            mobileDownloadMenuItem.Tag = "Form1_toolStrip1_btnUtilities_mobileDownloadMenuItem";
             mobileDownloadMenuItem.Click += mobileDownloadMenuItem_Click;
             //
             // toolStripSeparator5
@@ -209,6 +224,7 @@
             checkUpdateMenuItem.Name = "checkUpdateMenuItem";
             checkUpdateMenuItem.Size = new Size(171, 22);
             checkUpdateMenuItem.Text = "检查更新";
+            checkUpdateMenuItem.Tag = "Form1_toolStrip1_btnUtilities_checkUpdateMenuItem";
             checkUpdateMenuItem.Click += checkUpdateMenuItem_Click;
             //
             // toolStripSeparator4
@@ -221,6 +237,7 @@
             aboutMenuItem.Name = "aboutMenuItem";
             aboutMenuItem.Size = new Size(171, 22);
             aboutMenuItem.Text = "关于";
+            aboutMenuItem.Tag = "Form1_toolStrip1_btnUtilities_aboutMenuItem";
             aboutMenuItem.Click += aboutMenuItem_Click;
             //
             // statusStrip1
@@ -238,6 +255,7 @@
             statusLabel.Size = new Size(1359, 17);
             statusLabel.Spring = true;
             statusLabel.Text = "就绪";
+            statusLabel.Tag = "Form1_statusStrip1_statusLabel";
             statusLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // progressBar
@@ -271,6 +289,7 @@
             Name = "Form1";
             StartPosition = FormStartPosition.Manual;
             Text = "Unity3D WebPlayer 专属浏览器";
+            Tag = "Form1_Title";
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
             statusStrip1.ResumeLayout(false);

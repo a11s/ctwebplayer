@@ -12,6 +12,7 @@ CTWebPlayer 是一个为 Unity3D WebPlayer 游戏开发的基于 WebView2 的专
 - **CORS 问题处理**：自动处理跨域请求问题，确保游戏正常运行
 - **登录引导系统**：智能检测登录状态，提供便捷的登录引导流程
 - **自动更新功能**：支持自动检查和下载更新
+- **多语言支持**：支持英语、简体中文、繁体中文、日语和韩语界面
 
 ## 下载安装
 
@@ -54,7 +55,13 @@ CTWebPlayer 是一个为 Unity3D WebPlayer 游戏开发的基于 WebView2 的专
 - 支持日志查看器，方便分析
 - 可配置日志级别和文件大小限制
 
-### 5. 其他实用功能
+### 5. 多语言支持
+- **支持的语言**：英语、简体中文、繁体中文、日语、韩语
+- **自动检测**：首次启动时自动检测系统语言
+- **语言切换**：可在设置界面随时切换界面语言
+- **持久化保存**：语言设置会自动保存，下次启动时使用
+
+### 6. 其他实用功能
 - **自动 iframe 导航**：自动检测并导航到游戏 iframe 内容
 - **CORS 处理**：自动注入脚本处理跨域请求问题
 - **导航控制**：支持后退、前进、刷新等基本浏览器功能
@@ -122,7 +129,8 @@ CTWebPlayer 支持两种缓存规则：
     "loginUrl": "/cn/login.html",
     "registerUrl": "https://game.erolabsshare.net/app/627a8937/Cherry_Tale",
     "cookieName": "erolabsnickname"
-  }
+  },
+  "language": "zh-CN"
 }
 ```
 
@@ -148,6 +156,14 @@ CTWebPlayer 支持两种缓存规则：
   - `loginUrl`：登录页面相对路径
   - `registerUrl`：注册页面完整URL
   - `cookieName`：用于检测登录状态的Cookie名称
+- **language**：界面语言设置（可选值：en-US、zh-CN、zh-TW、ja、ko）
+  - 如果不设置，程序会自动检测系统语言
+  - 支持的语言：
+    - `en-US`：English
+    - `zh-CN`：简体中文
+    - `zh-TW`：繁體中文
+    - `ja`：日本語
+    - `ko`：한국어
 
 ## 使用方法
 

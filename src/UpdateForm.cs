@@ -17,6 +17,7 @@ namespace ctwebplayer
         public UpdateForm(CTWebPlayer.UpdateInfo updateInfo)
         {
             InitializeComponent();
+            LanguageManager.Instance.ApplyToForm(this);
             
             _updateInfo = updateInfo ?? throw new ArgumentNullException(nameof(updateInfo));
             _updateManager = new UpdateManager();
@@ -26,6 +27,7 @@ namespace ctwebplayer
             
             // 初始化界面
             InitializeUI();
+            LanguageManager.Instance.LanguageChanged += OnLanguageChanged;
         }
 
         /// <summary>
@@ -34,27 +36,26 @@ namespace ctwebplayer
         private void InitializeUI()
         {
             // 显示版本信息
-            lblCurrentVersion.Text = $"当前版本: {CTWebPlayer.Version.FullVersion}";
-            lblNewVersion.Text = $"最新版本: {_updateInfo.Version}";
-            lblReleaseDate.Text = $"发布时间: {_updateInfo.PublishedAt:yyyy-MM-dd HH:mm}";
+            lblCurrentVersion.Text = LanguageManager.Instance.GetString("UpdateForm.CurrentVersionLabel") + CTWebPlayer.Version.FullVersion;
+            lblNewVersion.Text = LanguageManager.Instance.GetString("UpdateForm.NewVersionLabel") + _updateInfo.Version;
+            lblReleaseDate.Text = LanguageManager.Instance.GetString("UpdateForm.ReleaseDateLabel") + _updateInfo.PublishedAt.ToString("yyyy-MM-dd HH:mm");
             
             // 显示文件信息
-            lblFileName.Text = $"文件名: {_updateInfo.FileName}";
-            lblFileSize.Text = $"文件大小: {_updateInfo.GetFormattedFileSize()}";
+            lblFileName.Text = LanguageManager.Instance.GetString("UpdateForm.FileNameLabel") + _updateInfo.FileName;
+            lblFileSize.Text = LanguageManager.Instance.GetString("UpdateForm.FileSizeLabel") + _updateInfo.GetFormattedFileSize();
             
             // 显示更新说明
             txtReleaseNotes.Text = _updateInfo.ReleaseNotes;
             
             // 初始化进度条
             progressBar.Value = 0;
-            lblProgress.Text = "准备下载...";
+            lblProgress.Text = LanguageManager.Instance.GetString("UpdateForm.ProgressPreparing");
             
             // 根据是否为强制更新设置按钮
             if (_updateInfo.IsUpdateMandatory())
             {
                 btnSkip.Visible = false;
                 btnClose.Visible = false;
-                lblMandatory.Text = "这是一个强制更新，必须安装后才能继续使用。";
                 lblMandatory.Visible = true;
             }
             else
@@ -79,8 +80,8 @@ namespace ctwebplayer
                 // 取消下载
                 _updateManager.CancelDownload();
                 _isDownloading = false;
-                btnDownload.Text = "下载更新";
-                lblProgress.Text = "下载已取消";
+                btnDownload.Text = LanguageManager.Instance.GetString("UpdateForm.DownloadButton");
+                lblProgress.Text = LanguageManager.Instance.GetString("UpdateForm.DownloadCancelled");
                 progressBar.Value = 0;
                 return;
             }
@@ -88,11 +89,11 @@ namespace ctwebplayer
             try
             {
                 _isDownloading = true;
-                btnDownload.Text = "取消下载";
+                btnDownload.Text = LanguageManager.Instance.GetString("UpdateForm_btnDownload_Cancel");
                 btnSkip.Enabled = false;
                 btnInstall.Enabled = false;
                 
-                lblProgress.Text = "正在下载...";
+                lblProgress.Text = LanguageManager.Instance.GetString("UpdateForm_lblProgress_Downloading");
                 progressBar.Value = 0;
 
                 // 异步下载更新
@@ -103,13 +104,13 @@ namespace ctwebplayer
                 btnDownload.Visible = false;
                 btnInstall.Enabled = true;
                 btnInstall.Visible = true;
-                lblProgress.Text = "下载完成！";
+                lblProgress.Text = LanguageManager.Instance.GetString("UpdateForm_lblProgress_Complete");
                 progressBar.Value = 100;
                 
                 // 显示提示
                 MessageBox.Show(
-                    "更新下载完成！\n\n点击\"安装更新\"按钮将重启程序并应用更新。",
-                    "下载完成",
+                    LanguageManager.Instance.GetString("UpdateForm_Msg_DownloadComplete"),
+                    LanguageManager.Instance.GetString("UpdateForm_Msg_DownloadCompleteTitle"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 );
@@ -117,16 +118,16 @@ namespace ctwebplayer
             catch (Exception ex)
             {
                 _isDownloading = false;
-                btnDownload.Text = "下载更新";
+                btnDownload.Text = LanguageManager.Instance.GetString("UpdateForm_btnDownload");
                 btnDownload.Enabled = true;
                 btnSkip.Enabled = true;
                 progressBar.Value = 0;
                 
-                lblProgress.Text = "下载失败";
+                lblProgress.Text = LanguageManager.Instance.GetString("UpdateForm_lblProgress_Failed");
                 
                 MessageBox.Show(
-                    $"下载更新失败：\n{ex.Message}",
-                    "错误",
+                    string.Format(LanguageManager.Instance.GetString("UpdateForm_Msg_DownloadError"), ex.Message),
+                    LanguageManager.Instance.GetString("UpdateForm_Msg_ErrorTitle"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
@@ -141,8 +142,8 @@ namespace ctwebplayer
             if (string.IsNullOrEmpty(_downloadedFilePath))
             {
                 MessageBox.Show(
-                    "没有找到下载的更新文件。",
-                    "错误",
+                    LanguageManager.Instance.GetString("UpdateForm_Msg_NoFile"),
+                    LanguageManager.Instance.GetString("UpdateForm_Msg_ErrorTitle"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
@@ -150,8 +151,8 @@ namespace ctwebplayer
             }
 
             var result = MessageBox.Show(
-                "安装更新将关闭程序并重新启动。\n\n是否继续？",
-                "确认安装",
+                LanguageManager.Instance.GetString("UpdateForm_Msg_ConfirmInstall"),
+                LanguageManager.Instance.GetString("UpdateForm_Msg_ConfirmInstallTitle"),
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
             );
@@ -166,8 +167,8 @@ namespace ctwebplayer
                 catch (Exception ex)
                 {
                     MessageBox.Show(
-                        $"安装更新失败：\n{ex.Message}",
-                        "错误",
+                        string.Format(LanguageManager.Instance.GetString("UpdateForm_Msg_InstallError"), ex.Message),
+                        LanguageManager.Instance.GetString("UpdateForm_Msg_ErrorTitle"),
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
                     );
@@ -181,8 +182,8 @@ namespace ctwebplayer
         private void btnSkip_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show(
-                "确定要跳过此更新吗？\n\n您可以稍后通过菜单再次检查更新。",
-                "跳过更新",
+                LanguageManager.Instance.GetString("UpdateForm_Msg_ConfirmSkip"),
+                LanguageManager.Instance.GetString("UpdateForm_Msg_ConfirmSkipTitle"),
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
             );
@@ -221,7 +222,7 @@ namespace ctwebplayer
             var downloaded = FormatBytes(e.BytesReceived);
             var total = FormatBytes(e.TotalBytesToReceive);
             
-            lblProgress.Text = $"正在下载... {downloaded} / {total} ({e.ProgressPercentage}%)";
+            lblProgress.Text = string.Format(LanguageManager.Instance.GetString("UpdateForm_lblProgress_Progress"), downloaded, total, e.ProgressPercentage);
         }
 
         /// <summary>
@@ -250,8 +251,8 @@ namespace ctwebplayer
             if (_isDownloading)
             {
                 var result = MessageBox.Show(
-                    "正在下载更新，确定要取消吗？",
-                    "确认取消",
+                    LanguageManager.Instance.GetString("UpdateForm_Msg_ConfirmCancel"),
+                    LanguageManager.Instance.GetString("UpdateForm_Msg_ConfirmCancelTitle"),
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question
                 );
@@ -266,6 +267,20 @@ namespace ctwebplayer
             }
 
             base.OnFormClosing(e);
+        }
+
+        private void OnLanguageChanged(object sender, EventArgs e)
+        {
+            LanguageManager.Instance.ApplyToForm(this);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                LanguageManager.Instance.LanguageChanged -= OnLanguageChanged;
+            }
+            base.Dispose(disposing);
         }
 
     }

@@ -56,6 +56,8 @@ namespace ctwebplayer
             chkEnableLogging = new CheckBox();
             tabInterface = new TabPage();
             lblSizeNote = new Label();
+            cmbLanguage = new ComboBox();
+            lblLanguage = new Label();
             btnResetSize = new Button();
             lblCurrentSize = new Label();
             lblHeightPx = new Label();
@@ -119,6 +121,7 @@ namespace ctwebplayer
             tabNetwork.Padding = new Padding(2, 3, 2, 3);
             tabNetwork.Size = new Size(350, 253);
             tabNetwork.TabIndex = 0;
+            tabNetwork.Tag = "SettingsForm_tabControl_tabNetwork";
             tabNetwork.Text = "网络";
             tabNetwork.UseVisualStyleBackColor = true;
             // 
@@ -130,22 +133,24 @@ namespace ctwebplayer
             linkLabel1.Size = new Size(104, 17);
             linkLabel1.TabIndex = 6;
             linkLabel1.TabStop = true;
+            linkLabel1.Tag = "SettingsForm_tabControl_tabNetwork_linkLabel1";
             linkLabel1.Text = "没有代理服务器？";
             linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // lblBaseURL
             // 
             lblBaseURL.AutoSize = true;
-            lblBaseURL.Location = new Point(16, 52);
+            lblBaseURL.Location = new Point(16, 43);
             lblBaseURL.Margin = new Padding(2, 0, 2, 0);
             lblBaseURL.Name = "lblBaseURL";
             lblBaseURL.Size = new Size(68, 17);
             lblBaseURL.TabIndex = 2;
+            lblBaseURL.Tag = "SettingsForm_tabControl_tabNetwork_lblBaseURL";
             lblBaseURL.Text = "主站域名：";
             // 
             // txtBaseURL
             // 
-            txtBaseURL.Location = new Point(82, 49);
+            txtBaseURL.Location = new Point(16, 61);
             txtBaseURL.Margin = new Padding(2, 3, 2, 3);
             txtBaseURL.Name = "txtBaseURL";
             txtBaseURL.PlaceholderText = "例如: https://game.ero-labs.live";
@@ -160,6 +165,7 @@ namespace ctwebplayer
             chkAutoIframeNav.Name = "chkAutoIframeNav";
             chkAutoIframeNav.Size = new Size(156, 21);
             chkAutoIframeNav.TabIndex = 0;
+            chkAutoIframeNav.Tag = "SettingsForm_tabControl_tabNetwork_chkAutoIframeNav";
             chkAutoIframeNav.Text = "自动导航到 iframe 内容";
             chkAutoIframeNav.UseVisualStyleBackColor = true;
             // 
@@ -171,6 +177,7 @@ namespace ctwebplayer
             chkEnableProxy.Name = "chkEnableProxy";
             chkEnableProxy.Size = new Size(111, 21);
             chkEnableProxy.TabIndex = 4;
+            chkEnableProxy.Tag = "SettingsForm_tabControl_tabNetwork_chkEnableProxy";
             chkEnableProxy.Text = "启用代理服务器";
             chkEnableProxy.UseVisualStyleBackColor = true;
             chkEnableProxy.CheckedChanged += ChkEnableProxy_CheckedChanged;
@@ -192,6 +199,7 @@ namespace ctwebplayer
             grpProxySettings.Size = new Size(319, 132);
             grpProxySettings.TabIndex = 5;
             grpProxySettings.TabStop = false;
+            grpProxySettings.Tag = "SettingsForm_tabControl_tabNetwork_grpProxySettings";
             grpProxySettings.Text = "代理服务器设置";
             // 
             // lblProxyNote
@@ -202,6 +210,7 @@ namespace ctwebplayer
             lblProxyNote.Name = "lblProxyNote";
             lblProxyNote.Size = new Size(288, 33);
             lblProxyNote.TabIndex = 6;
+            lblProxyNote.Tag = "SettingsForm_tabControl_tabNetwork_grpProxySettings_lblProxyNote";
             lblProxyNote.Text = "注意：优先使用SOCKS5代理，其次是HTTP/HTTPS代理。\r\n更改代理设置后需要重启浏览器才能生效。";
             // 
             // txtSocks5
@@ -220,6 +229,7 @@ namespace ctwebplayer
             lblSocks5.Name = "lblSocks5";
             lblSocks5.Size = new Size(62, 24);
             lblSocks5.TabIndex = 4;
+            lblSocks5.Tag = "SettingsForm_tabControl_tabNetwork_grpProxySettings_lblSocks5";
             lblSocks5.Text = "SOCKS5 代理:";
             lblSocks5.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -239,6 +249,7 @@ namespace ctwebplayer
             lblHttpsProxy.Name = "lblHttpsProxy";
             lblHttpsProxy.Size = new Size(58, 24);
             lblHttpsProxy.TabIndex = 2;
+            lblHttpsProxy.Tag = "SettingsForm_tabControl_tabNetwork_grpProxySettings_lblHttpsProxy";
             lblHttpsProxy.Text = "HTTPS:";
             lblHttpsProxy.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -258,6 +269,7 @@ namespace ctwebplayer
             lblHttpProxy.Name = "lblHttpProxy";
             lblHttpProxy.Size = new Size(62, 24);
             lblHttpProxy.TabIndex = 0;
+            lblHttpProxy.Tag = "SettingsForm_tabControl_tabNetwork_grpProxySettings_lblHttpProxy";
             lblHttpProxy.Text = "HTTP:";
             lblHttpProxy.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -278,6 +290,7 @@ namespace ctwebplayer
             tabLogging.Padding = new Padding(2, 3, 2, 3);
             tabLogging.Size = new Size(350, 253);
             tabLogging.TabIndex = 1;
+            tabLogging.Tag = "SettingsForm_tabControl_tabLogging";
             tabLogging.Text = "日志";
             tabLogging.UseVisualStyleBackColor = true;
             // 
@@ -289,6 +302,7 @@ namespace ctwebplayer
             chkDebugMode.Name = "chkDebugMode";
             chkDebugMode.Size = new Size(90, 21);
             chkDebugMode.TabIndex = 8;
+            chkDebugMode.Tag = "SettingsForm_tabControl_tabLogging_chkDebugMode";
             chkDebugMode.Text = "Debug模式";
             toolTip1.SetToolTip(chkDebugMode, "开启后将记录所有HTTP请求及缓存状态到request.log文件");
             chkDebugMode.UseVisualStyleBackColor = true;
@@ -300,6 +314,7 @@ namespace ctwebplayer
             btnClearLogs.Name = "btnClearLogs";
             btnClearLogs.Size = new Size(78, 28);
             btnClearLogs.TabIndex = 7;
+            btnClearLogs.Tag = "SettingsForm_tabControl_tabLogging_btnClearLogs";
             btnClearLogs.Text = "清理日志";
             btnClearLogs.UseVisualStyleBackColor = true;
             btnClearLogs.Click += BtnClearLogs_Click;
@@ -311,17 +326,19 @@ namespace ctwebplayer
             btnViewLogs.Name = "btnViewLogs";
             btnViewLogs.Size = new Size(78, 28);
             btnViewLogs.TabIndex = 6;
+            btnViewLogs.Tag = "SettingsForm_tabControl_tabLogging_btnViewLogs";
             btnViewLogs.Text = "查看日志";
             btnViewLogs.UseVisualStyleBackColor = true;
             btnViewLogs.Click += BtnViewLogs_Click;
             // 
             // lblMB
-            // 
+            //
             lblMB.Location = new Point(163, 94);
             lblMB.Margin = new Padding(2, 0, 2, 0);
             lblMB.Name = "lblMB";
             lblMB.Size = new Size(23, 24);
             lblMB.TabIndex = 5;
+            lblMB.Tag = "SettingsForm_tabControl_tabLogging_lblMB";
             lblMB.Text = "MB";
             lblMB.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -342,6 +359,7 @@ namespace ctwebplayer
             lblMaxFileSize.Name = "lblMaxFileSize";
             lblMaxFileSize.Size = new Size(62, 24);
             lblMaxFileSize.TabIndex = 3;
+            lblMaxFileSize.Tag = "SettingsForm_tabControl_tabLogging_lblMaxFileSize";
             lblMaxFileSize.Text = "最大文件大小:";
             lblMaxFileSize.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -363,6 +381,7 @@ namespace ctwebplayer
             lblLogLevel.Name = "lblLogLevel";
             lblLogLevel.Size = new Size(62, 24);
             lblLogLevel.TabIndex = 1;
+            lblLogLevel.Tag = "SettingsForm_tabControl_tabLogging_lblLogLevel";
             lblLogLevel.Text = "日志级别:";
             lblLogLevel.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -376,6 +395,7 @@ namespace ctwebplayer
             chkEnableLogging.Name = "chkEnableLogging";
             chkEnableLogging.Size = new Size(99, 21);
             chkEnableLogging.TabIndex = 0;
+            chkEnableLogging.Tag = "SettingsForm_tabControl_tabLogging_chkEnableLogging";
             chkEnableLogging.Text = "启用日志记录";
             chkEnableLogging.UseVisualStyleBackColor = true;
             chkEnableLogging.CheckedChanged += ChkEnableLogging_CheckedChanged;
@@ -383,6 +403,8 @@ namespace ctwebplayer
             // tabInterface
             // 
             tabInterface.Controls.Add(lblSizeNote);
+            tabInterface.Controls.Add(cmbLanguage);
+            tabInterface.Controls.Add(lblLanguage);
             tabInterface.Controls.Add(btnResetSize);
             tabInterface.Controls.Add(lblCurrentSize);
             tabInterface.Controls.Add(lblHeightPx);
@@ -398,52 +420,80 @@ namespace ctwebplayer
             tabInterface.Padding = new Padding(2, 3, 2, 3);
             tabInterface.Size = new Size(350, 253);
             tabInterface.TabIndex = 2;
+            tabInterface.Tag = "SettingsForm_tabControl_tabInterface";
             tabInterface.Text = "界面";
             tabInterface.UseVisualStyleBackColor = true;
             // 
             // lblSizeNote
-            // 
+            //
             lblSizeNote.ForeColor = Color.Gray;
             lblSizeNote.Location = new Point(16, 189);
             lblSizeNote.Margin = new Padding(2, 0, 2, 0);
             lblSizeNote.Name = "lblSizeNote";
             lblSizeNote.Size = new Size(319, 38);
             lblSizeNote.TabIndex = 9;
-            lblSizeNote.Text = "注意：更改窗口大小后，需要重启应用才能生效。\r\n当前窗口大小：1136 x 640 像素";
+            lblSizeNote.Tag = "SettingsForm_tabControl_tabInterface_lblSizeNote";
+            lblSizeNote.Text = "注意：更改窗口大小后，需要重启应用才能生效。\r\n当前窗口大小：1236 x 640 像素";
+            // 
+            // cmbLanguage
+            // 
+            cmbLanguage.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbLanguage.FormattingEnabled = true;
+            cmbLanguage.Items.AddRange(new object[] { "简体中文", "繁体中文", "English", "日本語", "한국어" });
+            cmbLanguage.Location = new Point(62, 19);
+            cmbLanguage.Margin = new Padding(2, 3, 2, 3);
+            cmbLanguage.Name = "cmbLanguage";
+            cmbLanguage.Size = new Size(150, 25);
+            cmbLanguage.TabIndex = 1;
+            cmbLanguage.Tag = "SettingsForm_tabControl_tabInterface_cmbLanguage";
+            // 
+            // lblLanguage
+            // 
+            lblLanguage.AutoSize = true;
+            lblLanguage.Location = new Point(16, 19);
+            lblLanguage.Margin = new Padding(2, 0, 2, 0);
+            lblLanguage.Name = "lblLanguage";
+            lblLanguage.Size = new Size(35, 17);
+            lblLanguage.TabIndex = 0;
+            lblLanguage.Tag = "SettingsForm_tabControl_tabInterface_lblLanguage";
+            lblLanguage.Text = "语言:";
             // 
             // btnResetSize
-            // 
+            //
             btnResetSize.Location = new Point(16, 142);
             btnResetSize.Margin = new Padding(2, 3, 2, 3);
             btnResetSize.Name = "btnResetSize";
             btnResetSize.Size = new Size(78, 28);
             btnResetSize.TabIndex = 8;
+            btnResetSize.Tag = "SettingsForm_tabControl_tabInterface_btnResetSize";
             btnResetSize.Text = "重置大小";
             btnResetSize.UseVisualStyleBackColor = true;
             btnResetSize.Click += BtnResetSize_Click;
             // 
             // lblCurrentSize
-            // 
+            //
             lblCurrentSize.Location = new Point(101, 146);
             lblCurrentSize.Margin = new Padding(2, 0, 2, 0);
             lblCurrentSize.Name = "lblCurrentSize";
             lblCurrentSize.Size = new Size(156, 19);
             lblCurrentSize.TabIndex = 7;
-            lblCurrentSize.Text = "当前大小：1136 x 640";
+            lblCurrentSize.Tag = "SettingsForm_tabControl_tabInterface_lblCurrentSize";
+            lblCurrentSize.Text = "当前大小：1236 x 640";
             // 
             // lblHeightPx
-            // 
-            lblHeightPx.Location = new Point(280, 57);
+            //
+            lblHeightPx.Location = new Point(274, 112);
             lblHeightPx.Margin = new Padding(2, 0, 2, 0);
             lblHeightPx.Name = "lblHeightPx";
             lblHeightPx.Size = new Size(31, 24);
             lblHeightPx.TabIndex = 6;
+            lblHeightPx.Tag = "SettingsForm_tabControl_tabInterface_lblHeightPx";
             lblHeightPx.Text = "像素";
             lblHeightPx.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // numWindowHeight
             // 
-            numWindowHeight.Location = new Point(214, 57);
+            numWindowHeight.Location = new Point(208, 112);
             numWindowHeight.Margin = new Padding(2, 3, 2, 3);
             numWindowHeight.Maximum = new decimal(new int[] { 2160, 0, 0, 0 });
             numWindowHeight.Minimum = new decimal(new int[] { 600, 0, 0, 0 });
@@ -454,27 +504,29 @@ namespace ctwebplayer
             // 
             // lblHeight
             // 
-            lblHeight.Location = new Point(171, 57);
+            lblHeight.Location = new Point(165, 112);
             lblHeight.Margin = new Padding(2, 0, 2, 0);
             lblHeight.Name = "lblHeight";
             lblHeight.Size = new Size(39, 24);
             lblHeight.TabIndex = 4;
+            lblHeight.Tag = "SettingsForm_tabControl_tabInterface_lblHeight";
             lblHeight.Text = "高度:";
             lblHeight.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblWidthPx
-            // 
-            lblWidthPx.Location = new Point(124, 57);
+            //
+            lblWidthPx.Location = new Point(118, 112);
             lblWidthPx.Margin = new Padding(2, 0, 2, 0);
             lblWidthPx.Name = "lblWidthPx";
             lblWidthPx.Size = new Size(31, 24);
             lblWidthPx.TabIndex = 3;
+            lblWidthPx.Tag = "SettingsForm_tabControl_tabInterface_lblWidthPx";
             lblWidthPx.Text = "像素";
             lblWidthPx.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // numWindowWidth
             // 
-            numWindowWidth.Location = new Point(58, 57);
+            numWindowWidth.Location = new Point(52, 112);
             numWindowWidth.Margin = new Padding(2, 3, 2, 3);
             numWindowWidth.Maximum = new decimal(new int[] { 3840, 0, 0, 0 });
             numWindowWidth.Minimum = new decimal(new int[] { 800, 0, 0, 0 });
@@ -485,22 +537,24 @@ namespace ctwebplayer
             // 
             // lblWidth
             // 
-            lblWidth.Location = new Point(16, 57);
+            lblWidth.Location = new Point(10, 112);
             lblWidth.Margin = new Padding(2, 0, 2, 0);
             lblWidth.Name = "lblWidth";
             lblWidth.Size = new Size(39, 24);
             lblWidth.TabIndex = 1;
+            lblWidth.Tag = "SettingsForm_tabControl_tabInterface_lblWidth";
             lblWidth.Text = "宽度:";
             lblWidth.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblWindowSize
             // 
             lblWindowSize.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 134);
-            lblWindowSize.Location = new Point(16, 19);
+            lblWindowSize.Location = new Point(16, 83);
             lblWindowSize.Margin = new Padding(2, 0, 2, 0);
             lblWindowSize.Name = "lblWindowSize";
             lblWindowSize.Size = new Size(78, 24);
-            lblWindowSize.TabIndex = 0;
+            lblWindowSize.TabIndex = 2;
+            lblWindowSize.Tag = "SettingsForm_tabControl_tabInterface_lblWindowSize";
             lblWindowSize.Text = "窗口大小设置";
             // 
             // tabLogin
@@ -512,6 +566,7 @@ namespace ctwebplayer
             tabLogin.Padding = new Padding(2, 3, 2, 3);
             tabLogin.Size = new Size(350, 253);
             tabLogin.TabIndex = 3;
+            tabLogin.Tag = "SettingsForm_tabControl_tabLogin";
             tabLogin.Text = "登录引导";
             tabLogin.UseVisualStyleBackColor = true;
             // 
@@ -532,6 +587,7 @@ namespace ctwebplayer
             grpLoginSettings.Size = new Size(319, 215);
             grpLoginSettings.TabIndex = 0;
             grpLoginSettings.TabStop = false;
+            grpLoginSettings.Tag = "SettingsForm_tabControl_tabLogin_grpLoginSettings";
             grpLoginSettings.Text = "登录引导设置";
             // 
             // chkEnableLogin
@@ -542,6 +598,7 @@ namespace ctwebplayer
             chkEnableLogin.Name = "chkEnableLogin";
             chkEnableLogin.Size = new Size(99, 21);
             chkEnableLogin.TabIndex = 0;
+            chkEnableLogin.Tag = "SettingsForm_tabControl_tabLogin_grpLoginSettings_chkEnableLogin";
             chkEnableLogin.Text = "启用登录引导";
             chkEnableLogin.UseVisualStyleBackColor = true;
             chkEnableLogin.CheckedChanged += ChkEnableLogin_CheckedChanged;
@@ -554,6 +611,7 @@ namespace ctwebplayer
             chkShowSkipButton.Name = "chkShowSkipButton";
             chkShowSkipButton.Size = new Size(99, 21);
             chkShowSkipButton.TabIndex = 1;
+            chkShowSkipButton.Tag = "SettingsForm_tabControl_tabLogin_grpLoginSettings_chkShowSkipButton";
             chkShowSkipButton.Text = "显示跳过按钮";
             chkShowSkipButton.UseVisualStyleBackColor = true;
             // 
@@ -564,6 +622,7 @@ namespace ctwebplayer
             lblCookieName.Name = "lblCookieName";
             lblCookieName.Size = new Size(87, 24);
             lblCookieName.TabIndex = 2;
+            lblCookieName.Tag = "SettingsForm_tabControl_tabLogin_grpLoginSettings_lblCookieName";
             lblCookieName.Text = "Cookie 名称:";
             lblCookieName.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -583,6 +642,7 @@ namespace ctwebplayer
             lblLoginUrl.Name = "lblLoginUrl";
             lblLoginUrl.Size = new Size(87, 24);
             lblLoginUrl.TabIndex = 4;
+            lblLoginUrl.Tag = "SettingsForm_tabControl_tabLogin_grpLoginSettings_lblLoginUrl";
             lblLoginUrl.Text = "登录页路径:";
             lblLoginUrl.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -602,6 +662,7 @@ namespace ctwebplayer
             lblRegisterUrl.Name = "lblRegisterUrl";
             lblRegisterUrl.Size = new Size(87, 24);
             lblRegisterUrl.TabIndex = 6;
+            lblRegisterUrl.Tag = "SettingsForm_tabControl_tabLogin_grpLoginSettings_lblRegisterUrl";
             lblRegisterUrl.Text = "注册页地址:";
             lblRegisterUrl.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -623,6 +684,7 @@ namespace ctwebplayer
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(58, 28);
             btnSave.TabIndex = 1;
+            btnSave.Tag = "SettingsForm_btnSave";
             btnSave.Text = "保存";
             btnSave.UseVisualStyleBackColor = true;
             btnSave.Click += BtnSave_Click;
@@ -635,6 +697,7 @@ namespace ctwebplayer
             btnApply.Name = "btnApply";
             btnApply.Size = new Size(58, 28);
             btnApply.TabIndex = 2;
+            btnApply.Tag = "SettingsForm_btnApply";
             btnApply.Text = "应用";
             btnApply.UseVisualStyleBackColor = true;
             btnApply.Click += BtnApply_Click;
@@ -648,6 +711,7 @@ namespace ctwebplayer
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(58, 28);
             btnCancel.TabIndex = 3;
+            btnCancel.Tag = "SettingsForm_btnCancel";
             btnCancel.Text = "取消";
             btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -668,6 +732,7 @@ namespace ctwebplayer
             MinimizeBox = false;
             Name = "SettingsForm";
             StartPosition = FormStartPosition.CenterParent;
+            Tag = "SettingsForm";
             Text = "设置";
             tabControl.ResumeLayout(false);
             tabNetwork.ResumeLayout(false);
@@ -678,6 +743,7 @@ namespace ctwebplayer
             tabLogging.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numMaxFileSize).EndInit();
             tabInterface.ResumeLayout(false);
+            tabInterface.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numWindowHeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)numWindowWidth).EndInit();
             tabLogin.ResumeLayout(false);
@@ -724,6 +790,8 @@ namespace ctwebplayer
         private System.Windows.Forms.NumericUpDown numWindowWidth;
         private System.Windows.Forms.Label lblWidth;
         private System.Windows.Forms.Label lblWindowSize;
+        private System.Windows.Forms.Label lblLanguage;
+        private System.Windows.Forms.ComboBox cmbLanguage;
         private System.Windows.Forms.TabPage tabLogin;
         private System.Windows.Forms.GroupBox grpLoginSettings;
         private System.Windows.Forms.CheckBox chkEnableLogin;

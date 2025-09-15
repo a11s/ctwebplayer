@@ -138,6 +138,7 @@ namespace ctwebplayer
                 },
                 DebugMode = false,
                 BaseURL = "https://mg.ero-labs.live",
+                Language = "", // 空字符串表示自动检测
                 Login = new LoginConfig
                 {
                     Enabled = true,
@@ -272,6 +273,11 @@ namespace ctwebplayer
         /// 基础URL
         /// </summary>
         public string BaseURL { get; set; } = "https://game.ero-labs.live";
+
+        /// <summary>
+        /// 语言设置 (en-US, zh-CN, zh-TW, ja, ko)
+        /// </summary>
+        public string Language { get; set; } = string.Empty;
 
         /// <summary>
         /// 调试模式（开启后会记录请求日志）

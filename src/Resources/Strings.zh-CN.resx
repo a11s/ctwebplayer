@@ -1,0 +1,965 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- 应用程序标题 -->
+  <data name="AppTitle" xml:space="preserve">
+    <value>CT 网页播放器</value>
+  </data>
+  
+  <!-- 按钮 -->
+  <data name="Button_OK" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Button_Apply" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="Button_Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Button_Load" xml:space="preserve">
+    <value>加载</value>
+  </data>
+  <data name="Button_Browse" xml:space="preserve">
+    <value>浏览...</value>
+  </data>
+  
+  <!-- 菜单项 -->
+  <data name="Menu_Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Menu_Language" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="Menu_File" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="Menu_Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="Menu_View" xml:space="preserve">
+    <value>视图</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="Menu_About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="Menu_Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  
+  <!-- 设置 -->
+  <data name="Settings_Title" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>常规</value>
+  </data>
+  <data name="Settings_Advanced" xml:space="preserve">
+    <value>高级</value>
+  </data>
+  <data name="Settings_Proxy" xml:space="preserve">
+    <value>代理设置</value>
+  </data>
+  <data name="Settings_Cache" xml:space="preserve">
+    <value>缓存设置</value>
+  </data>
+  
+  <!-- 消息 -->
+  <data name="Message_Success" xml:space="preserve">
+    <value>操作成功完成。</value>
+  </data>
+  <data name="Message_Error" xml:space="preserve">
+    <value>发生错误。</value>
+  </data>
+  <data name="Message_Warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="Message_Info" xml:space="preserve">
+    <value>信息</value>
+  </data>
+  <data name="Message_Confirm" xml:space="preserve">
+    <value>您确定要继续吗？</value>
+  </data>
+  
+  <!-- 登录 -->
+  <data name="Login_Title" xml:space="preserve">
+    <value>登录</value>
+  </data>
+  <data name="Login_Username" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="Login_Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="Login_RememberMe" xml:space="preserve">
+    <value>记住我</value>
+  </data>
+  
+  <!-- 常用标签 -->
+  <data name="Label_Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="Label_Description" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="Label_Version" xml:space="preserve">
+    <value>版本</value>
+  </data>
+  <data name="Label_Status" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="Label_Progress" xml:space="preserve">
+    <value>进度</value>
+  </data>
+  <!-- Form1 - 主窗体 -->
+  <data name="Form1_Title" xml:space="preserve">
+    <value>Unity3D WebPlayer 专属浏览器</value>
+  </data>
+  
+  <!-- Form1 - 导航按钮 -->
+  <data name="Form1_toolStrip1_btnHome" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="Form1_toolStrip1_btnBack" xml:space="preserve">
+    <value>后退</value>
+  </data>
+  <data name="Form1_Button_Back" xml:space="preserve">
+    <value>后退</value>
+  </data>
+  <data name="Form1_toolStrip1_btnForward" xml:space="preserve">
+    <value>前进</value>
+  </data>
+  <data name="Form1_toolStrip1_btnRefresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="Form1_toolStrip1_btnGo" xml:space="preserve">
+    <value>转到</value>
+  </data>
+  <data name="Form1_Button_Go" xml:space="preserve">
+    <value>转到</value>
+  </data>
+  <data name="Form1_toolStrip1_btnSettings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities" xml:space="preserve">
+    <value>工具</value>
+  </data>
+  <data name="Form1_Button_Tools" xml:space="preserve">
+    <value>实用工具</value>
+  </data>
+  
+  <!-- Form1 - 菜单项 -->
+  <data name="Form1_toolStrip1_btnUtilities_toggleFullScreenMenuItem" xml:space="preserve">
+    <value>全屏切换 (F11)</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_toggleMuteMenuItem" xml:space="preserve">
+    <value>静音切换 (F4)</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_logoutMenuItem" xml:space="preserve">
+    <value>退出登录</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_forumMenuItem" xml:space="preserve">
+    <value>官方讨论区</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_discordMenuItem" xml:space="preserve">
+    <value>官方Discord</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_githubMenuItem" xml:space="preserve">
+    <value>GitHub源码</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_mobileDownloadMenuItem" xml:space="preserve">
+    <value>手机版下载</value>
+  </data>
+  <data name="Form1_toolStrip1_btnUtilities_checkUpdateMenuItem" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  
+  <!-- Form1 - 状态消息 -->
+  <data name="Form1_Status_InitializingBrowser" xml:space="preserve">
+    <value>正在初始化浏览器...</value>
+  </data>
+  <data name="Form1_Status_Loading" xml:space="preserve">
+    <value>正在加载...</value>
+  </data>
+  <data name="Form1_Status_LoadComplete" xml:space="preserve">
+    <value>加载完成</value>
+  </data>
+  <data name="Form1_statusStrip1_statusLabel" xml:space="preserve">
+    <value>就绪</value>
+  </data>
+  <data name="Form1_Status_Ready" xml:space="preserve">
+    <value>就绪</value>
+  </data>
+  <data name="Form1_Status_BrowserInitFailed" xml:space="preserve">
+    <value>浏览器初始化失败</value>
+  </data>
+  <data name="Form1_Status_LoadFailed" xml:space="preserve">
+    <value>加载失败: {0}</value>
+  </data>
+  <data name="Form1_Status_Downloading" xml:space="preserve">
+    <value>正在下载: {0}</value>
+  </data>
+  <data name="Form1_Status_CheckingUpdate" xml:space="preserve">
+    <value>正在检查更新...</value>
+  </data>
+  <data name="Form1_Status_CheckUpdateFailed" xml:space="preserve">
+    <value>检查更新失败</value>
+  </data>
+  <data name="Form1_Status_LoggingOut" xml:space="preserve">
+    <value>正在退出登录...</value>
+  </data>
+  <data name="Form1_Status_LoggedOut" xml:space="preserve">
+    <value>已退出登录</value>
+  </data>
+  <data name="Form1_Status_LogoutFailed" xml:space="preserve">
+    <value>退出登录失败</value>
+  </data>
+  
+  <!-- Form1 - 缓存状态 -->
+  <data name="Form1_Cache_Status" xml:space="preserve">
+    <value>缓存命中：{0} | 未命中：{1} | 命中率：{2}% | 缓存大小：{3}</value>
+  </data>
+  <data name="Form1_Proxy_Enabled" xml:space="preserve">
+    <value>代理：已启用</value>
+  </data>
+  <data name="Form1_Proxy_Disabled" xml:space="preserve">
+    <value>代理：已禁用</value>
+  </data>
+  <data name="Form1_Mute_On" xml:space="preserve">
+    <value>静音：开启</value>
+  </data>
+  <data name="Form1_Mute_Off" xml:space="preserve">
+    <value>静音：关闭</value>
+  </data>
+  
+  <!-- Form1 - 消息 -->
+  <data name="Form1_Msg_WebView2InitFailed" xml:space="preserve">
+    <value>WebView2初始化失败: {0}
+
+请确保已安装WebView2运行时。</value>
+  </data>
+  <data name="Form1_Msg_NavigationFailed" xml:space="preserve">
+    <value>无法导航到URL: {0}</value>
+  </data>
+  <data name="Form1_Msg_ConfirmClearCache" xml:space="preserve">
+    <value>确定要清理所有缓存吗？
+
+这将删除所有已缓存的静态资源。</value>
+  </data>
+  <data name="Form1_Msg_CacheCleared" xml:space="preserve">
+    <value>缓存已清理完成。</value>
+  </data>
+  <data name="Form1_Msg_ClearCacheError" xml:space="preserve">
+    <value>清理缓存时出错：{0}</value>
+  </data>
+  <data name="Form1_Msg_ConfirmLogout" xml:space="preserve">
+    <value>确定要退出登录吗？
+
+这将清除所有 Cookies 并返回登录页面。</value>
+  </data>
+  <data name="Form1_Msg_LogoutError" xml:space="preserve">
+    <value>退出登录时出错：{0}</value>
+  </data>
+  <data name="Form1_Msg_CheckUpdateError" xml:space="preserve">
+    <value>检查更新时出错：{0}</value>
+  </data>
+  <data name="Form1_Msg_OpenForumError" xml:space="preserve">
+    <value>打开官方讨论区时出错：{0}</value>
+  </data>
+  <data name="Form1_Msg_OpenDiscordError" xml:space="preserve">
+    <value>打开官方Discord时出错：{0}</value>
+  </data>
+  <data name="Form1_Msg_OpenGitHubError" xml:space="preserve">
+    <value>打开GitHub时出错：{0}</value>
+  </data>
+  <data name="Form1_Msg_OpenMobileDownloadError" xml:space="preserve">
+    <value>打开手机版下载页面时出错：{0}</value>
+  </data>
+  
+  <!-- Form1 - 全屏提示 -->
+  <data name="Form1_Tip_ExitFullScreen" xml:space="preserve">
+    <value>按 F11 退出全屏</value>
+  </data>
+  <data name="Form1_Tip_MuteOn" xml:space="preserve">
+    <value>静音已开启</value>
+  </data>
+  <data name="Form1_Tip_MuteOff" xml:space="preserve">
+    <value>静音已关闭</value>
+  </data>
+  
+  <!-- Form1 - 缓存信息对话框 -->
+  <data name="Form1_CacheInfo_Title" xml:space="preserve">
+    <value>缓存信息</value>
+  </data>
+  <data name="Form1_CacheInfo_Message" xml:space="preserve">
+    <value>缓存统计信息：
+
+缓存目录：./cache
+缓存大小：{0}
+缓存命中次数：{1}
+缓存未命中次数：{2}
+缓存命中率：{3}%
+
+缓存策略：
+- JavaScript和CSS文件（带版本号）：长期缓存
+- 图片和字体文件：长期缓存
+- API请求：不缓存</value>
+  </data>
+  
+  <!-- Form1 - 标题 -->
+  <data name="Form1_Title_Format" xml:space="preserve">
+    <value>{0} - Unity3D WebPlayer 专属浏览器</value>
+  </data>
+  <data name="Form1_Confirm_Title" xml:space="preserve">
+    <value>确认清理</value>
+  </data>
+  
+  <!-- SettingsForm - 设置窗口 -->
+  <data name="SettingsForm" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  
+  <!-- SettingsForm - 选项卡 -->
+  <data name="SettingsForm_tabControl_tabNetwork" xml:space="preserve">
+    <value>网络</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging" xml:space="preserve">
+    <value>日志</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface" xml:space="preserve">
+    <value>界面</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin" xml:space="preserve">
+    <value>登录引导</value>
+  </data>
+  
+  <!-- SettingsForm - 网络选项卡 -->
+  <data name="SettingsForm_tabControl_tabNetwork_chkAutoIframeNav" xml:space="preserve">
+    <value>启用自动导航到iframe</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_lblBaseURL" xml:space="preserve">
+    <value>主站域名：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_chkEnableProxy" xml:space="preserve">
+    <value>启用代理服务器</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings" xml:space="preserve">
+    <value>代理设置</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings_lblHttpProxy" xml:space="preserve">
+    <value>HTTP代理：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings_lblHttpsProxy" xml:space="preserve">
+    <value>HTTPS代理：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings_lblSocks5" xml:space="preserve">
+    <value>SOCKS5代理：</value>
+  </data>
+  
+  <!-- SettingsForm - 日志选项卡 -->
+  <data name="SettingsForm_tabControl_tabLogging_chkEnableLogging" xml:space="preserve">
+    <value>启用日志记录</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_lblLogLevel" xml:space="preserve">
+    <value>日志级别：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_lblMaxFileSize" xml:space="preserve">
+    <value>最大文件大小 (MB)：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_chkDebugMode" xml:space="preserve">
+    <value>启用Debug模式</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_btnViewLogs" xml:space="preserve">
+    <value>查看日志</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_btnClearLogs" xml:space="preserve">
+    <value>清理日志</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogging_lblMB" xml:space="preserve">
+    <value>MB</value>
+  </data>
+  
+  <!-- SettingsForm - 界面选项卡 -->
+  <data name="SettingsForm_tabControl_tabInterface_lblWindowSize" xml:space="preserve">
+    <value>窗口大小</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblWidth" xml:space="preserve">
+    <value>宽度：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblHeight" xml:space="preserve">
+    <value>高度：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblCurrentSize" xml:space="preserve">
+    <value>当前窗口大小: {0} x {1}</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_btnResetSize" xml:space="preserve">
+    <value>重置默认大小</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblLanguage" xml:space="preserve">
+    <value>语言：</value>
+  <data name="SettingsForm_tabControl_tabInterface_lblWidthPx" xml:space="preserve">
+    <value>像素</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblHeightPx" xml:space="preserve">
+    <value>像素</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabInterface_lblSizeNote" xml:space="preserve">
+    <value>注意：更改窗口大小后，需要重启应用才能生效。</value>
+  </data>
+  </data>
+  
+  <!-- SettingsForm - 登录选项卡 -->
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings" xml:space="preserve">
+    <value>登录引导设置</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_chkEnableLogin" xml:space="preserve">
+    <value>启用登录引导</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_chkShowSkipButton" xml:space="preserve">
+    <value>显示跳过按钮</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_lblCookieName" xml:space="preserve">
+    <value>Cookie名称：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_lblLoginUrl" xml:space="preserve">
+    <value>登录URL路径：</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabLogin_grpLoginSettings_lblRegisterUrl" xml:space="preserve">
+    <value>注册URL：</value>
+  </data>
+  
+  <!-- SettingsForm - 按钮 -->
+  <data name="SettingsForm_btnSave" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="SettingsForm_btnApply" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="SettingsForm_btnCancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  
+  <!-- SettingsForm - 验证消息 -->
+  <data name="SettingsForm_Network_InvalidBaseUrlFormat" xml:space="preserve">
+    <value>主站域名格式不正确。
+格式示例：https://game.ero-labs.live</value>
+  </data>
+  <data name="SettingsForm_Network_BaseUrlCannotBeEmpty" xml:space="preserve">
+    <value>主站域名不能为空。</value>
+  </data>
+  <data name="SettingsForm_Network_PleaseEnterProxyAddress" xml:space="preserve">
+    <value>请至少填写一个代理服务器地址。</value>
+  </data>
+  <data name="SettingsForm_Network_InvalidHttpProxyFormat" xml:space="preserve">
+    <value>HTTP代理地址格式不正确。
+格式示例：http://127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Network_InvalidHttpsProxyFormat" xml:space="preserve">
+    <value>HTTPS代理地址格式不正确。
+格式示例：http://127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Network_InvalidSocks5ProxyFormat" xml:space="preserve">
+    <value>SOCKS5代理地址格式不正确。
+格式示例：127.0.0.1:7890</value>
+  </data>
+  <data name="SettingsForm_Network_InputError" xml:space="preserve">
+    <value>输入错误</value>
+  </data>
+  
+  <!-- SettingsForm - 常规消息 -->
+  <data name="SettingsForm_Logs_ConfirmClearMessage" xml:space="preserve">
+    <value>确定要清理所有日志文件吗？
+
+这将删除所有历史日志记录。</value>
+  </data>
+  <data name="SettingsForm_Logs_ConfirmClearTitle" xml:space="preserve">
+    <value>确认清理</value>
+  </data>
+  <data name="SettingsForm_Logs_ClearSuccess" xml:space="preserve">
+    <value>日志文件已清理完成。</value>
+  </data>
+  <data name="SettingsForm_Logs_ClearFailed" xml:space="preserve">
+    <value>清理日志文件时出错：{0}</value>
+  </data>
+  <data name="SettingsForm_SaveFailed" xml:space="preserve">
+    <value>设置保存失败</value>
+  </data>
+  <data name="SettingsForm_Applied" xml:space="preserve">
+    <value>设置已应用。</value>
+  </data>
+  <data name="SettingsForm_Msg_RestartRequired" xml:space="preserve">
+    <value>以下设置需要重启应用程序才能生效：
+</value>
+  </data>
+  <data name="SettingsForm_Tab_Network" xml:space="preserve">
+    <value>网络</value>
+  </data>
+  <data name="SettingsForm_Tab_Display" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="SettingsForm_Msg_LanguageChanged" xml:space="preserve">
+    <value>语言已更改。部分界面元素将在重启后更新。</value>
+  </data>
+  
+  <!-- SettingsForm - 代理帮助 -->
+  <data name="SettingsForm_Network_ProxyServiceHint" xml:space="preserve">
+    <value>如果你能正常打开ero-labs网站就不需要代理服务器。如果您所处的地区屏蔽了ero-labs或者速度很慢，那么您可以尝试购买一个类似的服务
+需要我提供一个购买地址吗？</value>
+  </data>
+  <data name="SettingsForm_NavigateHint" xml:space="preserve">
+    <value>跳转提示</value>
+  </data>
+  <data name="SettingsForm_Display_CurrentWindowSize" xml:space="preserve">
+    <value>当前窗口大小</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_grpProxySettings_lblProxyNote" xml:space="preserve">
+    <value>注意：优先使用SOCKS5代理，其次是HTTP/HTTPS代理。
+更改代理设置后需要重启浏览器才能生效。</value>
+  </data>
+  <data name="SettingsForm_tabControl_tabNetwork_linkLabel1" xml:space="preserve">
+    <value>没有代理服务器？</value>
+  </data>
+  
+  <!-- LoginDialog - 登录引导对话框 -->
+  <data name="LoginDialog_Title" xml:space="preserve">
+    <value>登录引导</value>
+  </data>
+  <data name="LoginDialog_lblMessage" xml:space="preserve">
+    <value>检测到您尚未登录。
+您是否已有账号？</value>
+  </data>
+  <data name="LoginDialog_btnHasAccount" xml:space="preserve">
+    <value>是的，我有账号</value>
+  </data>
+  <data name="LoginDialog_btnNoAccount" xml:space="preserve">
+    <value>没有，我需要注册</value>
+  </data>
+  <data name="LoginDialog_btnSkip" xml:space="preserve">
+    <value>跳过</value>
+  </data>
+  
+  <!-- UpdateForm - 更新窗口 -->
+  <data name="UpdateForm" xml:space="preserve">
+    <value>软件更新</value>
+  </data>
+  <data name="UpdateForm_lblTitle" xml:space="preserve">
+    <value>发现新版本</value>
+  </data>
+  <data name="UpdateForm_grpVersionInfo" xml:space="preserve">
+    <value>版本信息</value>
+  </data>
+  <data name="UpdateForm_grpVersionInfo_lblCurrentVersion" xml:space="preserve">
+    <value>当前版本: </value>
+  </data>
+  <data name="UpdateForm_grpVersionInfo_lblNewVersion" xml:space="preserve">
+    <value>最新版本: </value>
+  </data>
+  <data name="UpdateForm_grpVersionInfo_lblReleaseDate" xml:space="preserve">
+    <value>发布时间: </value>
+  </data>
+  <data name="UpdateForm_grpFileInfo" xml:space="preserve">
+    <value>文件信息</value>
+  </data>
+  <data name="UpdateForm_grpFileInfo_lblFileName" xml:space="preserve">
+    <value>文件名: </value>
+  </data>
+  <data name="UpdateForm_grpFileInfo_lblFileSize" xml:space="preserve">
+    <value>文件大小: </value>
+  </data>
+  <data name="UpdateForm_grpReleaseNotes" xml:space="preserve">
+    <value>更新说明</value>
+  </data>
+  <data name="UpdateForm_lblMandatory" xml:space="preserve">
+    <value>这是一个强制更新，必须安装后才能继续使用。</value>
+  </data>
+  <data name="UpdateForm_btnDownload" xml:space="preserve">
+    <value>下载更新</value>
+  </data>
+  <data name="UpdateForm_btnDownload_Cancel" xml:space="preserve">
+    <value>取消下载</value>
+  </data>
+  <data name="UpdateForm_btnInstall" xml:space="preserve">
+    <value>安装更新</value>
+  </data>
+  <data name="UpdateForm_btnSkip" xml:space="preserve">
+    <value>跳过</value>
+  </data>
+  <data name="UpdateForm_btnClose" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Ready" xml:space="preserve">
+    <value>准备下载...</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Downloading" xml:space="preserve">
+    <value>正在下载...</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Progress" xml:space="preserve">
+    <value>正在下载... {0} / {1} ({2}%)</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Complete" xml:space="preserve">
+    <value>下载完成！</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Cancelled" xml:space="preserve">
+    <value>下载已取消</value>
+  </data>
+  <data name="UpdateForm_lblProgress_Failed" xml:space="preserve">
+    <value>下载失败</value>
+  </data>
+  <data name="UpdateForm_Msg_DownloadComplete" xml:space="preserve">
+    <value>更新下载完成！
+点击"安装更新"继续安装。</value>
+  </data>
+  <data name="UpdateForm_Msg_DownloadCompleteTitle" xml:space="preserve">
+    <value>下载完成</value>
+  </data>
+  <data name="UpdateForm_Msg_DownloadError" xml:space="preserve">
+    <value>下载更新失败：
+{0}</value>
+  </data>
+  <data name="UpdateForm_Msg_ErrorTitle" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="UpdateForm_Msg_NoFile" xml:space="preserve">
+    <value>没有找到下载的更新文件。</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmInstall" xml:space="preserve">
+    <value>安装更新将关闭程序并重新启动。
+是否继续？</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmInstallTitle" xml:space="preserve">
+    <value>确认安装</value>
+  </data>
+  <data name="UpdateForm_Msg_InstallError" xml:space="preserve">
+    <value>安装更新失败：
+{0}</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmSkip" xml:space="preserve">
+    <value>确定要跳过此更新吗？
+您可以稍后再次检查更新。</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmSkipTitle" xml:space="preserve">
+    <value>跳过更新</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmCancel" xml:space="preserve">
+    <value>正在下载更新，确定要取消吗？</value>
+  </data>
+  <data name="UpdateForm_Msg_ConfirmCancelTitle" xml:space="preserve">
+    <value>取消下载</value>
+  </data>
+  
+  <!-- LogViewerForm - 日志查看器 -->
+  <data name="LogViewerForm" xml:space="preserve">
+    <value>日志查看器</value>
+  </data>
+  <data name="LogViewerForm_topPanel_lblLogLevel" xml:space="preserve">
+    <value>日志级别：</value>
+  </data>
+  <data name="LogViewerForm_topPanel_chkAutoRefresh" xml:space="preserve">
+    <value>自动刷新</value>
+  </data>
+  <data name="LogViewerForm_topPanel_btnRefresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="LogViewerForm_topPanel_btnClear" xml:space="preserve">
+    <value>清空</value>
+  </data>
+  <data name="LogViewerForm_bottomPanel_btnClose" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="LogViewerForm_FileInfo" xml:space="preserve">
+    <value>文件大小: {0}</value>
+  </data>
+  <data name="LogViewerForm_NoFile" xml:space="preserve">
+    <value>日志文件不存在。</value>
+  </data>
+  <data name="LogViewerForm_ReadError" xml:space="preserve">
+    <value>读取日志文件时出错：{0}</value>
+  </data>
+  <data name="LogViewerForm_ClearConfirmation" xml:space="preserve">
+    <value>确定要清空日志文件吗？
+
+此操作不可恢复。</value>
+  </data>
+  <data name="LogViewerForm_ClearSuccess" xml:space="preserve">
+    <value>日志已清空。</value>
+  </data>
+  <data name="LogViewerForm_ClearError" xml:space="preserve">
+    <value>清空日志时出错：{0}</value>
+  </data>
+  <data name="LogViewerForm_ClearConfirmationTitle" xml:space="preserve">
+    <value>确认清空</value>
+  </data>
+  <data name="LogViewerForm_SuccessTitle" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="LogViewerForm_ErrorTitle" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="LogViewerForm_Title" xml:space="preserve">
+    <value>日志查看器</value>
+  </data>
+  
+  <!-- AboutForm - 关于窗口 -->
+  <data name="AboutForm_Title" xml:space="preserve">
+    <value>关于 CTWebPlayer {0}</value>
+  </data>
+  <data name="AboutForm_lblTitle" xml:space="preserve">
+    <value>CTWebPlayer</value>
+  </data>
+  <data name="AboutForm_lblVersion" xml:space="preserve">
+    <value>Unity3D WebPlayer 专属浏览器 v{0}</value>
+  </data>
+  <data name="AboutForm_lblCopyright" xml:space="preserve">
+    <value>版权所有 (c) 2025, CTWebPlayer 开发者</value>
+  </data>
+  <data name="AboutForm_lblLicenseTitle" xml:space="preserve">
+    <value>许可证：</value>
+  </data>
+  <data name="AboutForm_lblImportantNotice" xml:space="preserve">
+    <value>⚠️ 重要提示：任何修改版本必须改名并声明与原作者无关！
+详情请仔细阅读下方许可证条款。</value>
+  </data>
+  <data name="AboutForm_LicenseLoadError" xml:space="preserve">
+    <value>无法加载许可证文件：{0}</value>
+  </data>
+  <data name="AboutForm_btnOK" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="AboutForm_License_Text" xml:space="preserve">
+    <value>CTWebPlayer 许可证
+基于 BSD 3-Clause License 修改
+
+版权所有 (c) 2025, CTWebPlayer 开发者
+保留所有权利。
+
+在满足以下条件的情况下，允许以源代码和二进制形式重新分发和使用，无论是否修改：
+
+1. 源代码的重新分发必须保留上述版权声明、此条件列表和以下免责声明。
+
+2. 二进制形式的重新分发必须在文档和/或其他提供的材料中复制上述版权声明、
+   此条件列表和以下免责声明。
+
+3. 未经特定事先书面许可，不得使用版权持有人的名称或其贡献者的名称来认可或
+   推广从本软件派生的产品。
+
+4. 【重要】任何修改版本必须：
+   - 使用不同的名称，不得使用"CTWebPlayer"或任何相似名称
+   - 清楚地标明这是修改版本
+   - 不得以任何方式暗示原作者对修改版本的认可或担保
+   - 必须在显著位置声明"基于CTWebPlayer修改，但与原作者无关"
+
+5. 未经书面授权，本软件不得用于商业目的。
+
+免责声明：
+本软件由版权持有人和贡献者"按原样"提供，不提供任何明示或暗示的保证，包括但不限于
+适销性、特定用途适用性和非侵权性的保证。在任何情况下，无论是在合同诉讼、侵权行为
+或其他方面，版权持有人或贡献者均不对因使用本软件或无法使用本软件而产生的任何索赔、
+损害或其他责任负责，即使已被告知可能发生此类损害。
+
+特别声明：
+任何基于本软件的修改版本所产生的问题、损害或法律责任，均由修改者自行承担，与原作者
+无关。用户应当从官方渠道获取本软件，以确保软件的完整性和安全性。</value>
+  </data>
+  
+  <!-- ProxySettingsForm -->
+  <data name="ProxySettingsForm" xml:space="preserve">
+    <value>代理设置</value>
+  </data>
+  <data name="ProxySettingsForm_chkEnableProxy" xml:space="preserve">
+    <value>启用代理服务器</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings" xml:space="preserve">
+    <value>代理服务器设置</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblHttpProxy" xml:space="preserve">
+    <value>HTTP 代理:</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblHttpsProxy" xml:space="preserve">
+    <value>HTTPS 代理:</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblSocks5" xml:space="preserve">
+    <value>SOCKS5 代理:</value>
+  </data>
+  <data name="ProxySettingsForm_grpProxySettings_lblNote" xml:space="preserve">
+    <value>注意：优先使用SOCKS5代理，其次是HTTP/HTTPS代理。
+更改代理设置后需要重启浏览器才能生效。</value>
+  </data>
+  <data name="ProxySettingsForm_btnSave" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="ProxySettingsForm_btnCancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="ProxySettingsForm_PlaceholderHttp" xml:space="preserve">
+    <value>例如: http://127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_PlaceholderSocks5" xml:space="preserve">
+    <value>例如: 127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_ProxyRequired" xml:space="preserve">
+    <value>请至少填写一个代理服务器地址。</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_HttpProxyInvalid" xml:space="preserve">
+    <value>HTTP代理地址格式不正确。
+格式示例：http://127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_HttpsProxyInvalid" xml:space="preserve">
+    <value>HTTPS代理地址格式不正确。
+格式示例：http://127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_Socks5Invalid" xml:space="preserve">
+    <value>SOCKS5代理地址格式不正确。
+格式示例：127.0.0.1:7890</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_InputError" xml:space="preserve">
+    <value>输入错误</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_SavedWithRestart" xml:space="preserve">
+    <value>代理设置已保存。
+
+请重启浏览器以应用新的代理设置。</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_ProxyDisabledWithRestart" xml:space="preserve">
+    <value>代理已禁用。
+
+请重启浏览器以应用更改。</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_SaveError" xml:space="preserve">
+    <value>保存配置时出错：{0}</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_Error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="ProxySettingsForm_Msg_Info" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  
+  <data name="RES_LanguageLabel" xml:space="preserve">
+    <value>语言：</value>
+  </data>
+</root>

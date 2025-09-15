@@ -151,9 +151,14 @@ Type: dirifempty; Name: "{app}"
 ; Root: HKLM; Subkey: "Software\Classes\ctwebplayer\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#AppExeName},0"
 ; Root: HKLM; Subkey: "Software\Classes\ctwebplayer\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#AppExeName}"" ""%1"""
 
-; 应用程序注册信息
-Root: HKLM; Subkey: "Software\{#AppPublisher}\{#AppName}"; ValueType: string; ValueName: "InstallPath"; ValueData: "{app}"; Flags: uninsdeletekey
-Root: HKLM; Subkey: "Software\{#AppPublisher}\{#AppName}"; ValueType: string; ValueName: "Version"; ValueData: "{#AppVersion}"
+; 应用程序注册信息 - 改为写入当前用户注册表，避免权限问题
+; 原本写入 HKLM 需要管理员权限，但程序本身不使用这些注册表项，所以改为写入 HKCU 更安全
+Root: HKCU; Subkey: "Software\{#AppPublisher}\{#AppName}"; ValueType: string; ValueName: "InstallPath"; ValueData: "{app}"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\{#AppPublisher}\{#AppName}"; ValueType: string; ValueName: "Version"; ValueData: "{#AppVersion}"
+
+; 如果确实需要在 HKLM 中记录安装信息，可以添加错误处理
+; Root: HKLM; Subkey: "Software\{#AppPublisher}\{#AppName}"; ValueType: string; ValueName: "InstallPath"; ValueData: "{app}"; Flags: uninsdeletekey uninsdeletekeyifempty dontcreatekey
+; Root: HKLM; Subkey: "Software\{#AppPublisher}\{#AppName}"; ValueType: string; ValueName: "Version"; ValueData: "{#AppVersion}"; Flags: dontcreatekey
 
 [Code]
 // 检查应用是否正在运行
