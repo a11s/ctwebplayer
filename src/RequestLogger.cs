@@ -15,7 +15,11 @@ namespace ctwebplayer
         private const long MaxFileSize = 10 * 1024 * 1024; // 10MB
         private static readonly UTF8Encoding Encoding = new UTF8Encoding(false);
 
-        private RequestLogger() { }
+        private RequestLogger()
+        {
+            // 程序启动时进行日志轮转
+            LogManager.RotateLogFileOnStartup(LogPath);
+        }
 
         public static RequestLogger Instance => _instance.Value;
 
@@ -47,9 +51,8 @@ namespace ctwebplayer
                         var fileInfo = new FileInfo(LogPath);
                         if (fileInfo.Length > MaxFileSize)
                         {
-                            var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                            string backupPath = LogPath + "." + timestamp;
-                            File.Move(LogPath, backupPath);
+                            // 使用与 LogManager 相同的轮转方法
+                            LogManager.RotateLogFileOnStartup(LogPath);
                         }
                     }
 
@@ -76,9 +79,36 @@ namespace ctwebplayer
             {
                 lock (_lockObject)
                 {
+                    // 删除主日志文件
                     if (File.Exists(LogPath))
                     {
                         File.Delete(LogPath);
+                    }
+                    
+                    // 删除所有编号的历史日志文件
+                    var directory = Path.GetDirectoryName(LogPath) ?? ".";
+                    var fileName = Path.GetFileNameWithoutExtension(LogPath);
+                    var extension = Path.GetExtension(LogPath);
+                    var pattern = $"{fileName}.*{extension}";
+                    
+                    try
+                    {
+                        var files = Directory.GetFiles(directory, pattern);
+                        foreach (var file in files)
+                        {
+                            try
+                            {
+                                File.Delete(file);
+                            }
+                            catch
+                            {
+                                // 忽略删除失败的文件
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // 忽略目录访问错误
                     }
                 }
             });

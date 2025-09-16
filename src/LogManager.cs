@@ -57,6 +57,9 @@ namespace ctwebplayer
 
         private LogManager()
         {
+            // 程序启动时进行日志轮转
+            RotateLogFileOnStartup(_logFilePath);
+            
             // 每秒刷新一次日志缓冲区
             _flushTimer = new System.Threading.Timer(async _ => await FlushLogsAsync(), null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
             
@@ -215,6 +218,75 @@ namespace ctwebplayer
         }
 
         /// <summary>
+        /// 程序启动时进行日志文件轮转
+        /// </summary>
+        public static void RotateLogFileOnStartup(string logFilePath)
+        {
+            try
+            {
+                if (!File.Exists(logFilePath))
+                    return;
+
+                var directory = Path.GetDirectoryName(logFilePath) ?? ".";
+                var fileName = Path.GetFileNameWithoutExtension(logFilePath);
+                var extension = Path.GetExtension(logFilePath);
+
+                // 找到现有日志文件中最大的编号
+                int maxNumber = 0;
+                var pattern = $"{fileName}.*{extension}";
+                var files = Directory.GetFiles(directory, pattern);
+                
+                foreach (var file in files)
+                {
+                    var name = Path.GetFileName(file);
+                    var parts = name.Split('.');
+                    if (parts.Length >= 3) // filename.number.extension
+                    {
+                        if (int.TryParse(parts[parts.Length - 2], out int number))
+                        {
+                            maxNumber = Math.Max(maxNumber, number);
+                        }
+                    }
+                }
+
+                // 从最大编号开始，向后移动文件
+                for (int i = Math.Min(maxNumber, 9); i >= 1; i--)
+                {
+                    var oldPath = $"{directory}/{fileName}.{i}{extension}";
+                    var newPath = $"{directory}/{fileName}.{i + 1}{extension}";
+                    
+                    if (File.Exists(oldPath))
+                    {
+                        if (i == 9)
+                        {
+                            // 删除第10个文件（最旧的）
+                            File.Delete(oldPath);
+                        }
+                        else
+                        {
+                            // 移动文件到新编号
+                            if (File.Exists(newPath))
+                                File.Delete(newPath);
+                            File.Move(oldPath, newPath);
+                        }
+                    }
+                }
+
+                // 将当前日志文件重命名为 .1
+                var firstArchivePath = $"{directory}/{fileName}.1{extension}";
+                if (File.Exists(firstArchivePath))
+                    File.Delete(firstArchivePath);
+                File.Move(logFilePath, firstArchivePath);
+
+                System.Diagnostics.Debug.WriteLine($"Log file rotated: {logFilePath} -> {firstArchivePath}");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"LogManager RotateLogFileOnStartup error: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// 检查并轮转日志文件
         /// </summary>
         private async Task CheckAndRotateLogFileAsync()
@@ -227,14 +299,8 @@ namespace ctwebplayer
                 var fileInfo = new FileInfo(_logFilePath);
                 if (fileInfo.Length >= _maxFileSize)
                 {
-                    var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                    var archivePath = $"{_logFilePath}.{timestamp}";
-                    
-                    // 移动当前日志文件到归档文件
-                    await Task.Run(() => File.Move(_logFilePath, archivePath));
-                    
-                    // 清理旧的日志文件（保留最近5个）
-                    await CleanupOldLogFilesAsync();
+                    // 使用新的轮转方法
+                    await Task.Run(() => RotateLogFileOnStartup(_logFilePath));
                 }
             }
             catch (Exception ex)
@@ -244,22 +310,37 @@ namespace ctwebplayer
         }
 
         /// <summary>
-        /// 清理旧的日志文件
+        /// 清理旧的日志文件（保留最近10个）
         /// </summary>
         private async Task CleanupOldLogFilesAsync()
         {
             try
             {
                 var directory = Path.GetDirectoryName(_logFilePath) ?? ".";
-                var logFileName = Path.GetFileName(_logFilePath);
-                var pattern = $"{logFileName}.*";
+                var fileName = Path.GetFileNameWithoutExtension(_logFilePath);
+                var extension = Path.GetExtension(_logFilePath);
                 
-                var files = await Task.Run(() => Directory.GetFiles(directory, pattern)
-                    .OrderByDescending(f => File.GetCreationTime(f))
-                    .Skip(5)
-                    .ToArray());
-
+                // 查找所有编号的日志文件
+                var numberFiles = new List<(string path, int number)>();
+                var pattern = $"{fileName}.*{extension}";
+                var files = await Task.Run(() => Directory.GetFiles(directory, pattern));
+                
                 foreach (var file in files)
+                {
+                    var name = Path.GetFileName(file);
+                    var parts = name.Split('.');
+                    if (parts.Length >= 3)
+                    {
+                        if (int.TryParse(parts[parts.Length - 2], out int number))
+                        {
+                            numberFiles.Add((file, number));
+                        }
+                    }
+                }
+
+                // 删除编号大于10的文件
+                var filesToDelete = numberFiles.Where(f => f.number > 10).Select(f => f.path);
+                foreach (var file in filesToDelete)
                 {
                     try
                     {

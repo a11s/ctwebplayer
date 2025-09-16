@@ -233,6 +233,17 @@ namespace ctwebplayer
                 // 配置WebView2以拦截资源请求
                 ConfigureResourceInterception();
                 
+                // 初始化ConsoleLogger
+                ConsoleLogger.Instance.Configure(true); // 启用ConsoleLogger
+                LogManager.Instance.Info("ConsoleLogger已初始化并启用");
+                
+                // 注入JavaScript来捕获console输出
+                webView2.CoreWebView2.DOMContentLoaded += async (sender, args) =>
+                {
+                    await InjectConsoleCapture();
+                };
+                LogManager.Instance.Info("已配置console输出捕获机制");
+                
                 // 订阅事件
                 webView2.NavigationStarting += WebView2_NavigationStarting;
                 webView2.NavigationCompleted += WebView2_NavigationCompleted;
@@ -377,6 +388,192 @@ namespace ctwebplayer
             // 自动允许所有权限请求
             e.State = CoreWebView2PermissionState.Allow;
             LogManager.Instance.Info($"已允许权限请求：{e.PermissionKind} for {e.Uri}");
+        }
+
+        /// <summary>
+        /// 标记是否已经订阅了WebMessage事件
+        /// </summary>
+        private bool _webMessageEventSubscribed = false;
+        
+        /// <summary>
+        /// 注入JavaScript代码来捕获console输出
+        /// </summary>
+        private async Task InjectConsoleCapture()
+        {
+            try
+            {
+                var script = @"
+                    (function() {
+                        // 如果已经注入过，则跳过
+                        if (window.__consoleLoggerInjected) return;
+                        window.__consoleLoggerInjected = true;
+                        
+                        // 保存原始的console方法
+                        var originalConsole = {
+                            log: console.log,
+                            info: console.info,
+                            warn: console.warn,
+                            error: console.error,
+                            debug: console.debug
+                        };
+                        
+                        // 获取调用堆栈信息
+                        function getStackInfo() {
+                            var stack = new Error().stack;
+                            if (!stack) return { source: '', line: 0, column: 0 };
+                            
+                            var lines = stack.split('\n');
+                            // 通常第3行包含调用者信息（第1行是Error，第2行是这个函数）
+                            if (lines.length >= 3) {
+                                var match = lines[2].match(/\((.+):(\d+):(\d+)\)/);
+                                if (match) {
+                                    return {
+                                        source: match[1],
+                                        line: parseInt(match[2]),
+                                        column: parseInt(match[3])
+                                    };
+                                }
+                            }
+                            return { source: '', line: 0, column: 0 };
+                        }
+                        
+                        // 包装console方法
+                        function wrapConsoleMethod(method, kind) {
+                            console[method] = function() {
+                                // 调用原始方法
+                                originalConsole[method].apply(console, arguments);
+                                
+                                // 获取消息和堆栈信息
+                                var message = Array.prototype.slice.call(arguments).map(function(arg) {
+                                    if (typeof arg === 'object') {
+                                        try {
+                                            return JSON.stringify(arg);
+                                        } catch (e) {
+                                            return String(arg);
+                                        }
+                                    }
+                                    return String(arg);
+                                }).join(' ');
+                                
+                                var stackInfo = getStackInfo();
+                                
+                                // 将对象转换为JSON字符串后发送
+                                var messageData = JSON.stringify({
+                                    type: 'consoleLog',
+                                    kind: kind,
+                                    message: message,
+                                    source: stackInfo.source,
+                                    line: stackInfo.line,
+                                    column: stackInfo.column
+                                });
+                                
+                                // 发送JSON字符串到C#端
+                                window.chrome.webview.postMessage(messageData);
+                            };
+                        }
+                        
+                        // 包装所有console方法
+                        wrapConsoleMethod('log', 'Log');
+                        wrapConsoleMethod('info', 'Info');
+                        wrapConsoleMethod('warn', 'Warning');
+                        wrapConsoleMethod('error', 'Error');
+                        wrapConsoleMethod('debug', 'Debug');
+                        
+                        console.log('Console capture initialized');
+                    })();
+                ";
+                
+                await webView2.CoreWebView2.ExecuteScriptAsync(script);
+                
+                // 只订阅一次WebMessage事件
+                if (!_webMessageEventSubscribed)
+                {
+                    webView2.CoreWebView2.WebMessageReceived += CoreWebView2_WebMessageReceived;
+                    _webMessageEventSubscribed = true;
+                    LogManager.Instance.Info("已订阅WebMessage事件");
+                }
+                
+                LogManager.Instance.Info("已注入console捕获脚本");
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("注入console捕获脚本时出错", ex);
+            }
+        }
+
+        /// <summary>
+        /// 处理从JavaScript发送的消息
+        /// </summary>
+        private void CoreWebView2_WebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e)
+        {
+            try
+            {
+                // 尝试获取字符串消息
+                string message = null;
+                try
+                {
+                    message = e.TryGetWebMessageAsString();
+                }
+                catch (ArgumentException)
+                {
+                    // 如果不是字符串，尝试获取JSON
+                    try
+                    {
+                        message = e.WebMessageAsJson;
+                    }
+                    catch
+                    {
+                        // 如果都失败了，忽略这个消息
+                        return;
+                    }
+                }
+                
+                if (string.IsNullOrEmpty(message)) return;
+                
+                // 解析JSON消息
+                var json = System.Text.Json.JsonDocument.Parse(message);
+                var root = json.RootElement;
+                
+                // 检查消息类型
+                if (root.TryGetProperty("type", out var typeElement) &&
+                    typeElement.GetString() == "consoleLog")
+                {
+                    // 提取console日志信息
+                    var kind = root.TryGetProperty("kind", out var kindElement) ? kindElement.GetString() : "Log";
+                    var logMessage = root.TryGetProperty("message", out var msgElement) ? msgElement.GetString() : "";
+                    var source = root.TryGetProperty("source", out var srcElement) ? srcElement.GetString() : "";
+                    var line = root.TryGetProperty("line", out var lineElement) ? lineElement.GetInt32() : 0;
+                    var column = root.TryGetProperty("column", out var columnElement) ? columnElement.GetInt32() : 0;
+                    
+                    // 记录到ConsoleLogger
+                    ConsoleLogger.Instance.LogFromWebView(kind ?? "Log", logMessage ?? "", source ?? "", line, column);
+                    
+                    // 同时记录到主日志系统（仅记录警告和错误）
+                    if (kind != null)
+                    {
+                        if (kind.Equals("Error", StringComparison.OrdinalIgnoreCase))
+                        {
+                            LogManager.Instance.Error($"[WebView2 Console Error] {logMessage} (Source: {source}:{line}:{column})");
+                        }
+                        else if (kind.Equals("Warning", StringComparison.OrdinalIgnoreCase))
+                        {
+                            LogManager.Instance.Warning($"[WebView2 Console Warning] {logMessage} (Source: {source}:{line}:{column})");
+                        }
+                    }
+                }
+            }
+            catch (System.Text.Json.JsonException)
+            {
+                // 不是我们的console消息，忽略
+            }
+            catch (Exception ex)
+            {
+                // 只记录非预期的错误
+                if (!(ex is ArgumentException))
+                {
+                    LogManager.Instance.Error("处理WebMessage时出错", ex);
+                }
+            }
         }
 
         /// <summary>
@@ -596,6 +793,9 @@ namespace ctwebplayer
                 
                 // 注入 CORS 处理脚本
                 await InjectCorsHandlingScript();
+                
+                // 注入console捕获脚本
+                await InjectConsoleCapture();
                 
                 // 检测并处理 ero-labs 域名跳转
                 await CheckAndUpdateBaseUrl();
@@ -1435,6 +1635,10 @@ namespace ctwebplayer
                 // 释放缓存管理器
                 LogManager.Instance.Info("准备释放缓存管理器");
                 _cacheManager?.Dispose();
+                
+                // 刷新ConsoleLogger的缓冲区并关闭
+                LogManager.Instance.Info("准备刷新ConsoleLogger缓冲区");
+                ConsoleLogger.Instance.FlushAsync().Wait(TimeSpan.FromSeconds(2));
                 
                 LogManager.Instance.Info("OnFormClosing 执行完毕，准备退出进程");
                 

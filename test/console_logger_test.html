@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Console Logger 测试</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #555;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .test-section {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .test-section h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        button.danger {
+            background: #e53e3e;
+        }
+        
+        button.danger:hover {
+            background: #c53030;
+        }
+        
+        button.warning {
+            background: #ed8936;
+        }
+        
+        button.warning:hover {
+            background: #dd6b20;
+        }
+        
+        button.info {
+            background: #3182ce;
+        }
+        
+        button.info:hover {
+            background: #2c5282;
+        }
+        
+        button.success {
+            background: #38a169;
+        }
+        
+        button.success:hover {
+            background: #2f855a;
+        }
+        
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background: #e6f7ff;
+            border: 1px solid #91d5ff;
+            color: #0050b3;
+        }
+        
+        .object-test {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        #log-counter {
+            background: #fef5e7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-size: 18px;
+            text-align: center;
+            font-weight: bold;
+            color: #d68910;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        progress {
+            width: 100%;
+            height: 30px;
+            margin: 10px 0;
+        }
+        
+        .description {
+            color: #666;
+            font-size: 14px;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Console Logger 功能测试</h1>
+        
+        <div class="status">
+            <strong>测试说明：</strong>此页面用于测试 WebView2 中的 console 输出捕获功能。
+            所有的 console 输出都应该被记录到 logs/console.log 文件中。
+        </div>
+
+        <!-- 基础日志测试 -->
+        <div class="test-section">
+            <h3>📝 基础日志方法测试</h3>
+            <p class="description">测试不同级别的 console 输出方法</p>
+            <div class="button-group">
+                <button onclick="testLog()">console.log</button>
+                <button class="info" onclick="testInfo()">console.info</button>
+                <button class="warning" onclick="testWarn()">console.warn</button>
+                <button class="danger" onclick="testError()">console.error</button>
+                <button class="success" onclick="testDebug()">console.debug</button>
+            </div>
+        </div>
+
+        <!-- 对象序列化测试 -->
+        <div class="test-section">
+            <h3>🎯 对象序列化测试</h3>
+            <p class="description">测试复杂对象和数组的序列化输出</p>
+            <div class="button-group">
+                <button onclick="testSimpleObject()">简单对象</button>
+                <button onclick="testNestedObject()">嵌套对象</button>
+                <button onclick="testArray()">数组</button>
+                <button onclick="testMixedData()">混合数据</button>
+                <button onclick="testCircularReference()">循环引用</button>
+            </div>
+        </div>
+
+        <!-- 错误堆栈测试 -->
+        <div class="test-section">
+            <h3>⚠️ 错误和堆栈跟踪测试</h3>
+            <p class="description">测试错误消息和堆栈跟踪的捕获</p>
+            <div class="button-group">
+                <button class="danger" onclick="testErrorMessage()">普通错误</button>
+                <button class="danger" onclick="testThrowError()">抛出异常</button>
+                <button class="danger" onclick="testStackTrace()">堆栈跟踪</button>
+                <button class="danger" onclick="testAsyncError()">异步错误</button>
+            </div>
+        </div>
+
+        <!-- 多参数测试 -->
+        <div class="test-section">
+            <h3>🔢 多参数输出测试</h3>
+            <p class="description">测试 console 方法的多参数支持</p>
+            <div class="button-group">
+                <button onclick="testMultipleArgs()">多个参数</button>
+                <button onclick="testFormattedString()">格式化字符串</button>
+                <button onclick="testMixedTypes()">混合类型参数</button>
+            </div>
+        </div>
+
+        <!-- 性能测试 -->
+        <div class="test-section">
+            <h3>⚡ 性能和压力测试</h3>
+            <p class="description">测试大量日志输出和文件大小限制</p>
+            
+            <div id="log-counter">已生成日志: 0 条</div>
+            <progress id="progress" value="0" max="100"></progress>
+            
+            <div class="button-group">
+                <button onclick="generateBulkLogs(100)">生成 100 条日志</button>
+                <button onclick="generateBulkLogs(1000)">生成 1,000 条日志</button>
+                <button onclick="generateBulkLogs(10000)">生成 10,000 条日志</button>
+                <button class="warning" onclick="generateLargeLog()">生成单条大日志 (1MB)</button>
+                <button class="danger" onclick="testFileSizeLimit()">测试 10MB 限制</button>
+            </div>
+        </div>
+
+        <!-- 特殊字符测试 -->
+        <div class="test-section">
+            <h3>🌐 特殊字符和编码测试</h3>
+            <p class="description">测试各种特殊字符和多语言支持</p>
+            <div class="button-group">
+                <button onclick="testSpecialChars()">特殊字符</button>
+                <button onclick="testUnicode()">Unicode 字符</button>
+                <button onclick="testEmoji()">Emoji 表情</button>
+                <button onclick="testMultiLanguage()">多语言文本</button>
+            </div>
+        </div>
+
+        <!-- 时间测试 -->
+        <div class="test-section">
+            <h3>⏰ 时间相关测试</h3>
+            <p class="description">测试 console.time 和 console.timeEnd</p>
+            <div class="button-group">
+                <button onclick="testTime()">计时测试</button>
+                <button onclick="testTimestamp()">时间戳测试</button>
+                <button onclick="testConsoleGroup()">分组测试</button>
+            </div>
+        </div>
+
+        <!-- 清理功能 -->
+        <div class="test-section">
+            <h3>🧹 清理和维护</h3>
+            <p class="description">清理控制台和日志文件</p>
+            <div class="button-group">
+                <button onclick="clearConsole()">清空控制台</button>
+                <button onclick="testLogRotation()">触发日志轮转</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let logCount = 0;
+
+        // 基础日志测试
+        function testLog() {
+            console.log('这是一条普通的 log 消息', new Date().toISOString());
+            updateCounter(1);
+        }
+
+        function testInfo() {
+            console.info('这是一条 info 级别的消息', { timestamp: Date.now() });
+            updateCounter(1);
+        }
+
+        function testWarn() {
+            console.warn('警告：这是一条警告消息！', '请注意检查');
+            updateCounter(1);
+        }
+
+        function testError() {
+            console.error('错误：发生了一个错误！', new Error('测试错误'));
+            updateCounter(1);
+        }
+
+        function testDebug() {
+            console.debug('调试信息：', { debug: true, details: '这是调试详情' });
+            updateCounter(1);
+        }
+
+        function testErrorMessage() {
+            console.error('错误：发生了一个错误！', new Error('测试错误消息'));
+            updateCounter(1);
+        }
+
+        // 对象序列化测试
+        function testSimpleObject() {
+            const obj = {
+                name: '测试对象',
+                id: 12345,
+                active: true,
+                created: new Date()
+            };
+            console.log('简单对象测试:', obj);
+            updateCounter(1);
+        }
+
+        function testNestedObject() {
+            const nested = {
+                level1: {
+                    level2: {
+                        level3: {
+                            deep: '这是深层嵌套',
+                            array: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    info: '二级信息'
+                },
+                metadata: {
+                    version: '1.0.0',
+                    author: 'Test System'
+                }
+            };
+            console.log('嵌套对象测试:', nested);
+            updateCounter(1);
+        }
+
+        function testArray() {
+            const arr = [
+                'string',
+                123,
+                true,
+                null,
+                undefined,
+                { obj: 'value' },
+                [1, 2, 3],
+                new Date(),
+                /regex/gi
+            ];
+            console.log('数组测试:', arr);
+            updateCounter(1);
+        }
+
+        function testMixedData() {
+            console.log('混合数据测试:',
+                '字符串',
+                42,
+                true,
+                { key: 'value' },
+                [1, 2, 3],
+                null,
+                undefined,
+                Symbol('test'),
+                BigInt(9007199254740991)
+            );
+            updateCounter(1);
+        }
+
+        function testCircularReference() {
+            const obj = { name: '循环引用对象' };
+            obj.self = obj; // 创建循环引用
+            
+            try {
+                console.log('循环引用测试:', obj);
+            } catch (e) {
+                console.error('循环引用序列化失败:', e.message);
+            }
+            updateCounter(1);
+        }
+
+        // 错误和堆栈测试
+        function testThrowError() {
+            try {
+                throw new Error('这是一个手动抛出的错误');
+            } catch (e) {
+                console.error('捕获的错误:', e);
+                console.error('错误堆栈:', e.stack);
+            }
+            updateCounter(2);
+        }
+
+        function testStackTrace() {
+            function level3() {
+                console.trace('堆栈跟踪测试');
+            }
+            function level2() {
+                level3();
+            }
+            function level1() {
+                level2();
+            }
+            level1();
+            updateCounter(1);
+        }
+
+        function testAsyncError() {
+            setTimeout(() => {
+                try {
+                    nonExistentFunction(); // 这会产生一个错误
+                } catch (e) {
+                    console.error('异步错误:', e);
+                }
+            }, 100);
+            updateCounter(1);
+        }
+
+        // 多参数测试
+        function testMultipleArgs() {
+            console.log('参数1', '参数2', '参数3', { param: 4 }, [5, 6, 7]);
+            updateCounter(1);
+        }
+
+        function testFormattedString() {
+            console.log('格式化: %s, 数字: %d, 对象: %o', '字符串', 42, { test: true });
+            console.log('百分比: %d%%', 75);
+            updateCounter(2);
+        }
+
+        function testMixedTypes() {
+            const func = function testFunction() { return 'test'; };
+            const regex = /test.*pattern/gi;
+            const date = new Date();
+            const map = new Map([['key1', 'value1'], ['key2', 'value2']]);
+            const set = new Set([1, 2, 3, 4, 5]);
+            
+            console.log('混合类型:', func, regex, date, map, set);
+            updateCounter(1);
+        }
+
+        // 性能测试
+        function generateBulkLogs(count) {
+            const startTime = Date.now();
+            const progressBar = document.getElementById('progress');
+            progressBar.max = count;
+            progressBar.value = 0;
+            
+            for (let i = 0; i < count; i++) {
+                console.log(`批量日志 #${i + 1}/${count}`, {
+                    timestamp: new Date().toISOString(),
+                    index: i,
+                    random: Math.random(),
+                    data: `这是第 ${i + 1} 条测试日志，包含一些随机数据: ${Math.random().toString(36).substring(7)}`
+                });
+                
+                if (i % 100 === 0) {
+                    progressBar.value = i;
+                }
+            }
+            
+            progressBar.value = count;
+            const duration = Date.now() - startTime;
+            console.info(`生成 ${count} 条日志耗时: ${duration}ms`);
+            updateCounter(count + 1);
+        }
+
+        function generateLargeLog() {
+            // 生成一个大约 1MB 的字符串
+            const size = 1024 * 1024; // 1MB
+            const chunk = 'A'.repeat(1024); // 1KB
+            let largeString = '';
+            
+            for (let i = 0; i < 1024; i++) {
+                largeString += chunk;
+            }
+            
+            console.log('大日志测试 (1MB):', largeString.substring(0, 100) + '...[省略]...');
+            console.info(`实际大小: ${largeString.length} 字节`);
+            updateCounter(2);
+        }
+
+        function testFileSizeLimit() {
+            console.warn('开始测试 10MB 文件大小限制...');
+            
+            // 生成总计超过 10MB 的日志
+            const chunkSize = 1024 * 100; // 100KB per log
+            const chunk = 'B'.repeat(chunkSize);
+            const totalLogs = 120; // 120 * 100KB = 12MB
+            
+            for (let i = 0; i < totalLogs; i++) {
+                console.log(`大小限制测试 ${i + 1}/${totalLogs}: ${chunk.substring(0, 50)}...`);
+            }
+            
+            console.info('10MB 限制测试完成，请检查日志文件是否进行了轮转');
+            updateCounter(totalLogs + 2);
+        }
+
+        // 特殊字符测试
+        function testSpecialChars() {
+            console.log('特殊字符测试: \\n换行 \\t制表符 \\r回车 \\\\ 反斜杠 \\" 引号 \\\' 单引号');
+            console.log('HTML标签: <script>alert("XSS")<\/script>');
+            console.log('SQL注入: SELECT * FROM users WHERE id = "1" OR "1"="1"');
+            updateCounter(3);
+        }
+
+        function testUnicode() {
+            console.log('Unicode 测试: \\u2665 \\u2666 \\u2663 \\u2660');
+            console.log('中文测试: 你好世界，这是中文日志测试');
+            console.log('日文测试: こんにちは世界');
+            console.log('韩文测试: 안녕하세요 세계');
+            console.log('阿拉伯文测试: مرحبا بالعالم');
+            updateCounter(5);
+        }
+
+        function testEmoji() {
+            console.log('Emoji 测试: 😀 😁 😂 🤣 😃 😄 😅 😆 😉 😊');
+            console.log('更多 Emoji: 🎉 🎊 🎈 🎆 🎇 ✨ 🎄 🎃 🎁 🎀');
+            console.log('复杂 Emoji: 👨‍👩‍👧‍👦 🏴󰁧󰁢󰁳󰁣󰁴󰁿 🏳️‍🌈');
+            updateCounter(3);
+        }
+
+        function testMultiLanguage() {
+            const messages = {
+                en: 'Hello World!',
+                zh: '你好，世界！',
+                ja: 'こんにちは世界！',
+                ko: '안녕하세요 세계!',
+                ar: 'مرحبا بالعالم!',
+                ru: 'Привет мир!',
+                es: '¡Hola Mundo!',
+                fr: 'Bonjour le monde!',
+                de: 'Hallo Welt!',
+                hi: 'नमस्ते दुनिया!'
+            };
+            
+            for (const [lang, msg] of Object.entries(messages)) {
+                console.log(`[${lang}] ${msg}`);
+            }
+            updateCounter(Object.keys(messages).length);
+        }
+
+        // 时间测试
+        function testTime() {
+            console.time('性能测试');
+            
+            // 执行一些耗时操作
+            let sum = 0;
+            for (let i = 0; i < 1000000; i++) {
+                sum += Math.sqrt(i);
+            }
+            
+            console.timeEnd('性能测试');
+            console.log('计算结果:', sum);
+            updateCounter(3);
+        }
+
+        function testTimestamp() {
+            console.log('时间戳测试:');
+            console.log('ISO 格式:', new Date().toISOString());
+            console.log('本地时间:', new Date().toLocaleString());
+            console.log('Unix 时间戳:', Date.now());
+            console.log('UTC 时间:', new Date().toUTCString());
+            updateCounter(5);
+        }
+
+        function testConsoleGroup() {
+            console.group('主分组');
+            console.log('主分组消息 1');
+            console.log('主分组消息 2');
+            
+            console.group('子分组');
+            console.log('子分组消息 1');
+            console.log('子分组消息 2');
+            console.groupEnd();
+            
+            console.log('主分组消息 3');
+            console.groupEnd();
+            
+            updateCounter(7);
+        }
+
+        // 清理功能
+        function clearConsole() {
+            console.clear();
+            console.log('控制台已清空，这是清空后的第一条消息');
+            logCount = 0;
+            updateCounter(1);
+        }
+
+        function testLogRotation() {
+            console.warn('触发日志轮转测试...');
+            
+            // 生成足够的日志触发轮转
+            for (let i = 0; i < 100; i++) {
+                console.log(`轮转测试日志 ${i + 1}`, new Date().toISOString());
+            }
+            
+            console.info('日志轮转测试完成');
+            updateCounter(102);
+        }
+
+        // 辅助函数
+        function updateCounter(count) {
+            logCount += count;
+            document.getElementById('log-counter').textContent = `已生成日志: ${logCount} 条`;
+        }
+
+        // 页面加载时的初始日志
+        window.addEventListener('load', () => {
+            console.log('=== Console Logger 测试页面已加载 ===');
+            console.log('页面 URL:', window.location.href);
+            console.log('User Agent:', navigator.userAgent);
+            console.log('加载时间:', new Date().toISOString());
+            updateCounter(4);
+        });
+
+        // 捕获未处理的错误
+        window.addEventListener('error', (event) => {
+            console.error('未处理的错误:', event.error || event.message);
+            updateCounter(1);
+        });
+
+        // 捕获未处理的 Promise 拒绝
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('未处理的 Promise 拒绝:', event.reason);
+            updateCounter(1);
+        });
+    </script>
+</body>
+</html>
