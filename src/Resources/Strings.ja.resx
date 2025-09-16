@@ -788,6 +788,12 @@
   <data name="Form1_Screenshot_ErrorTitle" xml:space="preserve">
     <value>エラー</value>
   </data>
+  <data name="Form1_Screenshot_WebGLNotSupported" xml:space="preserve">
+    <value>セキュリティ制限により、WebGLキャンバスの直接スクリーンショットはサポートされていません。WebView2キャプチャ方法を使用してください。</value>
+  </data>
+  <data name="Form1_Screenshot_EmptyCanvas" xml:space="preserve">
+    <value>キャンバスが空またはレンダリングされていません</value>
+  </data>
   <data name="AboutForm_Title" xml:space="preserve">
     <value>CTWebPlayerについて</value>
   </data>
@@ -807,5 +813,151 @@
   </data>
   <data name="Form1_Status_UnityCanvasFullscreen" xml:space="preserve">
     <value>Unityキャンバスフルスクリーンが適用されました</value>
+  </data>
+  <!-- CookieManagerForm - Cookie管理ウィンドウ -->
+  <data name="CookieManager_Title" xml:space="preserve">
+    <value>Cookie管理</value>
+  </data>
+  <data name="CookieManager_Refresh" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="CookieManager_Add" xml:space="preserve">
+    <value>追加</value>
+  </data>
+  <data name="CookieManager_Delete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="CookieManager_Import" xml:space="preserve">
+    <value>インポート</value>
+  </data>
+  <data name="CookieManager_Export" xml:space="preserve">
+    <value>エクスポート</value>
+  </data>
+  <data name="CookieManager_GroupByDomain" xml:space="preserve">
+    <value>ドメインでグループ化</value>
+  </data>
+  <data name="CookieManager_Search" xml:space="preserve">
+    <value>検索：</value>
+  </data>
+  <data name="CookieManager_Domain" xml:space="preserve">
+    <value>ドメイン</value>
+  </data>
+  <data name="CookieManager_Name" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="CookieManager_Value" xml:space="preserve">
+    <value>値</value>
+  </data>
+  <data name="CookieManager_Path" xml:space="preserve">
+    <value>パス</value>
+  </data>
+  <data name="CookieManager_Expires" xml:space="preserve">
+    <value>有効期限</value>
+  </data>
+  <data name="CookieManager_Size" xml:space="preserve">
+    <value>サイズ</value>
+  </data>
+  <data name="CookieManager_Copy" xml:space="preserve">
+    <value>コピー</value>
+  </data>
+  <data name="CookieManager_Edit" xml:space="preserve">
+    <value>編集</value>
+  </data>
+  <data name="CookieManager_StatusFormat" xml:space="preserve">
+    <value>合計: {0} | 表示: {1} | 選択: {2}</value>
+  </data>
+  <data name="CookieManager_SelectToDelete" xml:space="preserve">
+    <value>削除するCookieを選択してください</value>
+  </data>
+  <data name="CookieManager_Hint" xml:space="preserve">
+    <value>ヒント</value>
+  </data>
+  <data name="CookieManager_ConfirmDelete" xml:space="preserve">
+    <value>選択した {0} 個のCookieを削除してもよろしいですか？</value>
+  </data>
+  <data name="CookieManager_Confirm" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  <data name="CookieManager_ImportTitle" xml:space="preserve">
+    <value>Cookieをインポート</value>
+  </data>
+  <data name="CookieManager_ImportSuccess" xml:space="preserve">
+    <value>Cookieが正常にインポートされました</value>
+  </data>
+  <data name="CookieManager_Success" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="CookieManager_ImportError" xml:space="preserve">
+    <value>インポート失敗: {0}</value>
+  </data>
+  <data name="CookieManager_Error" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="CookieManager_ExportTitle" xml:space="preserve">
+    <value>Cookieをエクスポート</value>
+  </data>
+  <data name="CookieManager_ExportSuccess" xml:space="preserve">
+    <value>Cookieが正常にエクスポートされました</value>
+  </data>
+  <data name="CookieManager_ExportError" xml:space="preserve">
+    <value>エクスポート失敗: {0}</value>
+  </data>
+  <data name="CookieManager_Loading" xml:space="preserve">
+    <value>Cookieを読み込み中...</value>
+  </data>
+  <data name="CookieManager_LoadError" xml:space="preserve">
+    <value>Cookie読み込み失敗: {0}</value>
+  </data>
+  <!-- CookieEditDialog - Cookie編集ダイアログ -->
+  <data name="CookieEdit_TitleAdd" xml:space="preserve">
+    <value>Cookieを追加</value>
+  </data>
+  <data name="CookieEdit_TitleEdit" xml:space="preserve">
+    <value>Cookieを編集</value>
+  </data>
+  <data name="CookieEdit_Domain" xml:space="preserve">
+    <value>ドメイン：</value>
+  </data>
+  <data name="CookieEdit_Name" xml:space="preserve">
+    <value>名前：</value>
+  </data>
+  <data name="CookieEdit_Value" xml:space="preserve">
+    <value>値：</value>
+  </data>
+  <data name="CookieEdit_Path" xml:space="preserve">
+    <value>パス：</value>
+  </data>
+  <data name="CookieEdit_Expires" xml:space="preserve">
+    <value>有効期限：</value>
+  </data>
+  <data name="CookieEdit_SameSite" xml:space="preserve">
+    <value>SameSite：</value>
+  </data>
+  <data name="CookieEdit_HttpOnly" xml:space="preserve">
+    <value>HttpOnly</value>
+  </data>
+  <data name="CookieEdit_Secure" xml:space="preserve">
+    <value>Secure</value>
+  </data>
+  <data name="CookieEdit_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="CookieEdit_Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="CookieEdit_SessionCookie" xml:space="preserve">
+    <value>セッションCookie</value>
+  </data>
+  <data name="CookieEdit_Properties" xml:space="preserve">
+    <value>Cookieプロパティ</value>
+  </data>
+  <data name="CookieEdit_Security" xml:space="preserve">
+    <value>セキュリティ設定</value>
+  </data>
+  <data name="CookieEdit_DomainRequired" xml:space="preserve">
+    <value>ドメインは空にできません</value>
+  </data>
+  <data name="CookieEdit_NameRequired" xml:space="preserve">
+    <value>名前は空にできません</value>
   </data>
 </root>

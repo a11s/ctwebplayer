@@ -813,4 +813,150 @@ Please restart the browser to apply the changes.</value>
   <data name="Form1_Screenshot_EmptyCanvas" xml:space="preserve">
     <value>Canvas is empty or not rendered</value>
   </data>
+  <!-- CookieManagerForm - Cookie Manager Window -->
+  <data name="CookieManager_Title" xml:space="preserve">
+    <value>Cookie Manager</value>
+  </data>
+  <data name="CookieManager_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="CookieManager_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="CookieManager_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="CookieManager_Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="CookieManager_Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="CookieManager_GroupByDomain" xml:space="preserve">
+    <value>Group by Domain</value>
+  </data>
+  <data name="CookieManager_Search" xml:space="preserve">
+    <value>Search:</value>
+  </data>
+  <data name="CookieManager_Domain" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="CookieManager_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="CookieManager_Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="CookieManager_Path" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="CookieManager_Expires" xml:space="preserve">
+    <value>Expires</value>
+  </data>
+  <data name="CookieManager_Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="CookieManager_Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="CookieManager_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="CookieManager_StatusFormat" xml:space="preserve">
+    <value>Total: {0} | Displayed: {1} | Selected: {2}</value>
+  </data>
+  <data name="CookieManager_SelectToDelete" xml:space="preserve">
+    <value>Please select cookies to delete</value>
+  </data>
+  <data name="CookieManager_Hint" xml:space="preserve">
+    <value>Hint</value>
+  </data>
+  <data name="CookieManager_ConfirmDelete" xml:space="preserve">
+    <value>Are you sure you want to delete {0} selected cookie(s)?</value>
+  </data>
+  <data name="CookieManager_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="CookieManager_ImportTitle" xml:space="preserve">
+    <value>Import Cookies</value>
+  </data>
+  <data name="CookieManager_ImportSuccess" xml:space="preserve">
+    <value>Cookies imported successfully</value>
+  </data>
+  <data name="CookieManager_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="CookieManager_ImportError" xml:space="preserve">
+    <value>Import failed: {0}</value>
+  </data>
+  <data name="CookieManager_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="CookieManager_ExportTitle" xml:space="preserve">
+    <value>Export Cookies</value>
+  </data>
+  <data name="CookieManager_ExportSuccess" xml:space="preserve">
+    <value>Cookies exported successfully</value>
+  </data>
+  <data name="CookieManager_ExportError" xml:space="preserve">
+    <value>Export failed: {0}</value>
+  </data>
+  <data name="CookieManager_Loading" xml:space="preserve">
+    <value>Loading Cookies...</value>
+  </data>
+  <data name="CookieManager_LoadError" xml:space="preserve">
+    <value>Failed to load cookies: {0}</value>
+  </data>
+  <!-- CookieEditDialog - Cookie Edit Dialog -->
+  <data name="CookieEdit_TitleAdd" xml:space="preserve">
+    <value>Add Cookie</value>
+  </data>
+  <data name="CookieEdit_TitleEdit" xml:space="preserve">
+    <value>Edit Cookie</value>
+  </data>
+  <data name="CookieEdit_Domain" xml:space="preserve">
+    <value>Domain:</value>
+  </data>
+  <data name="CookieEdit_Name" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="CookieEdit_Value" xml:space="preserve">
+    <value>Value:</value>
+  </data>
+  <data name="CookieEdit_Path" xml:space="preserve">
+    <value>Path:</value>
+  </data>
+  <data name="CookieEdit_Expires" xml:space="preserve">
+    <value>Expires:</value>
+  </data>
+  <data name="CookieEdit_SameSite" xml:space="preserve">
+    <value>SameSite:</value>
+  </data>
+  <data name="CookieEdit_HttpOnly" xml:space="preserve">
+    <value>HttpOnly</value>
+  </data>
+  <data name="CookieEdit_Secure" xml:space="preserve">
+    <value>Secure</value>
+  </data>
+  <data name="CookieEdit_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="CookieEdit_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CookieEdit_SessionCookie" xml:space="preserve">
+    <value>Session Cookie</value>
+  </data>
+  <data name="CookieEdit_Properties" xml:space="preserve">
+    <value>Cookie Properties</value>
+  </data>
+  <data name="CookieEdit_Security" xml:space="preserve">
+    <value>Security Settings</value>
+  </data>
+  <data name="CookieEdit_DomainRequired" xml:space="preserve">
+    <value>Domain cannot be empty</value>
+  </data>
+  <data name="CookieEdit_NameRequired" xml:space="preserve">
+    <value>Name cannot be empty</value>
+  </data>
 </root>

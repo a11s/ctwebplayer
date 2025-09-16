@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Manager 功能测试</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #555;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .test-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        button.danger {
+            background: #e53e3e;
+        }
+        
+        button.danger:hover {
+            background: #c53030;
+        }
+        
+        button.success {
+            background: #48bb78;
+        }
+        
+        button.success:hover {
+            background: #38a169;
+        }
+        
+        .cookie-display {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .cookie-item {
+            background: #f7fafc;
+            border-left: 3px solid #667eea;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        
+        .cookie-name {
+            font-weight: bold;
+            color: #2d3748;
+        }
+        
+        .cookie-value {
+            color: #718096;
+            word-break: break-all;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+        
+        .status.success {
+            background: #c6f6d5;
+            color: #22543d;
+            border-left: 4px solid #48bb78;
+        }
+        
+        .status.error {
+            background: #fed7d7;
+            color: #742a2a;
+            border-left: 4px solid #e53e3e;
+        }
+        
+        .status.info {
+            background: #bee3f8;
+            color: #2c5282;
+            border-left: 4px solid #4299e1;
+        }
+        
+        .protocol-link {
+            display: inline-block;
+            background: #764ba2;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        
+        .protocol-link:hover {
+            background: #6b46a2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+        }
+        
+        input[type="text"], input[type="datetime-local"], select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin: 15px 0;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            margin: 10px 0;
+        }
+        
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            margin: 0;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍪 Cookie Manager 功能测试</h1>
+        
+        <div class="test-section">
+            <h2>Cookie管理界面快速访问</h2>
+            <p>点击下面的链接打开Cookie管理器：</p>
+            <div class="button-group">
+                <a href="ct://settings/cookie" class="protocol-link">打开Cookie管理器</a>
+                <a href="ct://settings/cookies" class="protocol-link">打开Cookie管理器（别名）</a>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>1. 创建测试Cookies</h2>
+            <p>点击按钮创建不同类型的测试cookies：</p>
+            <div class="button-group">
+                <button onclick="createSessionCookie()">创建会话Cookie</button>
+                <button onclick="createPersistentCookie()">创建持久Cookie</button>
+                <button onclick="createSecureCookie()">创建安全Cookie</button>
+                <button onclick="createHttpOnlyCookie()">创建HttpOnly Cookie</button>
+                <button onclick="createBatchCookies()" class="success">批量创建测试Cookies</button>
+            </div>
+            <div id="createStatus" class="status info" style="display:none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>2. 查看当前Cookies</h2>
+            <button onclick="displayAllCookies()">显示所有Cookies</button>
+            <div id="cookieDisplay" class="cookie-display"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>3. 自定义Cookie创建</h2>
+            <div class="form-group">
+                <label>名称：</label>
+                <input type="text" id="cookieName" placeholder="例如: my_cookie" value="test_cookie">
+            </div>
+            <div class="form-group">
+                <label>值：</label>
+                <input type="text" id="cookieValue" placeholder="例如: my_value" value="test_value_123">
+            </div>
+            <div class="form-group">
+                <label>域名：</label>
+                <input type="text" id="cookieDomain" placeholder="留空使用当前域名">
+            </div>
+            <div class="form-group">
+                <label>路径：</label>
+                <input type="text" id="cookiePath" placeholder="例如: /" value="/">
+            </div>
+            <div class="form-group">
+                <label>过期时间（天）：</label>
+                <input type="text" id="cookieExpires" placeholder="留空为会话Cookie" value="7">
+            </div>
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="cookieSecure">
+                    Secure
+                </label>
+                <label>
+                    <input type="checkbox" id="cookieHttpOnly">
+                    HttpOnly (注意：JavaScript无法读取)
+                </label>
+            </div>
+            <div class="form-group">
+                <label>SameSite：</label>
+                <select id="cookieSameSite">
+                    <option value="">None</option>
+                    <option value="Lax" selected>Lax</option>
+                    <option value="Strict">Strict</option>
+                </select>
+            </div>
+            <button onclick="createCustomCookie()" class="success">创建自定义Cookie</button>
+        </div>
+
+        <div class="test-section">
+            <h2>4. 删除Cookies</h2>
+            <div class="form-group">
+                <label>Cookie名称：</label>
+                <input type="text" id="deleteCookieName" placeholder="输入要删除的Cookie名称">
+            </div>
+            <div class="button-group">
+                <button onclick="deleteCookie()" class="danger">删除指定Cookie</button>
+                <button onclick="deleteAllCookies()" class="danger">删除所有Cookies</button>
+            </div>
+            <div id="deleteStatus" class="status error" style="display:none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>5. Cookie修改测试</h2>
+            <div class="form-group">
+                <label>Cookie名称：</label>
+                <input type="text" id="modifyCookieName" placeholder="输入要修改的Cookie名称">
+            </div>
+            <div class="form-group">
+                <label>新值：</label>
+                <input type="text" id="modifyCookieValue" placeholder="输入新的Cookie值">
+            </div>
+            <button onclick="modifyCookie()">修改Cookie值</button>
+        </div>
+
+        <div class="test-section">
+            <h2>5. 性能测试</h2>
+            <p>创建大量Cookies测试管理器性能：</p>
+            <div class="button-group">
+                <button onclick="createManyCookies(10)">创建10个Cookies</button>
+                <button onclick="createManyCookies(50)">创建50个Cookies</button>
+                <button onclick="createManyCookies(100)" class="danger">创建100个Cookies</button>
+                <button onclick="clearTestCookies()" class="danger">清理测试Cookies</button>
+            </div>
+            <div id="performanceStatus" class="status info" style="display:none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>6. 特殊场景测试</h2>
+            <div class="button-group">
+                <button onclick="createSpecialCookies()">创建特殊字符Cookie</button>
+                <button onclick="createLongValueCookie()">创建超长值Cookie</button>
+                <button onclick="createSubdomainCookie()">创建子域Cookie</button>
+                <button onclick="createExpiredCookie()">创建过期Cookie</button>
+                <button onclick="createFutureCookie()">创建远期Cookie</button>
+            </div>
+            <div id="specialStatus" class="status info" style="display:none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>7. Cookie验证测试</h2>
+            <div class="form-group">
+                <label>要验证的Cookie名称：</label>
+                <input type="text" id="verifyCookieName" placeholder="输入Cookie名称" value="test_cookie">
+            </div>
+            <button onclick="verifyCookie()">验证Cookie存在性</button>
+            <button onclick="getCookieInfo()">获取Cookie详情</button>
+            <div id="verifyResult" class="cookie-display" style="display:none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>8. 导入/导出测试数据</h2>
+            <p>下载测试用的Cookie JSON文件：</p>
+            <button onclick="generateTestJSON()" class="success">生成测试JSON文件</button>
+            <pre id="jsonOutput" class="cookie-display" style="display:none; max-height: 200px; overflow-y: auto;"></pre>
+        </div>
+
+        <div class="test-section">
+            <h2>测试说明</h2>
+            <ul>
+                <li>使用"打开Cookie管理器"链接可以直接访问Cookie管理界面</li>
+                <li>在Cookie管理器中可以查看、添加、编辑、删除和导入/导出Cookies</li>
+                <li>HttpOnly的Cookie无法通过JavaScript读取，但可以在Cookie管理器中查看</li>
+                <li>Secure的Cookie只能在HTTPS连接中传输</li>
+                <li>测试完成后，可以通过Cookie管理器导出所有Cookies保存为JSON文件</li>
+                <li>性能测试可以验证管理器处理大量Cookies的能力</li>
+                <li>特殊场景测试可以验证边界条件处理</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 创建会话Cookie
+        function createSessionCookie() {
+            document.cookie = `session_${Date.now()}=session_value_${Math.random().toString(36).substr(2, 9)}; path=/`;
+            showStatus('createStatus', '会话Cookie创建成功！', 'success');
+            displayAllCookies();
+        }
+
+        // 创建持久Cookie
+        function createPersistentCookie() {
+            const date = new Date();
+            date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000)); // 7天
+            document.cookie = `persistent_${Date.now()}=persistent_value_${Math.random().toString(36).substr(2, 9)}; expires=${date.toUTCString()}; path=/`;
+            showStatus('createStatus', '持久Cookie创建成功（7天有效期）！', 'success');
+            displayAllCookies();
+        }
+
+        // 创建安全Cookie
+        function createSecureCookie() {
+            document.cookie = `secure_${Date.now()}=secure_value_${Math.random().toString(36).substr(2, 9)}; secure; path=/`;
+            showStatus('createStatus', '安全Cookie创建成功（仅HTTPS）！', 'success');
+            displayAllCookies();
+        }
+
+        // 创建HttpOnly Cookie（注意：JavaScript无法创建真正的HttpOnly Cookie）
+        function createHttpOnlyCookie() {
+            showStatus('createStatus', '注意：JavaScript无法创建HttpOnly Cookie，请使用Cookie管理器创建！', 'error');
+        }
+
+        // 批量创建测试Cookies
+        function createBatchCookies() {
+            const cookies = [
+                { name: 'user_id', value: 'user_' + Math.floor(Math.random() * 10000), days: 30 },
+                { name: 'session_token', value: 'token_' + Math.random().toString(36).substr(2, 16), days: 0 },
+                { name: 'preferences', value: JSON.stringify({theme: 'dark', lang: 'zh-CN'}), days: 365 },
+                { name: 'last_visit', value: new Date().toISOString(), days: 7 },
+                { name: 'analytics_id', value: 'ga_' + Math.random().toString(36).substr(2, 12), days: 90 }
+            ];
+
+            cookies.forEach(cookie => {
+                if (cookie.days > 0) {
+                    const date = new Date();
+                    date.setTime(date.getTime() + (cookie.days * 24 * 60 * 60 * 1000));
+                    document.cookie = `${cookie.name}=${cookie.value}; expires=${date.toUTCString()}; path=/`;
+                } else {
+                    document.cookie = `${cookie.name}=${cookie.value}; path=/`;
+                }
+            });
+
+            showStatus('createStatus', `成功创建 ${cookies.length} 个测试Cookies！`, 'success');
+            displayAllCookies();
+        }
+
+        // 创建自定义Cookie
+        function createCustomCookie() {
+            const name = document.getElementById('cookieName').value;
+            const value = document.getElementById('cookieValue').value;
+            const domain = document.getElementById('cookieDomain').value;
+            const path = document.getElementById('cookiePath').value || '/';
+            const expires = document.getElementById('cookieExpires').value;
+            const secure = document.getElementById('cookieSecure').checked;
+            const sameSite = document.getElementById('cookieSameSite').value;
+
+            if (!name || !value) {
+                showStatus('createStatus', '请输入Cookie名称和值！', 'error');
+                return;
+            }
+
+            let cookieString = `${name}=${value}`;
+            
+            if (domain) {
+                cookieString += `; domain=${domain}`;
+            }
+            
+            cookieString += `; path=${path}`;
+            
+            if (expires) {
+                const date = new Date();
+                date.setTime(date.getTime() + (parseInt(expires) * 24 * 60 * 60 * 1000));
+                cookieString += `; expires=${date.toUTCString()}`;
+            }
+            
+            if (secure) {
+                cookieString += '; secure';
+            }
+            
+            if (sameSite) {
+                cookieString += `; SameSite=${sameSite}`;
+            }
+
+            document.cookie = cookieString;
+            showStatus('createStatus', `自定义Cookie "${name}" 创建成功！`, 'success');
+            displayAllCookies();
+        }
+
+        // 显示所有Cookies
+        function displayAllCookies() {
+            const cookies = document.cookie.split(';');
+            const display = document.getElementById('cookieDisplay');
+            
+            if (cookies.length === 0 || (cookies.length === 1 && cookies[0] === '')) {
+                display.innerHTML = '<div class="status info">当前没有Cookies</div>';
+                return;
+            }
+            
+            let html = '<h3>当前Cookies（' + cookies.length + '个）：</h3>';
+            
+            cookies.forEach(cookie => {
+                if (cookie.trim()) {
+                    const [name, value] = cookie.trim().split('=');
+                    html += `
+                        <div class="cookie-item">
+                            <span class="cookie-name">${name}:</span>
+                            <span class="cookie-value">${value || '(空值)'}</span>
+                        </div>
+                    `;
+                }
+            });
+            
+            display.innerHTML = html;
+        }
+
+        // 删除指定Cookie
+        function deleteCookie() {
+            const name = document.getElementById('deleteCookieName').value;
+            
+            if (!name) {
+                showStatus('deleteStatus', '请输入要删除的Cookie名称！', 'error');
+                return;
+            }
+            
+            // 删除Cookie的方法是设置过期时间为过去
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+            showStatus('deleteStatus', `Cookie "${name}" 已删除！`, 'success');
+            displayAllCookies();
+        }
+
+        // 删除所有Cookies
+        function deleteAllCookies() {
+            const cookies = document.cookie.split(';');
+            
+            cookies.forEach(cookie => {
+                if (cookie.trim()) {
+                    const name = cookie.trim().split('=')[0];
+                    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+                }
+            });
+            
+            showStatus('deleteStatus', '所有Cookies已删除！', 'success');
+            displayAllCookies();
+        }
+
+        // 修改Cookie
+        function modifyCookie() {
+            const name = document.getElementById('modifyCookieName').value;
+            const value = document.getElementById('modifyCookieValue').value;
+            
+            if (!name || !value) {
+                alert('请输入Cookie名称和新值！');
+                return;
+            }
+            
+            // 重新设置Cookie（会覆盖原有的）
+            document.cookie = `${name}=${value}; path=/`;
+            showStatus('createStatus', `Cookie "${name}" 已修改！`, 'success');
+            displayAllCookies();
+        }
+
+        // 显示状态消息
+        function showStatus(elementId, message, type) {
+            const statusElement = document.getElementById(elementId);
+            statusElement.textContent = message;
+            statusElement.className = `status ${type}`;
+            statusElement.style.display = 'block';
+            
+            setTimeout(() => {
+                statusElement.style.display = 'none';
+            }, 5000);
+        }
+        // 创建多个测试Cookies（性能测试）
+        function createManyCookies(count) {
+            const startTime = performance.now();
+            
+            for (let i = 0; i < count; i++) {
+                const date = new Date();
+                date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000)); // 30天
+                document.cookie = `perf_test_${i}=value_${Math.random().toString(36).substr(2, 9)}; expires=${date.toUTCString()}; path=/`;
+            }
+            
+            const endTime = performance.now();
+            const timeTaken = (endTime - startTime).toFixed(2);
+            
+            showStatus('performanceStatus', `成功创建 ${count} 个测试Cookies，耗时 ${timeTaken} 毫秒`, 'success');
+            displayAllCookies();
+        }
+
+        // 清理测试Cookies
+        function clearTestCookies() {
+            const cookies = document.cookie.split(';');
+            let count = 0;
+            
+            cookies.forEach(cookie => {
+                if (cookie.trim()) {
+                    const name = cookie.trim().split('=')[0];
+                    if (name.startsWith('perf_test_') || name.startsWith('test_') || name.startsWith('special_')) {
+                        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+                        count++;
+                    }
+                }
+            });
+            
+            showStatus('performanceStatus', `清理了 ${count} 个测试Cookies`, 'success');
+            displayAllCookies();
+        }
+
+        // 创建特殊字符Cookie
+        function createSpecialCookies() {
+            const specialValues = [
+                { name: 'special_chinese', value: '中文测试值_测试' },
+                { name: 'special_emoji', value: '😀🎉🚀' },
+                { name: 'special_symbols', value: '!@#$%^&*()_+-=[]{}|;:,.<>?' },
+                { name: 'special_encoded', value: encodeURIComponent('spaces and 特殊字符') }
+            ];
+            
+            specialValues.forEach(item => {
+                const date = new Date();
+                date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
+                document.cookie = `${item.name}=${item.value}; expires=${date.toUTCString()}; path=/`;
+            });
+            
+            showStatus('specialStatus', '创建了4个特殊字符测试Cookies', 'success');
+            displayAllCookies();
+        }
+
+        // 创建超长值Cookie
+        function createLongValueCookie() {
+            const longValue = 'a'.repeat(2048); // 2KB的值
+            const date = new Date();
+            date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
+            
+            try {
+                document.cookie = `long_value_cookie=${longValue}; expires=${date.toUTCString()}; path=/`;
+                showStatus('specialStatus', '创建了超长值Cookie（2KB）', 'success');
+            } catch (e) {
+                showStatus('specialStatus', '创建超长值Cookie失败：' + e.message, 'error');
+            }
+            displayAllCookies();
+        }
+
+        // 创建子域Cookie
+        function createSubdomainCookie() {
+            const domain = window.location.hostname;
+            const date = new Date();
+            date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
+            
+            // 尝试为当前域和父域创建Cookie
+            document.cookie = `subdomain_test=for_current_domain; expires=${date.toUTCString()}; path=/; domain=${domain}`;
+            
+            // 如果是子域名，尝试为父域创建
+            if (domain.split('.').length > 2) {
+                const parentDomain = '.' + domain.split('.').slice(-2).join('.');
+                document.cookie = `subdomain_test_parent=for_parent_domain; expires=${date.toUTCString()}; path=/; domain=${parentDomain}`;
+                showStatus('specialStatus', `创建了子域Cookie，当前域：${domain}，父域：${parentDomain}`, 'success');
+            } else {
+                showStatus('specialStatus', `创建了当前域Cookie：${domain}`, 'success');
+            }
+            displayAllCookies();
+        }
+
+        // 创建过期Cookie
+        function createExpiredCookie() {
+            // 创建一个已过期的Cookie（应该立即被删除）
+            document.cookie = `expired_cookie=should_be_deleted; expires=Thu, 01 Jan 2020 00:00:00 UTC; path=/`;
+            showStatus('specialStatus', '创建了过期Cookie（应该不会显示）', 'info');
+            setTimeout(displayAllCookies, 100);
+        }
+
+        // 创建远期Cookie
+        function createFutureCookie() {
+            const date = new Date();
+            date.setFullYear(date.getFullYear() + 10); // 10年后
+            document.cookie = `future_cookie=valid_for_10_years; expires=${date.toUTCString()}; path=/`;
+            showStatus('specialStatus', `创建了远期Cookie，过期时间：${date.toLocaleDateString()}`, 'success');
+            displayAllCookies();
+        }
+
+        // 验证Cookie存在性
+        function verifyCookie() {
+            const cookieName = document.getElementById('verifyCookieName').value;
+            
+            if (!cookieName) {
+                showVerifyResult('请输入Cookie名称', 'error');
+                return;
+            }
+            
+            const cookies = document.cookie.split(';');
+            let found = false;
+            let cookieValue = '';
+            
+            for (const cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === cookieName) {
+                    found = true;
+                    cookieValue = value;
+                    break;
+                }
+            }
+            
+            if (found) {
+                showVerifyResult(`✅ Cookie "${cookieName}" 存在\n值：${cookieValue}`, 'success');
+            } else {
+                showVerifyResult(`❌ Cookie "${cookieName}" 不存在`, 'error');
+            }
+        }
+
+        // 获取Cookie详情
+        function getCookieInfo() {
+            const cookieName = document.getElementById('verifyCookieName').value;
+            
+            if (!cookieName) {
+                showVerifyResult('请输入Cookie名称', 'error');
+                return;
+            }
+            
+            const cookies = document.cookie.split(';');
+            let found = false;
+            let info = '';
+            
+            for (const cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === cookieName) {
+                    found = true;
+                    info = `
+                        <h4>Cookie详情：${cookieName}</h4>
+                        <ul>
+                            <li><strong>名称：</strong>${name}</li>
+                            <li><strong>值：</strong>${value || '(空值)'}</li>
+                            <li><strong>长度：</strong>${(value || '').length} 字节</li>
+                            <li><strong>编码值：</strong>${encodeURIComponent(value || '')}</li>
+                            <li><strong>解码值：</strong>${decodeURIComponent(value || '')}</li>
+                        </ul>
+                        <p><em>注意：JavaScript无法获取HttpOnly、Secure、SameSite等属性</em></p>
+                    `;
+                    break;
+                }
+            }
+            
+            if (found) {
+                showVerifyResult(info, 'info');
+            } else {
+                showVerifyResult(`Cookie "${cookieName}" 不存在`, 'error');
+            }
+        }
+
+        // 显示验证结果
+        function showVerifyResult(message, type) {
+            const resultDiv = document.getElementById('verifyResult');
+            resultDiv.innerHTML = message;
+            resultDiv.className = `cookie-display ${type}`;
+            resultDiv.style.display = 'block';
+        }
+
+        // 生成测试JSON文件
+        function generateTestJSON() {
+            const testCookies = [
+                {
+                    "Domain": window.location.hostname || "localhost",
+                    "Name": "test_session",
+                    "Value": "session_value_123",
+                    "Path": "/",
+                    "Expires": null,
+                    "HttpOnly": false,
+                    "Secure": false,
+                    "SameSite": "Lax"
+                },
+                {
+                    "Domain": window.location.hostname || "localhost",
+                    "Name": "test_persistent",
+                    "Value": "persistent_value_456",
+                    "Path": "/",
+                    "Expires": new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+                    "HttpOnly": true,
+                    "Secure": true,
+                    "SameSite": "Strict"
+                },
+                {
+                    "Domain": window.location.hostname || "localhost",
+                    "Name": "test_analytics",
+                    "Value": "ga_" + Math.random().toString(36).substr(2, 12),
+                    "Path": "/",
+                    "Expires": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+                    "HttpOnly": false,
+                    "Secure": false,
+                    "SameSite": "None"
+                },
+                {
+                    "Domain": window.location.hostname || "localhost",
+                    "Name": "test_preferences",
+                    "Value": JSON.stringify({theme: "dark", lang: "zh-CN"}),
+                    "Path": "/",
+                    "Expires": new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
+                    "HttpOnly": false,
+                    "Secure": false,
+                    "SameSite": "Lax"
+                },
+                {
+                    "Domain": window.location.hostname || "localhost",
+                    "Name": "test_special_chars",
+                    "Value": "中文_emoji_😀_symbols_!@#$%",
+                    "Path": "/test",
+                    "Expires": new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    "HttpOnly": false,
+                    "Secure": true,
+                    "SameSite": "Strict"
+                }
+            ];
+            
+            const jsonString = JSON.stringify(testCookies, null, 2);
+            
+            // 显示JSON
+            const outputDiv = document.getElementById('jsonOutput');
+            outputDiv.textContent = jsonString;
+            outputDiv.style.display = 'block';
+            
+            // 创建下载链接
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'test_cookies.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showStatus('specialStatus', '测试JSON文件已生成并下载', 'success');
+        }
+
+        // 页面加载时显示当前Cookies
+        window.onload = function() {
+            displayAllCookies();
+        };
+    </script>
+</body>
+</html>

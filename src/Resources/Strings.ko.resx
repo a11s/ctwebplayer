@@ -789,6 +789,12 @@
   <data name="Form1_Screenshot_ErrorTitle" xml:space="preserve">
     <value>오류</value>
   </data>
+  <data name="Form1_Screenshot_WebGLNotSupported" xml:space="preserve">
+    <value>보안 제한으로 인해 WebGL 캔버스 스크린샷이 지원되지 않습니다. WebView2 캡처 방법을 사용하세요.</value>
+  </data>
+  <data name="Form1_Screenshot_EmptyCanvas" xml:space="preserve">
+    <value>캔버스가 비어 있거나 렌더링되지 않았습니다</value>
+  </data>
   <data name="AboutForm_Title" xml:space="preserve">
     <value>CTWebPlayer 정보</value>
   </data>
@@ -808,5 +814,151 @@
   </data>
   <data name="Form1_Status_UnityCanvasFullscreen" xml:space="preserve">
     <value>Unity 캔버스 전체 화면이 적용됨</value>
+  </data>
+  <!-- CookieManagerForm - 쿠키 관리자 창 -->
+  <data name="CookieManager_Title" xml:space="preserve">
+    <value>쿠키 관리자</value>
+  </data>
+  <data name="CookieManager_Refresh" xml:space="preserve">
+    <value>새로고침</value>
+  </data>
+  <data name="CookieManager_Add" xml:space="preserve">
+    <value>추가</value>
+  </data>
+  <data name="CookieManager_Delete" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="CookieManager_Import" xml:space="preserve">
+    <value>가져오기</value>
+  </data>
+  <data name="CookieManager_Export" xml:space="preserve">
+    <value>내보내기</value>
+  </data>
+  <data name="CookieManager_GroupByDomain" xml:space="preserve">
+    <value>도메인별 그룹화</value>
+  </data>
+  <data name="CookieManager_Search" xml:space="preserve">
+    <value>검색:</value>
+  </data>
+  <data name="CookieManager_Domain" xml:space="preserve">
+    <value>도메인</value>
+  </data>
+  <data name="CookieManager_Name" xml:space="preserve">
+    <value>이름</value>
+  </data>
+  <data name="CookieManager_Value" xml:space="preserve">
+    <value>값</value>
+  </data>
+  <data name="CookieManager_Path" xml:space="preserve">
+    <value>경로</value>
+  </data>
+  <data name="CookieManager_Expires" xml:space="preserve">
+    <value>만료 시간</value>
+  </data>
+  <data name="CookieManager_Size" xml:space="preserve">
+    <value>크기</value>
+  </data>
+  <data name="CookieManager_Copy" xml:space="preserve">
+    <value>복사</value>
+  </data>
+  <data name="CookieManager_Edit" xml:space="preserve">
+    <value>편집</value>
+  </data>
+  <data name="CookieManager_StatusFormat" xml:space="preserve">
+    <value>전체: {0} | 표시: {1} | 선택: {2}</value>
+  </data>
+  <data name="CookieManager_SelectToDelete" xml:space="preserve">
+    <value>삭제할 쿠키를 선택하세요</value>
+  </data>
+  <data name="CookieManager_Hint" xml:space="preserve">
+    <value>힌트</value>
+  </data>
+  <data name="CookieManager_ConfirmDelete" xml:space="preserve">
+    <value>선택한 {0}개의 쿠키를 삭제하시겠습니까?</value>
+  </data>
+  <data name="CookieManager_Confirm" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="CookieManager_ImportTitle" xml:space="preserve">
+    <value>쿠키 가져오기</value>
+  </data>
+  <data name="CookieManager_ImportSuccess" xml:space="preserve">
+    <value>쿠키를 성공적으로 가져왔습니다</value>
+  </data>
+  <data name="CookieManager_Success" xml:space="preserve">
+    <value>성공</value>
+  </data>
+  <data name="CookieManager_ImportError" xml:space="preserve">
+    <value>가져오기 실패: {0}</value>
+  </data>
+  <data name="CookieManager_Error" xml:space="preserve">
+    <value>오류</value>
+  </data>
+  <data name="CookieManager_ExportTitle" xml:space="preserve">
+    <value>쿠키 내보내기</value>
+  </data>
+  <data name="CookieManager_ExportSuccess" xml:space="preserve">
+    <value>쿠키를 성공적으로 내보냈습니다</value>
+  </data>
+  <data name="CookieManager_ExportError" xml:space="preserve">
+    <value>내보내기 실패: {0}</value>
+  </data>
+  <data name="CookieManager_Loading" xml:space="preserve">
+    <value>쿠키 로드 중...</value>
+  </data>
+  <data name="CookieManager_LoadError" xml:space="preserve">
+    <value>쿠키 로드 실패: {0}</value>
+  </data>
+  <!-- CookieEditDialog - 쿠키 편집 대화상자 -->
+  <data name="CookieEdit_TitleAdd" xml:space="preserve">
+    <value>쿠키 추가</value>
+  </data>
+  <data name="CookieEdit_TitleEdit" xml:space="preserve">
+    <value>쿠키 편집</value>
+  </data>
+  <data name="CookieEdit_Domain" xml:space="preserve">
+    <value>도메인:</value>
+  </data>
+  <data name="CookieEdit_Name" xml:space="preserve">
+    <value>이름:</value>
+  </data>
+  <data name="CookieEdit_Value" xml:space="preserve">
+    <value>값:</value>
+  </data>
+  <data name="CookieEdit_Path" xml:space="preserve">
+    <value>경로:</value>
+  </data>
+  <data name="CookieEdit_Expires" xml:space="preserve">
+    <value>만료 시간:</value>
+  </data>
+  <data name="CookieEdit_SameSite" xml:space="preserve">
+    <value>SameSite:</value>
+  </data>
+  <data name="CookieEdit_HttpOnly" xml:space="preserve">
+    <value>HttpOnly</value>
+  </data>
+  <data name="CookieEdit_Secure" xml:space="preserve">
+    <value>Secure</value>
+  </data>
+  <data name="CookieEdit_OK" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="CookieEdit_Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="CookieEdit_SessionCookie" xml:space="preserve">
+    <value>세션 쿠키</value>
+  </data>
+  <data name="CookieEdit_Properties" xml:space="preserve">
+    <value>쿠키 속성</value>
+  </data>
+  <data name="CookieEdit_Security" xml:space="preserve">
+    <value>보안 설정</value>
+  </data>
+  <data name="CookieEdit_DomainRequired" xml:space="preserve">
+    <value>도메인은 비워둘 수 없습니다</value>
+  </data>
+  <data name="CookieEdit_NameRequired" xml:space="preserve">
+    <value>이름은 비워둘 수 없습니다</value>
   </data>
 </root>

@@ -287,7 +287,55 @@ namespace ctwebplayer
             string format = GetString(key);
             try
             {
+                // 添加调试日志
+                LogManager.Instance.Debug($"[LanguageManager.GetString] 格式化 - 键: {key}, 格式字符串: '{format}', 参数数量: {args?.Length ?? 0}");
+                
+                // 如果格式字符串就是key本身（找不到资源），或者不包含占位符，返回默认格式
+                if (format == key || !format.Contains("{"))
+                {
+                    LogManager.Instance.Warning($"[LanguageManager.GetString] 资源键 '{key}' 找不到或格式无效，使用默认格式");
+                    // 根据参数数量构建默认格式
+                    if (args != null && args.Length > 0)
+                    {
+                        if (key == "CookieManager_StatusFormat" && args.Length == 3)
+                        {
+                            // 为CookieManager_StatusFormat提供默认格式
+                            format = "Total: {0} | Displayed: {1} | Selected: {2}";
+                        }
+                        else
+                        {
+                            // 通用默认格式
+                            var placeholders = string.Join(" | ", Enumerable.Range(0, args.Length).Select(i => $"{{{i}}}"));
+                            format = placeholders;
+                        }
+                        LogManager.Instance.Debug($"[LanguageManager.GetString] 使用默认格式: '{format}'");
+                    }
+                    else
+                    {
+                        return format;
+                    }
+                }
+                
+                // 记录参数详情
+                if (args != null && args.Length > 0)
+                {
+                    for (int i = 0; i < args.Length; i++)
+                    {
+                        LogManager.Instance.Debug($"[LanguageManager.GetString] 参数[{i}]: {args[i]?.ToString() ?? "null"}");
+                    }
+                }
+                
                 return string.Format(format, args);
+            }
+            catch (FormatException fex)
+            {
+                LogManager.Instance.Error($"格式化资源字符串失败 - 键: {key}, 格式: '{format}', 参数数量: {args?.Length ?? 0}, 错误: {fex.Message}", fex);
+                // 返回一个安全的字符串
+                if (args != null && args.Length > 0)
+                {
+                    return string.Join(" | ", args.Select(a => a?.ToString() ?? ""));
+                }
+                return format;
             }
             catch (Exception ex)
             {

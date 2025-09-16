@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.IO;
 
 namespace ctwebplayer
 {
@@ -336,32 +338,33 @@ namespace ctwebplayer
         /// <returns>Cookie 列表</returns>
         private async Task<List<CoreWebView2Cookie>> GetCookiesAsync(string uri)
         {
-            var tcs = new TaskCompletionSource<List<CoreWebView2Cookie>>();
             var cookies = new List<CoreWebView2Cookie>();
 
             try
             {
-                await Task.Run(() =>
+                LogManager.Instance.Debug($"GetCookiesAsync开始，URI: {uri ?? "null"}");
+                
+                // 直接使用await等待异步操作，不需要额外的Task.Run
+                var cookieList = await _cookieManager.GetCookiesAsync(uri);
+                
+                if (cookieList != null)
                 {
-                    _cookieManager.GetCookiesAsync(uri).ContinueWith(task =>
+                    foreach (var cookie in cookieList)
                     {
-                        if (task.IsCompletedSuccessfully && task.Result != null)
-                        {
-                            foreach (var cookie in task.Result)
-                            {
-                                cookies.Add(cookie);
-                            }
-                        }
-                        tcs.SetResult(cookies);
-                    });
-                });
+                        cookies.Add(cookie);
+                    }
+                    LogManager.Instance.Debug($"GetCookiesAsync成功，获取到 {cookies.Count} 个cookies");
+                }
+                else
+                {
+                    LogManager.Instance.Warning($"GetCookiesAsync返回null，URI: {uri ?? "null"}");
+                }
 
-                return await tcs.Task;
+                return cookies;
             }
             catch (Exception ex)
             {
-                LogManager.Instance.Error($"获取 Cookies 失败: {ex.Message}");
-                tcs.SetResult(cookies);
+                LogManager.Instance.Error($"获取 Cookies 失败，URI: {uri ?? "null"}, 错误: {ex.Message}", ex);
                 return cookies;
             }
         }
@@ -425,6 +428,265 @@ namespace ctwebplayer
             {
                 LogManager.Instance.Error($"删除所有 Cookies 失败: {ex.Message}");
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// 获取所有cookies
+        /// </summary>
+        /// <returns>所有cookies的列表</returns>
+        public async Task<List<CookieItem>> GetAllCookiesAsync()
+        {
+            var allCookies = new List<CookieItem>();
+            
+            try
+            {
+                LogManager.Instance.Info("开始获取所有cookies...");
+                LogManager.Instance.Info($"CookieManager实例: {_cookieManager != null}");
+                
+                if (_cookieManager == null)
+                {
+                    LogManager.Instance.Error("CookieManager实例为null，无法获取cookies");
+                    return allCookies;
+                }
+                
+                // 获取所有cookies - 使用null作为URI参数表示获取所有cookies
+                LogManager.Instance.Info("调用GetCookiesAsync(null)获取所有cookies");
+                
+                var cookiesTask = _cookieManager.GetCookiesAsync(null);
+                LogManager.Instance.Info($"GetCookiesAsync任务创建成功，等待完成...");
+                
+                var cookies = await cookiesTask;
+                LogManager.Instance.Info($"GetCookiesAsync完成，返回cookies集合: {cookies != null}");
+                
+                if (cookies == null)
+                {
+                    LogManager.Instance.Warning("GetCookiesAsync返回null");
+                    return allCookies;
+                }
+                
+                LogManager.Instance.Info($"开始遍历cookies集合...");
+                int index = 0;
+                foreach (var cookie in cookies)
+                {
+                    if (cookie == null)
+                    {
+                        LogManager.Instance.Warning($"Cookie[{index}]为null，跳过");
+                        index++;
+                        continue;
+                    }
+                    
+                    LogManager.Instance.Debug($"Cookie[{index}]: Name={cookie.Name}, Domain={cookie.Domain}, Value长度={cookie.Value?.Length ?? 0}");
+                    
+                    try
+                    {
+                        var cookieItem = CookieItem.FromWebView2Cookie(cookie);
+                        allCookies.Add(cookieItem);
+                        LogManager.Instance.Debug($"成功转换Cookie[{index}]为CookieItem");
+                    }
+                    catch (Exception convertEx)
+                    {
+                        LogManager.Instance.Error($"转换Cookie[{index}]时出错: {convertEx.Message}", convertEx);
+                    }
+                    
+                    index++;
+                }
+                
+                LogManager.Instance.Info($"成功获取到 {allCookies.Count} 个cookies");
+                return allCookies;
+            }
+            catch (InvalidOperationException ioEx)
+            {
+                LogManager.Instance.Error($"获取cookies时发生InvalidOperationException，可能是WebView2未完全初始化: {ioEx.Message}", ioEx);
+                return allCookies;
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error($"获取所有cookies失败: {ex.GetType().Name}: {ex.Message}", ex);
+                LogManager.Instance.Error($"堆栈跟踪: {ex.StackTrace}");
+                return allCookies;
+            }
+        }
+
+        /// <summary>
+        /// 根据域名获取cookies
+        /// </summary>
+        /// <param name="domain">域名</param>
+        /// <returns>指定域名的cookies列表</returns>
+        public async Task<List<CookieItem>> GetCookiesByDomainAsync(string domain)
+        {
+            var domainCookies = new List<CookieItem>();
+            
+            try
+            {
+                var uri = domain.StartsWith("http") ? domain : $"https://{domain}";
+                var cookies = await GetCookiesAsync(uri);
+                
+                foreach (var cookie in cookies)
+                {
+                    domainCookies.Add(CookieItem.FromWebView2Cookie(cookie));
+                }
+                
+                LogManager.Instance.Info($"获取域名 {domain} 的cookies: {domainCookies.Count} 个");
+                return domainCookies;
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error($"获取域名 {domain} 的cookies失败: {ex.Message}", ex);
+                return domainCookies;
+            }
+        }
+
+        /// <summary>
+        /// 添加或更新cookie
+        /// </summary>
+        /// <param name="cookieItem">Cookie项</param>
+        /// <returns>操作是否成功</returns>
+        public async Task<bool> AddOrUpdateCookieAsync(CookieItem cookieItem)
+        {
+            try
+            {
+                if (cookieItem == null)
+                    throw new ArgumentNullException(nameof(cookieItem));
+                
+                // 验证cookie数据
+                if (!cookieItem.IsValid(out string errorMessage))
+                {
+                    LogManager.Instance.Error($"Cookie验证失败: {errorMessage}");
+                    return false;
+                }
+                
+                // 创建WebView2 cookie
+                var cookie = _cookieManager.CreateCookie(
+                    cookieItem.Name,
+                    cookieItem.Value,
+                    cookieItem.Domain,
+                    cookieItem.Path
+                );
+                
+                // 设置其他属性
+                cookie.IsSecure = cookieItem.Secure;
+                cookie.IsHttpOnly = cookieItem.HttpOnly;
+                cookie.SameSite = cookieItem.GetSameSiteKind();
+                
+                // 设置过期时间
+                if (cookieItem.Expires.HasValue)
+                {
+                    cookie.Expires = cookieItem.Expires.Value;
+                }
+                
+                // 添加或更新cookie
+                await Task.Run(() => _cookieManager.AddOrUpdateCookie(cookie));
+                
+                LogManager.Instance.Info($"成功添加/更新cookie: {cookieItem.Name}@{cookieItem.Domain}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error($"添加/更新cookie失败: {ex.Message}", ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 删除指定的cookie
+        /// </summary>
+        /// <param name="cookieItem">要删除的cookie</param>
+        /// <returns>操作是否成功</returns>
+        public async Task<bool> DeleteCookieAsync(CookieItem cookieItem)
+        {
+            try
+            {
+                if (cookieItem == null)
+                    throw new ArgumentNullException(nameof(cookieItem));
+                
+                // 构建URI
+                var uri = cookieItem.Domain.StartsWith("http")
+                    ? cookieItem.Domain
+                    : $"https://{cookieItem.Domain}";
+                
+                // 删除cookie
+                await Task.Run(() => _cookieManager.DeleteCookies(cookieItem.Name, uri));
+                
+                LogManager.Instance.Info($"成功删除cookie: {cookieItem.Name}@{cookieItem.Domain}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error($"删除cookie失败: {ex.Message}", ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 导出cookies到JSON文件
+        /// </summary>
+        /// <param name="filePath">文件路径</param>
+        /// <returns>操作是否成功</returns>
+        public async Task<bool> ExportCookiesAsync(string filePath)
+        {
+            try
+            {
+                var allCookies = await GetAllCookiesAsync();
+                
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                };
+                
+                var json = JsonSerializer.Serialize(allCookies, options);
+                await File.WriteAllTextAsync(filePath, json);
+                
+                LogManager.Instance.Info($"成功导出 {allCookies.Count} 个cookies到: {filePath}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error($"导出cookies失败: {ex.Message}", ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 从JSON文件导入cookies
+        /// </summary>
+        /// <param name="filePath">文件路径</param>
+        /// <returns>成功导入的cookie数量</returns>
+        public async Task<int> ImportCookiesAsync(string filePath)
+        {
+            try
+            {
+                if (!File.Exists(filePath))
+                {
+                    LogManager.Instance.Error($"文件不存在: {filePath}");
+                    return 0;
+                }
+                
+                var json = await File.ReadAllTextAsync(filePath);
+                var cookies = JsonSerializer.Deserialize<List<CookieItem>>(json);
+                
+                if (cookies == null || cookies.Count == 0)
+                {
+                    LogManager.Instance.Warning("导入的文件中没有有效的cookies");
+                    return 0;
+                }
+                
+                int successCount = 0;
+                foreach (var cookie in cookies)
+                {
+                    if (await AddOrUpdateCookieAsync(cookie))
+                    {
+                        successCount++;
+                    }
+                }
+                
+                LogManager.Instance.Info($"成功导入 {successCount}/{cookies.Count} 个cookies");
+                return successCount;
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error($"导入cookies失败: {ex.Message}", ex);
+                return 0;
             }
         }
     }

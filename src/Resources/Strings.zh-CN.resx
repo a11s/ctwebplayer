@@ -814,4 +814,150 @@
   <data name="Form1_Status_UnityCanvasFullscreen" xml:space="preserve">
     <value>Unity画布全屏已应用</value>
   </data>
+  <!-- CookieManagerForm - Cookie管理器窗口 -->
+  <data name="CookieManager_Title" xml:space="preserve">
+    <value>Cookie管理器</value>
+  </data>
+  <data name="CookieManager_Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="CookieManager_Add" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="CookieManager_Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="CookieManager_Import" xml:space="preserve">
+    <value>导入</value>
+  </data>
+  <data name="CookieManager_Export" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="CookieManager_GroupByDomain" xml:space="preserve">
+    <value>按域名分组</value>
+  </data>
+  <data name="CookieManager_Search" xml:space="preserve">
+    <value>搜索：</value>
+  </data>
+  <data name="CookieManager_Domain" xml:space="preserve">
+    <value>域名</value>
+  </data>
+  <data name="CookieManager_Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="CookieManager_Value" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="CookieManager_Path" xml:space="preserve">
+    <value>路径</value>
+  </data>
+  <data name="CookieManager_Expires" xml:space="preserve">
+    <value>过期时间</value>
+  </data>
+  <data name="CookieManager_Size" xml:space="preserve">
+    <value>大小</value>
+  </data>
+  <data name="CookieManager_Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="CookieManager_Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="CookieManager_StatusFormat" xml:space="preserve">
+    <value>总计: {0} | 显示: {1} | 已选: {2}</value>
+  </data>
+  <data name="CookieManager_SelectToDelete" xml:space="preserve">
+    <value>请选择要删除的Cookie</value>
+  </data>
+  <data name="CookieManager_Hint" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="CookieManager_ConfirmDelete" xml:space="preserve">
+    <value>确定要删除选中的 {0} 个Cookie吗？</value>
+  </data>
+  <data name="CookieManager_Confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="CookieManager_ImportTitle" xml:space="preserve">
+    <value>导入Cookies</value>
+  </data>
+  <data name="CookieManager_ImportSuccess" xml:space="preserve">
+    <value>Cookies导入成功</value>
+  </data>
+  <data name="CookieManager_Success" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="CookieManager_ImportError" xml:space="preserve">
+    <value>导入失败: {0}</value>
+  </data>
+  <data name="CookieManager_Error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="CookieManager_ExportTitle" xml:space="preserve">
+    <value>导出Cookies</value>
+  </data>
+  <data name="CookieManager_ExportSuccess" xml:space="preserve">
+    <value>Cookies导出成功</value>
+  </data>
+  <data name="CookieManager_ExportError" xml:space="preserve">
+    <value>导出失败: {0}</value>
+  </data>
+  <data name="CookieManager_Loading" xml:space="preserve">
+    <value>正在加载Cookies...</value>
+  </data>
+  <data name="CookieManager_LoadError" xml:space="preserve">
+    <value>加载Cookies失败: {0}</value>
+  </data>
+  <!-- CookieEditDialog - Cookie编辑对话框 -->
+  <data name="CookieEdit_TitleAdd" xml:space="preserve">
+    <value>添加Cookie</value>
+  </data>
+  <data name="CookieEdit_TitleEdit" xml:space="preserve">
+    <value>编辑Cookie</value>
+  </data>
+  <data name="CookieEdit_Domain" xml:space="preserve">
+    <value>域名：</value>
+  </data>
+  <data name="CookieEdit_Name" xml:space="preserve">
+    <value>名称：</value>
+  </data>
+  <data name="CookieEdit_Value" xml:space="preserve">
+    <value>值：</value>
+  </data>
+  <data name="CookieEdit_Path" xml:space="preserve">
+    <value>路径：</value>
+  </data>
+  <data name="CookieEdit_Expires" xml:space="preserve">
+    <value>过期时间：</value>
+  </data>
+  <data name="CookieEdit_SameSite" xml:space="preserve">
+    <value>SameSite：</value>
+  </data>
+  <data name="CookieEdit_HttpOnly" xml:space="preserve">
+    <value>HttpOnly</value>
+  </data>
+  <data name="CookieEdit_Secure" xml:space="preserve">
+    <value>Secure</value>
+  </data>
+  <data name="CookieEdit_OK" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="CookieEdit_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="CookieEdit_SessionCookie" xml:space="preserve">
+    <value>会话Cookie</value>
+  </data>
+  <data name="CookieEdit_Properties" xml:space="preserve">
+    <value>Cookie属性</value>
+  </data>
+  <data name="CookieEdit_Security" xml:space="preserve">
+    <value>安全设置</value>
+  </data>
+  <data name="CookieEdit_DomainRequired" xml:space="preserve">
+    <value>域名不能为空</value>
+  </data>
+  <data name="CookieEdit_NameRequired" xml:space="preserve">
+    <value>名称不能为空</value>
+  </data>
 </root>

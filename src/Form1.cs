@@ -65,6 +65,9 @@ namespace ctwebplayer
         // Cookie管理器
         private CookieManager _cookieManager = null!; // 在 InitializeWebView 中初始化
         
+        // 自定义协议处理器
+        private CustomProtocolHandler _protocolHandler = null!; // 在 InitializeWebView 中初始化
+        
         // 登录流程状态
         private LoginFlowState _currentLoginState = LoginFlowState.Initial;
         
@@ -95,6 +98,11 @@ namespace ctwebplayer
             
             // 初始化语言管理器
             LanguageManager.Instance.Initialize();
+            
+            // 运行资源文件验证（仅在调试模式下）
+            #if DEBUG
+            ResourcesValidator.RunValidation();
+            #endif
             
             // 应用语言设置
             LanguageManager.Instance.ApplyToForm(this);
@@ -148,6 +156,10 @@ namespace ctwebplayer
                 // 初始化缓存管理器
                 _cacheManager = new CacheManager();
                 LogManager.Instance.Info("缓存管理器已初始化");
+                
+                // 初始化自定义协议处理器
+                _protocolHandler = new CustomProtocolHandler(this, _configManager);
+                LogManager.Instance.Info("自定义协议处理器已初始化");
                 
                 // 构建浏览器参数
                 var browserArgs = new List<string>
@@ -523,8 +535,32 @@ namespace ctwebplayer
         /// <summary>
         /// 导航开始事件
         /// </summary>
-        private void WebView2_NavigationStarting(object? sender, CoreWebView2NavigationStartingEventArgs e)
+        private async void WebView2_NavigationStarting(object? sender, CoreWebView2NavigationStartingEventArgs e)
         {
+            // 检查是否是自定义协议
+            if (CustomProtocolHandler.ShouldIntercept(e.Uri))
+            {
+                // 取消导航
+                e.Cancel = true;
+                
+                LogManager.Instance.Info($"拦截自定义协议URL：{e.Uri}");
+                
+                // 异步处理协议
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _protocolHandler.HandleProtocolAsync(e.Uri);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogManager.Instance.Error($"处理自定义协议时出错：{e.Uri}", ex);
+                    }
+                });
+                
+                return;
+            }
+            
             // 显示进度条
             progressBar.Visible = true;
             progressBar.Style = ProgressBarStyle.Marquee;
@@ -1172,12 +1208,31 @@ namespace ctwebplayer
         /// <summary>
         /// 导航到地址栏中的URL
         /// </summary>
-        private void NavigateToUrl()
+        private async void NavigateToUrl()
         {
             string url = txtAddress.Text.Trim();
             
             if (string.IsNullOrEmpty(url))
             {
+                return;
+            }
+            
+            // 检查是否是ct://协议
+            if (url.StartsWith("ct://", StringComparison.OrdinalIgnoreCase))
+            {
+                LogManager.Instance.Info($"地址栏输入自定义协议URL：{url}");
+                
+                // 直接处理协议，不进行导航
+                try
+                {
+                    await _protocolHandler.HandleProtocolAsync(url);
+                }
+                catch (Exception ex)
+                {
+                    LogManager.Instance.Error($"处理自定义协议时出错：{url}", ex);
+                    MessageBox.Show($"处理协议时出错：{ex.Message}", LanguageManager.Instance.GetString("Message_Error"),
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 return;
             }
             
