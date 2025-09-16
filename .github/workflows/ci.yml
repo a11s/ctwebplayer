@@ -67,7 +67,8 @@ jobs:
     # 运行测试（如果有测试项目）
     - name: Test
       run: |
-        if (Test-Path "src/*.Tests.csproj" -Recurse) {
+        $testProjects = Get-ChildItem -Path "src" -Filter "*.Tests.csproj" -Recurse -ErrorAction SilentlyContinue
+        if ($testProjects) {
           dotnet test src/ctwebplayer.sln --configuration ${{ matrix.configuration }} --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
         } else {
           Write-Host "No test projects found, skipping tests"
