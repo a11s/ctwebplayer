@@ -36,24 +36,39 @@ jobs:
       with:
         dotnet-version: '8.0.x'
     
-    # 显示 .NET 信息
-    - name: Display .NET info
+    # 显示 .NET 信息和调试信息
+    - name: Display .NET info and debug info
       run: |
         dotnet --info
+        Write-Host "Current directory: $(Get-Location)"
+        Write-Host "Directory contents:"
+        Get-ChildItem -Recurse -Name | Select-Object -First 20
+        Write-Host "`nChecking for project files:"
+        if (Test-Path "src/ctwebplayer.sln") {
+          Write-Host "✅ Found: src/ctwebplayer.sln"
+        } else {
+          Write-Host "❌ Not found: src/ctwebplayer.sln"
+        }
+        if (Test-Path "src/ctwebplayer.csproj") {
+          Write-Host "✅ Found: src/ctwebplayer.csproj"
+        } else {
+          Write-Host "❌ Not found: src/ctwebplayer.csproj"
+        }
+      shell: pwsh
     
     # 还原依赖
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore src/ctwebplayer.sln
     
     # 构建项目
     - name: Build
-      run: dotnet build --configuration ${{ matrix.configuration }} --no-restore
+      run: dotnet build src/ctwebplayer.sln --configuration ${{ matrix.configuration }} --no-restore
     
     # 运行测试（如果有测试项目）
     - name: Test
       run: |
-        if (Test-Path "*.Tests.csproj" -Recurse) {
-          dotnet test --configuration ${{ matrix.configuration }} --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+        if (Test-Path "src/*.Tests.csproj" -Recurse) {
+          dotnet test src/ctwebplayer.sln --configuration ${{ matrix.configuration }} --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
         } else {
           Write-Host "No test projects found, skipping tests"
         }
@@ -64,7 +79,7 @@ jobs:
       if: matrix.configuration == 'Release'
       run: |
         # 运行代码分析
-        dotnet build --configuration Release /p:RunAnalyzers=true /p:AnalysisMode=AllEnabledByDefault
+        dotnet build src/ctwebplayer.sln --configuration Release /p:RunAnalyzers=true /p:AnalysisMode=AllEnabledByDefault
     
     # 检查代码格式（可选）
     - name: Check code format
@@ -74,13 +89,13 @@ jobs:
         # 安装 dotnet-format
         dotnet tool install -g dotnet-format || dotnet tool update -g dotnet-format
         # 检查格式
-        dotnet format --verify-no-changes --verbosity diagnostic
+        dotnet format src/ctwebplayer.sln --verify-no-changes --verbosity diagnostic
     
     # 发布构建（仅在 Release 模式下）
     - name: Publish
       if: matrix.configuration == 'Release'
       run: |
-        dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
+        dotnet publish src/ctwebplayer.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
     
     # 验证发布输出
     - name: Verify publish output
@@ -157,7 +172,7 @@ jobs:
           Write-Host "✅ Third-party licenses file found"
           
           # 获取所有 NuGet 包
-          $packages = dotnet list package --include-transitive
+          $packages = dotnet list src/ctwebplayer.csproj package --include-transitive
           Write-Host "`nInstalled packages:"
           Write-Host $packages
         } else {

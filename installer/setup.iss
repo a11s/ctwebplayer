@@ -46,8 +46,12 @@ ArchitecturesInstallIn64BitMode=x64
 ArchitecturesAllowed=x64
 
 ; 权限设置
+; 始终要求管理员权限，以确保能终止进程和写入系统目录
 PrivilegesRequired=admin
 PrivilegesRequiredOverridesAllowed=dialog
+; 显示 UAC 提示时的权限提升信息
+InfoBeforeFile=
+InfoAfterFile=
 
 ; 界面设置
 WizardStyle=modern
@@ -161,6 +165,12 @@ Root: HKCU; Subkey: "Software\{#AppPublisher}\{#AppName}"; ValueType: string; Va
 ; Root: HKLM; Subkey: "Software\{#AppPublisher}\{#AppName}"; ValueType: string; ValueName: "Version"; ValueData: "{#AppVersion}"; Flags: dontcreatekey
 
 [Code]
+// 检查是否以管理员权限运行
+function IsAdminLoggedOn(): Boolean;
+begin
+  Result := IsAdminInstallMode();
+end;
+
 // 检查应用是否正在运行
 function IsAppRunning(const FileName: string): Boolean;
 var
@@ -175,6 +185,106 @@ begin
     FWbemObjectSet := FWMIService.ExecQuery(Format('SELECT Name FROM Win32_Process WHERE Name="%s"', [FileName]));
     Result := (FWbemObjectSet.Count > 0);
   except
+    // 如果 WMI 失败，尝试使用 tasklist 命令
+    Result := CheckProcessByTasklist(FileName);
+  end;
+end;
+
+// 使用 tasklist 命令检查进程（备用方案）
+function CheckProcessByTasklist(const FileName: string): Boolean;
+var
+  ResultCode: Integer;
+  TempFile: string;
+  FileContent: TStringList;
+begin
+  Result := False;
+  TempFile := ExpandConstant('{tmp}\process_check.txt');
+  
+  if Exec(ExpandConstant('{cmd}'), '/C tasklist /FI "IMAGENAME eq ' + FileName + '" > "' + TempFile + '"',
+          '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
+  begin
+    if FileExists(TempFile) then
+    begin
+      FileContent := TStringList.Create;
+      try
+        FileContent.LoadFromFile(TempFile);
+        Result := Pos(FileName, FileContent.Text) > 0;
+      finally
+        FileContent.Free;
+        DeleteFile(TempFile);
+      end;
+    end;
+  end;
+end;
+
+// 终止指定的进程（使用 WMI）
+function KillProcessByWMI(const FileName: string): Boolean;
+var
+  FWMIService: Variant;
+  FSWbemLocator: Variant;
+  FWbemObjectSet: Variant;
+  FWbemObject: Variant;
+  oEnum: IEnumvariant;
+  iValue: LongWord;
+begin
+  Result := False;
+  try
+    FSWbemLocator := CreateOleObject('WBEMScripting.SWBEMLocator');
+    FWMIService := FSWbemLocator.ConnectServer('', 'root\CIMV2', '', '');
+    FWbemObjectSet := FWMIService.ExecQuery(Format('SELECT * FROM Win32_Process WHERE Name="%s"', [FileName]));
+    oEnum := IUnknown(FWbemObjectSet._NewEnum) as IEnumVariant;
+    while oEnum.Next(1, FWbemObject, iValue) = 0 do
+    begin
+      FWbemObject.Terminate();
+      Result := True;
+      FWbemObject := Unassigned;
+    end;
+  except
+    // WMI 失败时返回 False
+  end;
+end;
+
+// 使用 taskkill 命令终止进程（备用方案）
+function KillProcessByTaskKill(const FileName: string): Boolean;
+var
+  ResultCode: Integer;
+begin
+  // 使用 /F (强制) 和 /IM (镜像名称) 参数
+  Result := Exec('taskkill', '/F /IM "' + FileName + '" /T', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  Result := Result and (ResultCode = 0);
+end;
+
+// 智能终止进程（先尝试 WMI，失败则使用 taskkill）
+function KillProcess(const FileName: string): Boolean;
+begin
+  Result := KillProcessByWMI(FileName);
+  
+  // 如果 WMI 方法失败，尝试使用 taskkill
+  if not Result then
+  begin
+    Result := KillProcessByTaskKill(FileName);
+  end;
+  
+  // 等待进程完全结束
+  if Result then
+    Sleep(500);
+end;
+
+// 获取进程数量
+function GetProcessCount(const FileName: string): Integer;
+var
+  FWMIService: Variant;
+  FSWbemLocator: Variant;
+  FWbemObjectSet: Variant;
+begin
+  Result := 0;
+  try
+    FSWbemLocator := CreateOleObject('WBEMScripting.SWBEMLocator');
+    FWMIService := FSWbemLocator.ConnectServer('', 'root\CIMV2', '', '');
+    FWbemObjectSet := FWMIService.ExecQuery(Format('SELECT Name FROM Win32_Process WHERE Name="%s"', [FileName]));
+    Result := FWbemObjectSet.Count;
+  except
+    // 发生错误时返回 0
   end;
 end;
 
@@ -236,20 +346,123 @@ end;
 // 初始化安装
 procedure InitializeWizard();
 begin
-  // 可以在这里添加自定义的安装向导页面
+  // 检查管理员权限
+  if not IsAdminLoggedOn() then
+  begin
+    MsgBox('警告：安装程序未以管理员权限运行。' + #13#10 +
+           '某些功能（如自动关闭运行中的程序）可能无法正常工作。' + #13#10 +
+           '建议右键点击安装程序并选择"以管理员身份运行"。',
+           mbInformation, MB_OK);
+  end;
+end;
+
+// 初始化安装时的权限检查
+function InitializeSetup(): Boolean;
+var
+  ErrorCode: Integer;
+begin
+  Result := True;
+  
+  // 如果不是管理员权限，提示用户
+  if not IsAdminLoggedOn() then
+  begin
+    if MsgBox('安装程序需要管理员权限才能：' + #13#10 +
+              '• 自动关闭运行中的程序' + #13#10 +
+              '• 安装到系统目录' + #13#10 +
+              '• 创建卸载信息' + #13#10 + #13#10 +
+              '是否以管理员权限重新启动安装程序？',
+              mbConfirmation, MB_YESNO) = IDYES then
+    begin
+      // 尝试以管理员权限重新启动
+      ShellExec('runas', ExpandConstant('{srcexe}'), '', '', SW_SHOW, ewNoWait, ErrorCode);
+      Result := False; // 终止当前安装
+    end;
+  end;
 end;
 
 // 安装前准备
 function PrepareToInstall(var NeedsRestart: Boolean): String;
+var
+  RetryCount: Integer;
+  ProcessCount: Integer;
+  UserChoice: Integer;
 begin
-  // 检查是否有运行中的程序实例
-  if IsAppRunning('{#AppExeName}') then
-  begin
-    Result := '{#AppName} is running. Please close the program and try again.';
-    Exit;
-  end;
-  
   Result := '';
+  RetryCount := 0;
+  
+  // 检查是否有运行中的程序实例
+  while IsAppRunning('{#AppExeName}') do
+  begin
+    ProcessCount := GetProcessCount('{#AppExeName}');
+    
+    if RetryCount = 0 then
+    begin
+      // 第一次检测到进程时，询问用户
+      UserChoice := MsgBox(
+        Format('{#AppName} 正在运行 (%d 个进程)。', [ProcessCount]) + #13#10 +
+        '安装程序需要关闭它才能继续。' + #13#10 + #13#10 +
+        '点击"是"自动关闭程序' + #13#10 +
+        '点击"否"手动关闭程序' + #13#10 +
+        '点击"取消"终止安装',
+        mbConfirmation, MB_YESNOCANCEL);
+        
+      case UserChoice of
+        IDYES:
+          begin
+            // 用户选择自动关闭
+            if not KillProcess('{#AppExeName}') then
+            begin
+              // 如果标准方法失败，检查权限并给出更详细的提示
+              if not IsAdminLoggedOn() then
+              begin
+                Result := '需要管理员权限才能自动关闭程序。' + #13#10 +
+                         '请以管理员身份运行安装程序，或手动关闭程序。';
+                Exit;
+              end
+              else if MsgBox('无法自动关闭程序。' + #13#10 +
+                            '请尝试手动关闭程序后继续。',
+                            mbConfirmation, MB_OKCANCEL) = IDCANCEL then
+              begin
+                Result := '安装已取消。';
+                Exit;
+              end;
+            end;
+          end;
+        IDNO:
+          begin
+            // 用户选择手动关闭
+            MsgBox('请手动关闭 {#AppName}，然后点击"确定"继续安装。', mbInformation, MB_OK);
+          end;
+        IDCANCEL:
+          begin
+            Result := '用户取消了安装。';
+            Exit;
+          end;
+      end;
+    end
+    else
+    begin
+      // 重试时自动尝试关闭
+      KillProcess('{#AppExeName}');
+    end;
+    
+    Inc(RetryCount);
+    
+    // 等待一段时间让进程完全结束
+    Sleep(1000);
+    
+    // 如果尝试次数过多，退出
+    if RetryCount > 5 then
+    begin
+      Result := '无法关闭 {#AppName}。' + #13#10 +
+                '请确保您有足够的权限，或手动结束进程后重试。';
+      Exit;
+    end;
+    
+    // 再次检查进程是否还在运行
+    if not IsAppRunning('{#AppExeName}') then
+      Break;
+  end;
 end;
 
 // 安装后操作
@@ -281,15 +494,55 @@ end;
 
 // 卸载前准备
 function InitializeUninstall(): Boolean;
+var
+  RetryCount: Integer;
+  UserChoice: Integer;
 begin
+  Result := True;
+  RetryCount := 0;
+  
   // 检查程序是否正在运行
-  if IsAppRunning('{#AppExeName}') then
+  while IsAppRunning('{#AppExeName}') do
   begin
-    MsgBox('{#AppName} is running. Please close the program before uninstalling.', mbError, MB_OK);
-    Result := False;
-  end
-  else
-    Result := True;
+    if RetryCount = 0 then
+    begin
+      UserChoice := MsgBox(
+        '{#AppName} 正在运行。' + #13#10 +
+        '卸载程序需要关闭它才能继续。' + #13#10 + #13#10 +
+        '是否自动关闭程序？',
+        mbConfirmation, MB_YESNO);
+        
+      if UserChoice = IDNO then
+      begin
+        MsgBox('请手动关闭 {#AppName} 后再试。', mbError, MB_OK);
+        Result := False;
+        Exit;
+      end;
+    end;
+    
+    // 尝试终止进程
+    if not KillProcess('{#AppExeName}') then
+    begin
+      // 如果失败，可能是权限问题
+      if MsgBox('无法自动关闭程序（可能需要管理员权限）。' + #13#10 +
+               '请手动关闭程序后点击"重试"，或点击"取消"终止卸载。',
+               mbError, MB_RETRYCANCEL) = IDCANCEL then
+      begin
+        Result := False;
+        Exit;
+      end;
+    end;
+    
+    Inc(RetryCount);
+    Sleep(1000);
+    
+    if RetryCount > 5 then
+    begin
+      MsgBox('无法关闭 {#AppName}。请手动结束进程后再卸载。', mbError, MB_OK);
+      Result := False;
+      Exit;
+    end;
+  end;
 end;
 
 // 支持静默安装的参数处理
