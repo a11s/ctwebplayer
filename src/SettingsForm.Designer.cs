@@ -676,9 +676,8 @@ namespace ctwebplayer
             txtRegisterUrl.TabIndex = 7;
             // 
             // btnSave
-            // 
+            //
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSave.DialogResult = DialogResult.OK;
             btnSave.Location = new Point(235, 302);
             btnSave.Margin = new Padding(2, 3, 2, 3);
             btnSave.Name = "btnSave";
@@ -703,9 +702,8 @@ namespace ctwebplayer
             btnApply.Click += BtnApply_Click;
             // 
             // btnCancel
-            // 
+            //
             btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnCancel.DialogResult = DialogResult.Cancel;
             btnCancel.Location = new Point(172, 302);
             btnCancel.Margin = new Padding(2, 3, 2, 3);
             btnCancel.Name = "btnCancel";
@@ -714,13 +712,12 @@ namespace ctwebplayer
             btnCancel.Tag = "SettingsForm_btnCancel";
             btnCancel.Text = "取消";
             btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += BtnCancel_Click;
             // 
             // SettingsForm
-            // 
-            AcceptButton = btnSave;
+            //
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            CancelButton = btnCancel;
             ClientSize = new Size(376, 341);
             Controls.Add(btnSave);
             Controls.Add(btnApply);

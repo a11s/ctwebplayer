@@ -108,6 +108,8 @@ namespace ctwebplayer
         /// <returns>用户选择的结果</returns>
         public static DialogResultType ShowLoginDialog(IWin32Window owner, bool skipEnabled = false)
         {
+            // 注意：LoginDialog 保持模式对话框，因为需要等待用户选择并返回结果
+            // 这是一个阻塞式的交互，用户必须做出选择才能继续
             using (var dialog = new LoginDialog(skipEnabled))
             {
                 dialog.ShowDialog(owner);

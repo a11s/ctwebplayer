@@ -25,6 +25,7 @@ namespace ctwebplayer
         private bool groupByDomain = false;
         private CoreWebView2 webView2;
         private CookieManager cookieManager;
+        private CookieEditDialog _currentEditDialog = null;
 
         public CookieManagerForm(CoreWebView2 webView2Instance = null)
         {
@@ -509,18 +510,45 @@ namespace ctwebplayer
             }
         }
 
-        private void toolStripButtonAdd_Click(object sender, EventArgs e)
+        private async void toolStripButtonAdd_Click(object sender, EventArgs e)
         {
-            using (var dialog = new CookieEditDialog())
+            // 如果已有打开的编辑对话框，先激活它
+            if (_currentEditDialog != null && !_currentEditDialog.IsDisposed)
             {
-                if (dialog.ShowDialog() == DialogResult.OK)
+                _currentEditDialog.BringToFront();
+                _currentEditDialog.Focus();
+                return;
+            }
+            
+            _currentEditDialog = new CookieEditDialog();
+            _currentEditDialog.FormClosed += async (s, args) =>
+            {
+                if (_currentEditDialog.DialogResult == DialogResult.OK)
                 {
-                    cookieList.Add(dialog.Cookie);
+                    cookieList.Add(_currentEditDialog.Cookie);
+                    
+                    // 如果有 WebView2 实例，立即保存到浏览器
+                    if (cookieManager != null && webView2 != null)
+                    {
+                        try
+                        {
+                            await SaveCookieToBrowser(_currentEditDialog.Cookie);
+                            logManager.Info($"Cookie已保存到浏览器: {_currentEditDialog.Cookie.Name}@{_currentEditDialog.Cookie.Domain}");
+                        }
+                        catch (Exception ex)
+                        {
+                            logManager.Error($"保存Cookie到浏览器失败: {ex.Message}", ex);
+                        }
+                    }
+                    
                     RefreshDisplay();
                     UpdateStatusBar();
-                    logManager.Info($"添加Cookie: {dialog.Cookie.Name}@{dialog.Cookie.Domain}");
+                    logManager.Info($"添加Cookie: {_currentEditDialog.Cookie.Name}@{_currentEditDialog.Cookie.Domain}");
                 }
-            }
+                _currentEditDialog = null;
+            };
+            
+            _currentEditDialog.Show(this);
         }
 
         private void toolStripButtonDelete_Click(object sender, EventArgs e)
@@ -686,34 +714,109 @@ namespace ctwebplayer
             toolStripButtonDelete_Click(sender, e);
         }
 
-        private void EditSelectedCookie()
+        private async void EditSelectedCookie()
         {
             if (dataGridViewCookies.SelectedRows.Count == 1)
             {
+                // 如果已有打开的编辑对话框，先激活它
+                if (_currentEditDialog != null && !_currentEditDialog.IsDisposed)
+                {
+                    _currentEditDialog.BringToFront();
+                    _currentEditDialog.Focus();
+                    return;
+                }
+                
                 var selectedRow = dataGridViewCookies.SelectedRows[0];
                 // 从Tag属性获取CookieItem对象
                 var cookie = selectedRow.Tag as CookieItem;
                 if (cookie != null)
                 {
-                    using (var dialog = new CookieEditDialog(cookie))
+                    _currentEditDialog = new CookieEditDialog(cookie);
+                    _currentEditDialog.FormClosed += async (s, args) =>
                     {
-                        if (dialog.ShowDialog() == DialogResult.OK)
+                        if (_currentEditDialog.DialogResult == DialogResult.OK)
                         {
                             // 更新Cookie
                             var index = cookieList.IndexOf(cookie);
                             if (index >= 0)
                             {
-                                cookieList[index] = dialog.Cookie;
+                                cookieList[index] = _currentEditDialog.Cookie;
+                                
+                                // 如果有 WebView2 实例，立即保存到浏览器
+                                if (cookieManager != null && webView2 != null)
+                                {
+                                    try
+                                    {
+                                        // 先删除旧的cookie
+                                        await DeleteCookieFromBrowser(cookie);
+                                        // 再添加新的cookie
+                                        await SaveCookieToBrowser(_currentEditDialog.Cookie);
+                                        logManager.Info($"Cookie已更新到浏览器: {_currentEditDialog.Cookie.Name}@{_currentEditDialog.Cookie.Domain}");
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        logManager.Error($"更新Cookie到浏览器失败: {ex.Message}", ex);
+                                    }
+                                }
+                                
                                 RefreshDisplay();
                                 UpdateStatusBar();
-                                logManager.Info($"编辑Cookie: {dialog.Cookie.Name}@{dialog.Cookie.Domain}");
+                                logManager.Info($"编辑Cookie: {_currentEditDialog.Cookie.Name}@{_currentEditDialog.Cookie.Domain}");
                             }
                         }
-                    }
+                        _currentEditDialog = null;
+                    };
+                    
+                    _currentEditDialog.Show(this);
                 }
             }
         }
+        
+        /// <summary>
+        /// 保存Cookie到浏览器
+        /// </summary>
+        private async Task SaveCookieToBrowser(CookieItem cookie)
+        {
+            if (webView2?.CookieManager == null)
+                return;
+                
+            var webViewCookie = webView2.CookieManager.CreateCookie(
+                cookie.Name,
+                cookie.Value,
+                cookie.Domain,
+                cookie.Path
+            );
+            
+            webViewCookie.IsHttpOnly = cookie.HttpOnly;
+            webViewCookie.IsSecure = cookie.Secure;
+            webViewCookie.SameSite = cookie.GetSameSiteKind();
+            
+            if (cookie.Expires.HasValue)
+            {
+                webViewCookie.Expires = cookie.Expires.Value;
+            }
+            
+            await Task.Run(() => webView2.CookieManager.AddOrUpdateCookie(webViewCookie));
+        }
+        
+        /// <summary>
+        /// 从浏览器删除Cookie
+        /// </summary>
+        private async Task DeleteCookieFromBrowser(CookieItem cookie)
+        {
+            if (webView2?.CookieManager == null)
+                return;
+                
+            await Task.Run(() => webView2.CookieManager.DeleteCookies(cookie.Name, $"https://{cookie.Domain}"));
+        }
 
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            // 关闭任何打开的编辑对话框
+            _currentEditDialog?.Close();
+            base.OnFormClosing(e);
+        }
+        
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);

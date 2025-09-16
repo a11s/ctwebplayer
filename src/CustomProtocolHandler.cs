@@ -12,6 +12,13 @@ namespace ctwebplayer
     {
         private readonly ConfigManager _configManager;
         private readonly Form1 _mainForm;
+        
+        // 保存对话框实例，避免重复创建
+        private AboutForm _aboutForm = null;
+        private CookieManagerForm _cookieManagerForm = null;
+        private ProxySettingsForm _proxyForm = null;
+        private SettingsForm _settingsForm = null;
+        private LogViewerForm _logViewerForm = null;
 
         /// <summary>
         /// 构造函数
@@ -144,9 +151,23 @@ namespace ctwebplayer
             {
                 _mainForm.Invoke(new Action(() =>
                 {
-                    using (var aboutForm = new AboutForm())
+                    if (_aboutForm == null || _aboutForm.IsDisposed)
                     {
-                        aboutForm.ShowDialog(_mainForm);
+                        _aboutForm = new AboutForm();
+                        _aboutForm.FormClosed += (s, args) =>
+                        {
+                            LogManager.Instance.Info("关于窗口已关闭（从协议处理器打开）");
+                        };
+                    }
+                    
+                    if (!_aboutForm.Visible)
+                    {
+                        _aboutForm.Show(_mainForm);
+                    }
+                    else
+                    {
+                        _aboutForm.BringToFront();
+                        _aboutForm.Focus();
                     }
                 }));
             });
@@ -314,13 +335,25 @@ namespace ctwebplayer
                     
                     LogManager.Instance.Info($"准备打开CookieManagerForm，CoreWebView2实例: {coreWebView2 != null}");
                     
-                    // 打开Cookie管理窗体，传递WebView2实例
-                    using (var cookieManagerForm = new CookieManagerForm(coreWebView2))
+                    // 打开Cookie管理窗体（非模式）
+                    if (_cookieManagerForm == null || _cookieManagerForm.IsDisposed)
                     {
-                        cookieManagerForm.ShowDialog(_mainForm);
+                        _cookieManagerForm = new CookieManagerForm(coreWebView2);
+                        _cookieManagerForm.FormClosed += (s, args) =>
+                        {
+                            LogManager.Instance.Info("Cookie管理界面已关闭（从协议处理器打开）");
+                        };
                     }
                     
-                    LogManager.Instance.Info("Cookie管理界面已关闭");
+                    if (!_cookieManagerForm.Visible)
+                    {
+                        _cookieManagerForm.Show(_mainForm);
+                    }
+                    else
+                    {
+                        _cookieManagerForm.BringToFront();
+                        _cookieManagerForm.Focus();
+                    }
                 }));
             });
         }
@@ -332,9 +365,23 @@ namespace ctwebplayer
         {
             _mainForm.Invoke(new Action(() =>
             {
-                using (var proxyForm = new ProxySettingsForm(_configManager))
+                if (_proxyForm == null || _proxyForm.IsDisposed)
                 {
-                    proxyForm.ShowDialog(_mainForm);
+                    _proxyForm = new ProxySettingsForm(_configManager);
+                    _proxyForm.FormClosed += (s, args) =>
+                    {
+                        LogManager.Instance.Info("代理设置窗口已关闭（从协议处理器打开）");
+                    };
+                }
+                
+                if (!_proxyForm.Visible)
+                {
+                    _proxyForm.Show(_mainForm);
+                }
+                else
+                {
+                    _proxyForm.BringToFront();
+                    _proxyForm.Focus();
                 }
             }));
         }
@@ -346,9 +393,23 @@ namespace ctwebplayer
         {
             _mainForm.Invoke(new Action(() =>
             {
-                using (var settingsForm = new SettingsForm(_configManager))
+                if (_settingsForm == null || _settingsForm.IsDisposed)
                 {
-                    settingsForm.ShowDialog(_mainForm);
+                    _settingsForm = new SettingsForm(_configManager);
+                    _settingsForm.FormClosed += (s, args) =>
+                    {
+                        LogManager.Instance.Info("设置窗口已关闭（从协议处理器打开-语言）");
+                    };
+                }
+                
+                if (!_settingsForm.Visible)
+                {
+                    _settingsForm.Show(_mainForm);
+                }
+                else
+                {
+                    _settingsForm.BringToFront();
+                    _settingsForm.Focus();
                 }
             }));
         }
@@ -360,9 +421,23 @@ namespace ctwebplayer
         {
             _mainForm.Invoke(new Action(() =>
             {
-                using (var settingsForm = new SettingsForm(_configManager))
+                if (_settingsForm == null || _settingsForm.IsDisposed)
                 {
-                    settingsForm.ShowDialog(_mainForm);
+                    _settingsForm = new SettingsForm(_configManager);
+                    _settingsForm.FormClosed += (s, args) =>
+                    {
+                        LogManager.Instance.Info("设置窗口已关闭（从协议处理器打开-通用）");
+                    };
+                }
+                
+                if (!_settingsForm.Visible)
+                {
+                    _settingsForm.Show(_mainForm);
+                }
+                else
+                {
+                    _settingsForm.BringToFront();
+                    _settingsForm.Focus();
                 }
             }));
         }
@@ -417,9 +492,23 @@ namespace ctwebplayer
         {
             _mainForm.Invoke(new Action(() =>
             {
-                using (var logViewerForm = new LogViewerForm())
+                if (_logViewerForm == null || _logViewerForm.IsDisposed)
                 {
-                    logViewerForm.ShowDialog(_mainForm);
+                    _logViewerForm = new LogViewerForm();
+                    _logViewerForm.FormClosed += (s, args) =>
+                    {
+                        LogManager.Instance.Info("日志查看器窗口已关闭（从协议处理器打开）");
+                    };
+                }
+                
+                if (!_logViewerForm.Visible)
+                {
+                    _logViewerForm.Show(_mainForm);
+                }
+                else
+                {
+                    _logViewerForm.BringToFront();
+                    _logViewerForm.Focus();
                 }
             }));
         }

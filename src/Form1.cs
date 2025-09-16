@@ -56,6 +56,15 @@ namespace ctwebplayer
         private const uint VK_F11 = 0x7A;
         #endregion
         
+        #region 对话框实例管理
+        // 保存对话框实例，避免重复创建
+        private SettingsForm _settingsForm = null;
+        private ProxySettingsForm _proxyForm = null;
+        private LogViewerForm _logViewerForm = null;
+        private UpdateForm _updateForm = null;
+        private AboutForm _aboutForm = null;
+        #endregion
+        
         // 缓存管理器
         private CacheManager _cacheManager = null!; // 在 InitializeWebView 中初始化
         
@@ -1259,15 +1268,26 @@ namespace ctwebplayer
         /// </summary>
         private void btnSettings_Click(object? sender, EventArgs e)
         {
-            // 打开综合设置窗口
-            using (var settingsForm = new SettingsForm(_configManager))
+            // 打开综合设置窗口（非模式）
+            if (_settingsForm == null || _settingsForm.IsDisposed)
             {
-                if (settingsForm.ShowDialog(this) == DialogResult.OK)
+                _settingsForm = new SettingsForm(_configManager);
+                _settingsForm.FormClosed += (s, args) =>
                 {
-                    // 更新状态栏显示
+                    // 窗口关闭时更新状态
                     UpdateCacheStatus();
-                    LogManager.Instance.Info("设置已更新");
-                }
+                    LogManager.Instance.Info("设置窗口已关闭");
+                };
+            }
+            
+            if (!_settingsForm.Visible)
+            {
+                _settingsForm.Show(this);
+            }
+            else
+            {
+                _settingsForm.BringToFront();
+                _settingsForm.Focus();
             }
         }
 
@@ -1328,14 +1348,25 @@ namespace ctwebplayer
         /// </summary>
         private void ShowProxySettings()
         {
-            using (var proxyForm = new ProxySettingsForm(_configManager))
+            if (_proxyForm == null || _proxyForm.IsDisposed)
             {
-                if (proxyForm.ShowDialog(this) == DialogResult.OK)
+                _proxyForm = new ProxySettingsForm(_configManager);
+                _proxyForm.FormClosed += (s, args) =>
                 {
                     // 更新状态栏显示
                     UpdateCacheStatus();
-                    LogManager.Instance.Info("代理设置已更新");
-                }
+                    LogManager.Instance.Info("代理设置窗口已关闭");
+                };
+            }
+            
+            if (!_proxyForm.Visible)
+            {
+                _proxyForm.Show(this);
+            }
+            else
+            {
+                _proxyForm.BringToFront();
+                _proxyForm.Focus();
             }
         }
 
@@ -1344,9 +1375,23 @@ namespace ctwebplayer
         /// </summary>
         private void ShowLogViewer()
         {
-            using (var logViewerForm = new LogViewerForm())
+            if (_logViewerForm == null || _logViewerForm.IsDisposed)
             {
-                logViewerForm.ShowDialog(this);
+                _logViewerForm = new LogViewerForm();
+                _logViewerForm.FormClosed += (s, args) =>
+                {
+                    LogManager.Instance.Info("日志查看器窗口已关闭");
+                };
+            }
+            
+            if (!_logViewerForm.Visible)
+            {
+                _logViewerForm.Show(this);
+            }
+            else
+            {
+                _logViewerForm.BringToFront();
+                _logViewerForm.Focus();
             }
         }
 
@@ -1360,6 +1405,14 @@ namespace ctwebplayer
             
             try
             {
+                // 关闭所有打开的子窗口
+                LogManager.Instance.Info("准备关闭所有子窗口");
+                _settingsForm?.Close();
+                _proxyForm?.Close();
+                _logViewerForm?.Close();
+                _updateForm?.Close();
+                _aboutForm?.Close();
+                
                 // 同步清理资源
                 LogManager.Instance.Info("准备注销全局热键");
                 UnregisterGlobalHotkeys();
@@ -1459,10 +1512,24 @@ namespace ctwebplayer
                 
                 if (updateInfo != null && updateInfo.IsUpdateRequired())
                 {
-                    // 显示更新窗口
-                    using (var updateForm = new UpdateForm(updateInfo))
+                    // 显示更新窗口（非模式）
+                    if (_updateForm == null || _updateForm.IsDisposed)
                     {
-                        updateForm.ShowDialog(this);
+                        _updateForm = new UpdateForm(updateInfo);
+                        _updateForm.FormClosed += (s, args) =>
+                        {
+                            LogManager.Instance.Info("更新窗口已关闭");
+                        };
+                    }
+                    
+                    if (!_updateForm.Visible)
+                    {
+                        _updateForm.Show(this);
+                    }
+                    else
+                    {
+                        _updateForm.BringToFront();
+                        _updateForm.Focus();
                     }
                 }
                 
@@ -1482,9 +1549,23 @@ namespace ctwebplayer
         /// </summary>
         private void aboutMenuItem_Click(object? sender, EventArgs e)
         {
-            using (var aboutForm = new AboutForm())
+            if (_aboutForm == null || _aboutForm.IsDisposed)
             {
-                aboutForm.ShowDialog(this);
+                _aboutForm = new AboutForm();
+                _aboutForm.FormClosed += (s, args) =>
+                {
+                    LogManager.Instance.Info("关于窗口已关闭");
+                };
+            }
+            
+            if (!_aboutForm.Visible)
+            {
+                _aboutForm.Show(this);
+            }
+            else
+            {
+                _aboutForm.BringToFront();
+                _aboutForm.Focus();
             }
         }
 

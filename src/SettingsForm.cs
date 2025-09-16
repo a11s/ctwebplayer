@@ -14,6 +14,7 @@ namespace ctwebplayer
     {
         private ConfigManager _configManager;
         private readonly Dictionary<string, string> _languageMap;
+        private LogViewerForm _logViewerForm = null;
 
         /// <summary>
         /// 构造函数
@@ -154,9 +155,23 @@ namespace ctwebplayer
         /// </summary>
         private void BtnViewLogs_Click(object? sender, EventArgs e)
         {
-            using (var logViewerForm = new LogViewerForm())
+            if (_logViewerForm == null || _logViewerForm.IsDisposed)
             {
-                logViewerForm.ShowDialog(this);
+                _logViewerForm = new LogViewerForm();
+                _logViewerForm.FormClosed += (s, args) =>
+                {
+                    LogManager.Instance.Info("日志查看器窗口已关闭（从设置窗口打开）");
+                };
+            }
+            
+            if (!_logViewerForm.Visible)
+            {
+                _logViewerForm.Show(this);
+            }
+            else
+            {
+                _logViewerForm.BringToFront();
+                _logViewerForm.Focus();
             }
         }
 
@@ -430,9 +445,11 @@ namespace ctwebplayer
         /// </summary>
         private async void BtnSave_Click(object? sender, EventArgs e)
         {
+            LogManager.Instance.Debug("保存按钮点击 - 开始保存设置");
             if (await SaveSettings())
             {
-                this.DialogResult = DialogResult.OK;
+                // 非模式对话框不使用 DialogResult
+                LogManager.Instance.Debug("设置保存成功，关闭窗口");
                 this.Close();
             }
         }
@@ -486,6 +503,20 @@ namespace ctwebplayer
                         MessageBoxIcon.Error);
                 }
             }
+        }
+
+        /// <summary>
+        /// 取消按钮点击事件
+        /// </summary>
+        private void BtnCancel_Click(object? sender, EventArgs e)
+        {
+            LogManager.Instance.Debug("取消按钮点击 - 重新加载原始设置");
+            
+            // 重新加载原始设置以撤销任何未保存的更改
+            LoadCurrentSettings();
+            
+            // 关闭窗口
+            this.Close();
         }
     }
 }
