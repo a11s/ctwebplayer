@@ -171,26 +171,8 @@ begin
   Result := IsAdminInstallMode();
 end;
 
-// 检查应用是否正在运行
-function IsAppRunning(const FileName: string): Boolean;
-var
-  FWMIService: Variant;
-  FSWbemLocator: Variant;
-  FWbemObjectSet: Variant;
-begin
-  Result := False;
-  try
-    FSWbemLocator := CreateOleObject('WBEMScripting.SWBEMLocator');
-    FWMIService := FSWbemLocator.ConnectServer('', 'root\CIMV2', '', '');
-    FWbemObjectSet := FWMIService.ExecQuery(Format('SELECT Name FROM Win32_Process WHERE Name="%s"', [FileName]));
-    Result := (FWbemObjectSet.Count > 0);
-  except
-    // 如果 WMI 失败，尝试使用 tasklist 命令
-    Result := CheckProcessByTasklist(FileName);
-  end;
-end;
-
 // 使用 tasklist 命令检查进程（备用方案）
+// 声明在前，供其他函数调用
 function CheckProcessByTasklist(const FileName: string): Boolean;
 var
   ResultCode: Integer;
@@ -217,27 +199,48 @@ begin
   end;
 end;
 
+// 检查应用是否正在运行
+function IsAppRunning(const FileName: string): Boolean;
+var
+  FWMIService: Variant;
+  FSWbemLocator: Variant;
+  FWbemObjectSet: Variant;
+begin
+  Result := False;
+  try
+    FSWbemLocator := CreateOleObject('WBEMScripting.SWBEMLocator');
+    FWMIService := FSWbemLocator.ConnectServer('', 'root\CIMV2', '', '');
+    FWbemObjectSet := FWMIService.ExecQuery(Format('SELECT Name FROM Win32_Process WHERE Name="%s"', [FileName]));
+    Result := (FWbemObjectSet.Count > 0);
+  except
+    // 如果 WMI 失败，尝试使用 tasklist 命令
+    Result := CheckProcessByTasklist(FileName);
+  end;
+end;
+
 // 终止指定的进程（使用 WMI）
 function KillProcessByWMI(const FileName: string): Boolean;
 var
   FWMIService: Variant;
   FSWbemLocator: Variant;
   FWbemObjectSet: Variant;
-  FWbemObject: Variant;
-  oEnum: IEnumvariant;
-  iValue: LongWord;
+  I: Integer;
 begin
   Result := False;
   try
     FSWbemLocator := CreateOleObject('WBEMScripting.SWBEMLocator');
     FWMIService := FSWbemLocator.ConnectServer('', 'root\CIMV2', '', '');
     FWbemObjectSet := FWMIService.ExecQuery(Format('SELECT * FROM Win32_Process WHERE Name="%s"', [FileName]));
-    oEnum := IUnknown(FWbemObjectSet._NewEnum) as IEnumVariant;
-    while oEnum.Next(1, FWbemObject, iValue) = 0 do
+    
+    // 简化的方式遍历进程
+    for I := 0 to FWbemObjectSet.Count - 1 do
     begin
-      FWbemObject.Terminate();
-      Result := True;
-      FWbemObject := Unassigned;
+      try
+        FWbemObjectSet.ItemIndex(I).Terminate();
+        Result := True;
+      except
+        // 忽略单个进程终止失败
+      end;
     end;
   except
     // WMI 失败时返回 False
