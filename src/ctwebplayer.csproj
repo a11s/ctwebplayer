@@ -53,6 +53,9 @@
     
     <!-- 禁用设计器文件的可空性警告 -->
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    
+    <!-- 运行时标识符 - 支持多平台构建 -->
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <!-- Release构建配置 -->
