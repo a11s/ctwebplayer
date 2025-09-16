@@ -829,6 +829,9 @@ namespace ctwebplayer
                                 LogManager.Instance.Info($"CookieManager 已初始化/更新，使用当前域名：{currentDomain}，支持 JavaScript 检测");
                             }
                             
+                            // 尝试更新窗口标题为用户的 nickname
+                            await UpdateWindowTitleWithNickname();
+                            
                             // 检查是否导航到了游戏相关页面并且还未进行登录流程检查
                             if ((currentUrl.Contains("/game/") || currentUrl.Contains("/cn/game")) &&
                                 _currentLoginState == LoginFlowState.Initial &&
@@ -1321,16 +1324,9 @@ namespace ctwebplayer
         /// </summary>
         private void CoreWebView2_DocumentTitleChanged(object? sender, object e)
         {
-            // 更新窗口标题
-            string title = webView2.CoreWebView2.DocumentTitle;
-            if (!string.IsNullOrEmpty(title))
-            {
-                this.Text = $"{title} - {LanguageManager.Instance.GetString("Form1_Title")}";
-            }
-            else
-            {
-                this.Text = LanguageManager.Instance.GetString("Form1_Title");
-            }
+            // 更新网页标题并刷新窗口标题
+            _currentPageTitle = webView2.CoreWebView2.DocumentTitle;
+            UpdateWindowTitle();
         }
 
         /// <summary>
@@ -1824,8 +1820,10 @@ namespace ctwebplayer
                         LogManager.Instance.Info("已清除所有 Cookies");
                     }
 
-                    // 重置登录状态
+                    // 重置登录状态和玩家名称
                     _currentLoginState = LoginFlowState.Initial;
+                    _currentPlayerName = "";
+                    UpdateWindowTitle();
 
                     // 导航到登录页面
                     var loginUrl = _configManager.Config.BaseURL.TrimEnd('/') + _configManager.Config.Login.LoginUrl;
@@ -3400,6 +3398,182 @@ namespace ctwebplayer
             {
                 LogManager.Instance.Error("显示截图错误提示时出错", ex);
             }
+        }
+        
+        // 保存当前的网页标题和玩家名称
+        private string _currentPageTitle = "";
+        private string _currentPlayerName = "";
+        
+        /// <summary>
+        /// 更新窗口标题为用户的 nickname
+        /// </summary>
+        private async Task UpdateWindowTitleWithNickname()
+        {
+            try
+            {
+                if (_cookieManager == null)
+                {
+                    LogManager.Instance.Debug("UpdateWindowTitleWithNickname: CookieManager 未初始化");
+                    UpdateWindowTitle();
+                    return;
+                }
+                
+                // 使用 JavaScript 直接获取 erolabsnickname cookie 的值
+                var script = @"
+                    (function() {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = cookies[i].trim();
+                            if (cookie.startsWith('erolabsnickname=')) {
+                                var value = cookie.substring('erolabsnickname='.length);
+                                // URL 解码
+                                try {
+                                    value = decodeURIComponent(value);
+                                } catch (e) {
+                                    console.error('Failed to decode nickname:', e);
+                                }
+                                console.log('Found erolabsnickname:', value);
+                                return value;
+                            }
+                        }
+                        console.log('erolabsnickname not found in cookies');
+                        return null;
+                    })();
+                ";
+                
+                var result = await webView2.CoreWebView2.ExecuteScriptAsync(script);
+                
+                // 解析结果
+                if (!string.IsNullOrEmpty(result) && result != "null")
+                {
+                    // 移除外层引号
+                    var nickname = result.Trim('"');
+                    
+                    // 处理转义字符
+                    nickname = nickname.Replace("\\\"", "\"");
+                    
+                    if (!string.IsNullOrWhiteSpace(nickname))
+                    {
+                        LogManager.Instance.Info($"成功获取用户 nickname: {nickname}");
+                        _currentPlayerName = nickname;
+                        UpdateWindowTitle();
+                    }
+                    else
+                    {
+                        LogManager.Instance.Debug("获取到的 nickname 为空或仅包含空白字符");
+                        _currentPlayerName = "";
+                        UpdateWindowTitle();
+                    }
+                }
+                else
+                {
+                    LogManager.Instance.Debug("未找到 erolabsnickname cookie，尝试使用备用方法");
+                    
+                    // 备用方法：通过 CookieManager API 获取
+                    await UpdateTitleFromCookieManagerAPI();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error($"更新窗口标题时出错: {ex.Message}", ex);
+                _currentPlayerName = "";
+                UpdateWindowTitle();
+            }
+        }
+        
+        /// <summary>
+        /// 使用 CookieManager API 获取 nickname 并更新标题
+        /// </summary>
+        private async Task UpdateTitleFromCookieManagerAPI()
+        {
+            try
+            {
+                // 获取所有 cookies
+                var allCookies = await _cookieManager.GetAllCookiesAsync();
+                
+                LogManager.Instance.Debug($"通过 API 获取到 {allCookies.Count} 个 cookies");
+                
+                // 查找 erolabsnickname
+                var nicknameCookie = allCookies.FirstOrDefault(c =>
+                    c.Name.Equals("erolabsnickname", StringComparison.OrdinalIgnoreCase));
+                
+                if (nicknameCookie != null && !string.IsNullOrWhiteSpace(nicknameCookie.Value))
+                {
+                    var nickname = nicknameCookie.Value;
+                    
+                    // URL 解码
+                    try
+                    {
+                        nickname = System.Web.HttpUtility.UrlDecode(nickname);
+                    }
+                    catch (Exception decodeEx)
+                    {
+                        LogManager.Instance.Warning($"解码 nickname 失败: {decodeEx.Message}");
+                    }
+                    
+                    LogManager.Instance.Info($"通过 API 获取到用户 nickname: {nickname}");
+                    _currentPlayerName = nickname;
+                    UpdateWindowTitle();
+                }
+                else
+                {
+                    LogManager.Instance.Debug("API 方法也未找到有效的 erolabsnickname cookie");
+                    _currentPlayerName = "";
+                    UpdateWindowTitle();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error($"通过 API 获取 nickname 时出错: {ex.Message}", ex);
+                _currentPlayerName = "";
+                UpdateWindowTitle();
+            }
+        }
+        
+        /// <summary>
+        /// 更新窗口标题（格式：网页标题 - 玩家名/（未登录））
+        /// </summary>
+        private void UpdateWindowTitle()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => UpdateWindowTitle()));
+                return;
+            }
+            
+            // 获取当前网页标题
+            _currentPageTitle = webView2?.CoreWebView2?.DocumentTitle ?? "";
+            
+            // 构建窗口标题
+            string windowTitle;
+            if (!string.IsNullOrWhiteSpace(_currentPageTitle))
+            {
+                if (!string.IsNullOrWhiteSpace(_currentPlayerName))
+                {
+                    // 格式：网页标题 - 玩家名
+                    windowTitle = $"{_currentPageTitle} - {_currentPlayerName}";
+                }
+                else
+                {
+                    // 格式：网页标题 - （未登录）
+                    windowTitle = $"{_currentPageTitle} - （未登录）";
+                }
+            }
+            else
+            {
+                // 如果没有网页标题，只显示玩家名或默认标题
+                if (!string.IsNullOrWhiteSpace(_currentPlayerName))
+                {
+                    windowTitle = _currentPlayerName;
+                }
+                else
+                {
+                    windowTitle = LanguageManager.Instance.GetString("Form1_Title");
+                }
+            }
+            
+            this.Text = windowTitle;
+            LogManager.Instance.Info($"窗口标题已更新为: {windowTitle}");
         }
     }
 }

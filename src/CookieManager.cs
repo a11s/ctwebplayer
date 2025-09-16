@@ -383,12 +383,14 @@ namespace ctwebplayer
             {
                 domain = domain ?? _baseDomain;
                 var cookie = _cookieManager.CreateCookie(name, value, domain, path);
-                await Task.Run(() => _cookieManager.AddOrUpdateCookie(cookie));
+                // AddOrUpdateCookie 必须在 UI 线程上执行
+                _cookieManager.AddOrUpdateCookie(cookie);
+                await Task.CompletedTask;
                 return true;
             }
             catch (Exception ex)
             {
-                LogManager.Instance.Error($"设置 Cookie 失败: {ex.Message}");
+                LogManager.Instance.Error($"设置 Cookie 失败: {ex.Message}", ex);
                 return false;
             }
         }
@@ -403,12 +405,14 @@ namespace ctwebplayer
             try
             {
                 var uri = new Uri($"https://{_baseDomain}");
-                await Task.Run(() => _cookieManager.DeleteCookies(cookieName, uri.ToString()));
+                // DeleteCookies 必须在 UI 线程上执行
+                _cookieManager.DeleteCookies(cookieName, uri.ToString());
+                await Task.CompletedTask;
                 return true;
             }
             catch (Exception ex)
             {
-                LogManager.Instance.Error($"删除 Cookie 失败: {ex.Message}");
+                LogManager.Instance.Error($"删除 Cookie 失败: {ex.Message}", ex);
                 return false;
             }
         }
@@ -421,12 +425,15 @@ namespace ctwebplayer
         {
             try
             {
-                await Task.Run(() => _cookieManager.DeleteAllCookies());
+                // DeleteAllCookies 必须在 UI 线程上执行
+                // 由于这是一个同步方法，我们使用 Task.CompletedTask
+                _cookieManager.DeleteAllCookies();
+                await Task.CompletedTask;
                 return true;
             }
             catch (Exception ex)
             {
-                LogManager.Instance.Error($"删除所有 Cookies 失败: {ex.Message}");
+                LogManager.Instance.Error($"删除所有 Cookies 失败: {ex.Message}", ex);
                 return false;
             }
         }
@@ -575,8 +582,8 @@ namespace ctwebplayer
                     cookie.Expires = cookieItem.Expires.Value;
                 }
                 
-                // 添加或更新cookie
-                await Task.Run(() => _cookieManager.AddOrUpdateCookie(cookie));
+                // 添加或更新cookie - 必须在 UI 线程上执行
+                _cookieManager.AddOrUpdateCookie(cookie);
                 
                 LogManager.Instance.Info($"成功添加/更新cookie: {cookieItem.Name}@{cookieItem.Domain}");
                 return true;
@@ -605,8 +612,8 @@ namespace ctwebplayer
                     ? cookieItem.Domain
                     : $"https://{cookieItem.Domain}";
                 
-                // 删除cookie
-                await Task.Run(() => _cookieManager.DeleteCookies(cookieItem.Name, uri));
+                // 删除cookie - 必须在 UI 线程上执行
+                _cookieManager.DeleteCookies(cookieItem.Name, uri);
                 
                 LogManager.Instance.Info($"成功删除cookie: {cookieItem.Name}@{cookieItem.Domain}");
                 return true;
