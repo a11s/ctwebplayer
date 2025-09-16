@@ -377,7 +377,7 @@ namespace ctwebplayer
         /// <param name="domain">域名</param>
         /// <param name="path">路径</param>
         /// <returns>设置是否成功</returns>
-        public async Task<bool> SetCookieAsync(string name, string value, string? domain = null, string path = "/")
+        public Task<bool> SetCookieAsync(string name, string value, string? domain = null, string path = "/")
         {
             try
             {
@@ -385,13 +385,12 @@ namespace ctwebplayer
                 var cookie = _cookieManager.CreateCookie(name, value, domain, path);
                 // AddOrUpdateCookie 必须在 UI 线程上执行
                 _cookieManager.AddOrUpdateCookie(cookie);
-                await Task.CompletedTask;
-                return true;
+                return Task.FromResult(true);
             }
             catch (Exception ex)
             {
                 LogManager.Instance.Error($"设置 Cookie 失败: {ex.Message}", ex);
-                return false;
+                return Task.FromResult(false);
             }
         }
 
@@ -400,20 +399,19 @@ namespace ctwebplayer
         /// </summary>
         /// <param name="cookieName">Cookie 名称</param>
         /// <returns>删除是否成功</returns>
-        public async Task<bool> DeleteCookieAsync(string cookieName)
+        public Task<bool> DeleteCookieAsync(string cookieName)
         {
             try
             {
                 var uri = new Uri($"https://{_baseDomain}");
                 // DeleteCookies 必须在 UI 线程上执行
                 _cookieManager.DeleteCookies(cookieName, uri.ToString());
-                await Task.CompletedTask;
-                return true;
+                return Task.FromResult(true);
             }
             catch (Exception ex)
             {
                 LogManager.Instance.Error($"删除 Cookie 失败: {ex.Message}", ex);
-                return false;
+                return Task.FromResult(false);
             }
         }
 
@@ -421,20 +419,18 @@ namespace ctwebplayer
         /// 删除所有 Cookies
         /// </summary>
         /// <returns>删除是否成功</returns>
-        public async Task<bool> DeleteAllCookiesAsync()
+        public Task<bool> DeleteAllCookiesAsync()
         {
             try
             {
                 // DeleteAllCookies 必须在 UI 线程上执行
-                // 由于这是一个同步方法，我们使用 Task.CompletedTask
                 _cookieManager.DeleteAllCookies();
-                await Task.CompletedTask;
-                return true;
+                return Task.FromResult(true);
             }
             catch (Exception ex)
             {
                 LogManager.Instance.Error($"删除所有 Cookies 失败: {ex.Message}", ex);
-                return false;
+                return Task.FromResult(false);
             }
         }
 
@@ -549,7 +545,7 @@ namespace ctwebplayer
         /// </summary>
         /// <param name="cookieItem">Cookie项</param>
         /// <returns>操作是否成功</returns>
-        public async Task<bool> AddOrUpdateCookieAsync(CookieItem cookieItem)
+        public Task<bool> AddOrUpdateCookieAsync(CookieItem cookieItem)
         {
             try
             {
@@ -560,7 +556,7 @@ namespace ctwebplayer
                 if (!cookieItem.IsValid(out string errorMessage))
                 {
                     LogManager.Instance.Error($"Cookie验证失败: {errorMessage}");
-                    return false;
+                    return Task.FromResult(false);
                 }
                 
                 // 创建WebView2 cookie
@@ -586,12 +582,12 @@ namespace ctwebplayer
                 _cookieManager.AddOrUpdateCookie(cookie);
                 
                 LogManager.Instance.Info($"成功添加/更新cookie: {cookieItem.Name}@{cookieItem.Domain}");
-                return true;
+                return Task.FromResult(true);
             }
             catch (Exception ex)
             {
                 LogManager.Instance.Error($"添加/更新cookie失败: {ex.Message}", ex);
-                return false;
+                return Task.FromResult(false);
             }
         }
 
@@ -600,7 +596,7 @@ namespace ctwebplayer
         /// </summary>
         /// <param name="cookieItem">要删除的cookie</param>
         /// <returns>操作是否成功</returns>
-        public async Task<bool> DeleteCookieAsync(CookieItem cookieItem)
+        public Task<bool> DeleteCookieAsync(CookieItem cookieItem)
         {
             try
             {
@@ -616,12 +612,12 @@ namespace ctwebplayer
                 _cookieManager.DeleteCookies(cookieItem.Name, uri);
                 
                 LogManager.Instance.Info($"成功删除cookie: {cookieItem.Name}@{cookieItem.Domain}");
-                return true;
+                return Task.FromResult(true);
             }
             catch (Exception ex)
             {
                 LogManager.Instance.Error($"删除cookie失败: {ex.Message}", ex);
-                return false;
+                return Task.FromResult(false);
             }
         }
 

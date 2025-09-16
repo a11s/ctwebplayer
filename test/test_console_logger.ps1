@@ -186,7 +186,7 @@ $LargeContent = New-Object System.Text.StringBuilder
 $LargeContent.AppendLine("[2025-01-16 12:00:00.000] [LOG] 大文件测试开始") | Out-Null
 
 # 生成接近10MB的内容（留一些空间给最后的测试）
-$LineSize = 100  # 每行约100字节
+# $LineSize = 100  # 每行约100字节
 $TargetSize = 10 * 1024 * 1024  # 10MB
 $CurrentSize = 0
 $LineCount = 0
