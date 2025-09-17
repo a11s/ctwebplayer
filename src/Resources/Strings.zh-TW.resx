@@ -961,4 +961,52 @@
   <data name="CookieEdit_NameRequired" xml:space="preserve">
     <value>名稱不能為空</value>
   </data>
+  <!-- UpdateNotificationDialog - 啟動時更新通知 -->
+  <data name="UpdateNotification_Title" xml:space="preserve">
+    <value>有可用更新</value>
+  </data>
+  <data name="UpdateNotification_NewVersionAvailable" xml:space="preserve">
+    <value>發現新版本！</value>
+  </data>
+  <data name="UpdateNotification_UpdateMessage" xml:space="preserve">
+    <value>建議您更新以獲取最新功能和改進。</value>
+  </data>
+  <data name="UpdateNotification_MandatoryUpdate" xml:space="preserve">
+    <value>這是一個強制更新。您必須安裝此更新才能繼續使用應用程式。</value>
+  </data>
+  <data name="UpdateNotification_CurrentVersion" xml:space="preserve">
+    <value>目前版本：{0}</value>
+  </data>
+  <data name="UpdateNotification_NewVersion" xml:space="preserve">
+    <value>新版本：{0}</value>
+  </data>
+  <data name="UpdateNotification_FileSize" xml:space="preserve">
+    <value>下載大小：{0}</value>
+  </data>
+  <data name="UpdateNotification_ReleaseDate" xml:space="preserve">
+    <value>發佈日期：{0}</value>
+  </data>
+  <data name="UpdateNotification_ReleaseNotes" xml:space="preserve">
+    <value>更新內容：</value>
+  </data>
+  <data name="UpdateNotification_UpdateNow" xml:space="preserve">
+    <value>立即更新</value>
+  </data>
+  <data name="UpdateNotification_SkipVersion" xml:space="preserve">
+    <value>略過此版本</value>
+  </data>
+  <data name="UpdateNotification_RemindLater" xml:space="preserve">
+    <value>稍後提醒</value>
+  </data>
+  <data name="UpdateNotification_DontShowAgain" xml:space="preserve">
+    <value>不再顯示啟動時的更新檢查</value>
+  </data>
+  <data name="UpdateNotification_ConfirmSkip" xml:space="preserve">
+    <value>確定要略過此版本嗎？
+    
+您將不會再收到關於此版本的通知，但仍可以手動檢查更新。</value>
+  </data>
+  <data name="UpdateNotification_ConfirmSkipTitle" xml:space="preserve">
+    <value>略過版本</value>
+  </data>
 </root>

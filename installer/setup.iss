@@ -26,7 +26,8 @@ AppCopyright={#AppCopyright}
 AppComments={#AppDescription}
 
 ; 安装目录设置
-DefaultDirName={autopf}\{#AppName}
+; 改为用户本地应用程序目录，不需要管理员权限
+DefaultDirName={localappdata}\{#AppName}
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
 DisableDirPage=no
@@ -46,9 +47,10 @@ ArchitecturesInstallIn64BitMode=x64
 ArchitecturesAllowed=x64
 
 ; 权限设置
-; 始终要求管理员权限，以确保能终止进程和写入系统目录
-PrivilegesRequired=admin
-PrivilegesRequiredOverridesAllowed=dialog
+; 使用 none 表示不需要任何特殊权限，以当前用户权限运行
+PrivilegesRequired=none
+; 不允许覆盖权限设置
+PrivilegesRequiredOverridesAllowed=
 ; 显示 UAC 提示时的权限提升信息
 InfoBeforeFile=
 InfoAfterFile=
@@ -169,6 +171,15 @@ Root: HKCU; Subkey: "Software\{#AppPublisher}\{#AppName}"; ValueType: string; Va
 function IsAdminLoggedOn(): Boolean;
 begin
   Result := IsAdminInstallMode();
+end;
+
+// 辅助函数：将布尔值转换为字符串
+function BoolToStr(Value: Boolean): String;
+begin
+  if Value then
+    Result := 'True'
+  else
+    Result := 'False';
 end;
 
 // 使用 tasklist 命令检查进程（备用方案）
@@ -391,87 +402,48 @@ begin
     Result := RegQueryStringValue(HKCU, 'SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}', 'pv', Version);
 end;
 
-// 初始化安装
+// 初始化安装向导
 procedure InitializeWizard();
 begin
-  // 检查管理员权限
-  if not IsAdminLoggedOn() then
-  begin
-    MsgBox('警告：安装程序未以管理员权限运行。' + #13#10 +
-           '某些功能（如自动关闭运行中的程序）可能无法正常工作。' + #13#10 +
-           '建议右键点击安装程序并选择"以管理员身份运行"。',
-           mbInformation, MB_OK);
-  end;
+  // 不再需要权限检查，安装程序以用户权限运行
+  // 可以在这里添加其他初始化逻辑
 end;
 
-// 初始化安装时的权限检查
+// 简化的初始化安装函数 - 移除所有调试消息
 function InitializeSetup(): Boolean;
 var
-  ErrorCode: Integer;
   InstallerPath: String;
   InstallerName: String;
-  DebugMsg: String;
 begin
   Result := True;
   
-  // 获取安装程序信息用于调试
+  // 获取安装程序信息
   InstallerPath := ExpandConstant('{srcexe}');
   InstallerName := ExtractFileName(InstallerPath);
   
-  // 调试：记录安装程序信息
-  DebugMsg := '安装程序调试信息：' + #13#10 +
-              '• 安装程序路径: ' + InstallerPath + #13#10 +
-              '• 安装程序名称: ' + InstallerName + #13#10 +
-              '• 目标程序名称: {#AppExeName}' + #13#10;
-              
-  // 检查是否存在命名冲突
+  // 静默检查是否存在命名冲突
   if CompareText(InstallerName, '{#AppExeName}') = 0 then
   begin
-    MsgBox('错误：安装程序名称与目标程序名称相同！' + #13#10 + #13#10 +
-           DebugMsg + #13#10 +
+    // 只在真正的错误情况下显示消息
+    MsgBox('错误：安装程序名称与目标程序名称相同！' + #13#10 +
            '请将安装程序重命名后再运行（例如：setup.exe）。',
            mbError, MB_OK);
     Result := False;
     Exit;
   end;
   
-  // 检查安装程序是否在目标目录运行
-  if Pos(UpperCase(ExpandConstant('{autopf}\{#AppName}')), UpperCase(InstallerPath)) > 0 then
+  // 静默检查安装程序是否在目标目录运行
+  if Pos(UpperCase(ExpandConstant('{localappdata}\{#AppName}')), UpperCase(InstallerPath)) > 0 then
   begin
-    MsgBox('错误：安装程序正在目标安装目录中运行！' + #13#10 + #13#10 +
-           DebugMsg + #13#10 +
+    MsgBox('错误：安装程序正在目标安装目录中运行！' + #13#10 +
            '请将安装程序移动到其他位置（如桌面）后再运行。',
            mbError, MB_OK);
     Result := False;
     Exit;
   end;
   
-  // 如果不是管理员权限，提示用户
-  if not IsAdminLoggedOn() then
-  begin
-    if MsgBox('安装程序需要管理员权限才能：' + #13#10 +
-              '• 自动关闭运行中的程序' + #13#10 +
-              '• 安装到系统目录' + #13#10 +
-              '• 创建卸载信息' + #13#10 + #13#10 +
-              '是否以管理员权限重新启动安装程序？',
-              mbConfirmation, MB_YESNO) = IDYES then
-    begin
-      // 修复：使用 ewWaitUntilTerminated 确保原进程终止
-      if ShellExec('runas', InstallerPath, '', '', SW_SHOW, ewWaitUntilTerminated, ErrorCode) then
-      begin
-        // 成功启动提升权限的进程
-        Result := False; // 终止当前安装
-      end
-      else
-      begin
-        MsgBox('无法以管理员权限启动安装程序。' + #13#10 +
-               '错误代码: ' + IntToStr(ErrorCode) + #13#10 + #13#10 +
-               '请右键点击安装程序，选择"以管理员身份运行"。',
-               mbError, MB_OK);
-        Result := False;
-      end;
-    end;
-  end;
+  // 移除管理员权限提示，静默处理
+  // 不再显示任何调试或提示信息
 end;
 
 // 安装前准备

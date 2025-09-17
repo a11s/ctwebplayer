@@ -959,4 +959,52 @@ Please restart the browser to apply the changes.</value>
   <data name="CookieEdit_NameRequired" xml:space="preserve">
     <value>Name cannot be empty</value>
   </data>
+  <!-- UpdateNotificationDialog - Startup Update Notification -->
+  <data name="UpdateNotification_Title" xml:space="preserve">
+    <value>Update Available</value>
+  </data>
+  <data name="UpdateNotification_NewVersionAvailable" xml:space="preserve">
+    <value>A new version is available!</value>
+  </data>
+  <data name="UpdateNotification_UpdateMessage" xml:space="preserve">
+    <value>We recommend updating to get the latest features and improvements.</value>
+  </data>
+  <data name="UpdateNotification_MandatoryUpdate" xml:space="preserve">
+    <value>This is a mandatory update. You must install it to continue using the application.</value>
+  </data>
+  <data name="UpdateNotification_CurrentVersion" xml:space="preserve">
+    <value>Current version: {0}</value>
+  </data>
+  <data name="UpdateNotification_NewVersion" xml:space="preserve">
+    <value>New version: {0}</value>
+  </data>
+  <data name="UpdateNotification_FileSize" xml:space="preserve">
+    <value>Download size: {0}</value>
+  </data>
+  <data name="UpdateNotification_ReleaseDate" xml:space="preserve">
+    <value>Release date: {0}</value>
+  </data>
+  <data name="UpdateNotification_ReleaseNotes" xml:space="preserve">
+    <value>What's new:</value>
+  </data>
+  <data name="UpdateNotification_UpdateNow" xml:space="preserve">
+    <value>Update Now</value>
+  </data>
+  <data name="UpdateNotification_SkipVersion" xml:space="preserve">
+    <value>Skip This Version</value>
+  </data>
+  <data name="UpdateNotification_RemindLater" xml:space="preserve">
+    <value>Remind Me Later</value>
+  </data>
+  <data name="UpdateNotification_DontShowAgain" xml:space="preserve">
+    <value>Don't check for updates on startup</value>
+  </data>
+  <data name="UpdateNotification_ConfirmSkip" xml:space="preserve">
+    <value>Are you sure you want to skip this version?
+    
+You won't be notified about this version again, but you can still check for updates manually.</value>
+  </data>
+  <data name="UpdateNotification_ConfirmSkipTitle" xml:space="preserve">
+    <value>Skip Version</value>
+  </data>
 </root>

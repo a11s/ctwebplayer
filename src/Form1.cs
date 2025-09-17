@@ -272,6 +272,9 @@ namespace ctwebplayer
                 
                 // 等待导航完成后再进行登录流程检查
                 // 这将在 NavigationCompleted 事件中处理
+                
+                // 启动时检查更新（异步执行，不阻塞主界面）
+                _ = CheckForUpdatesOnStartupAsync();
             }
             catch (Exception ex)
             {
@@ -279,6 +282,138 @@ namespace ctwebplayer
                 MessageBox.Show($"{LanguageManager.Instance.GetString("Form1_Error_WebView2InitFailed")}: {ex.Message}\n\n{LanguageManager.Instance.GetString("Form1_Error_EnsureWebView2Installed")}",
                     LanguageManager.Instance.GetString("Message_Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 statusLabel.Text = LanguageManager.Instance.GetString("Form1_Status_BrowserInitFailed");
+            }
+        }
+
+        /// <summary>
+        /// 启动时检查更新
+        /// </summary>
+        private async Task CheckForUpdatesOnStartupAsync()
+        {
+            try
+            {
+                // 等待一段时间，确保主窗口已完全加载
+                await Task.Delay(2000);
+                
+                // 检查是否启用了启动时检查更新
+                if (!_configManager.Config.Update?.CheckOnStartup ?? false)
+                {
+                    LogManager.Instance.Info("启动时检查更新已禁用");
+                    return;
+                }
+                
+                // 检查距离上次检查的时间间隔（至少间隔1小时）
+                var lastCheckTime = _configManager.Config.Update?.LastCheckTime ?? DateTime.MinValue;
+                if ((DateTime.Now - lastCheckTime).TotalHours < 1)
+                {
+                    LogManager.Instance.Info($"距离上次检查更新时间过短，跳过检查。上次检查：{lastCheckTime}");
+                    return;
+                }
+                
+                LogManager.Instance.Info("开始启动时检查更新");
+                
+                var updateManager = new UpdateManager();
+                var updateInfo = await updateManager.CheckForUpdatesAsync(false); // false = 不显示"已是最新版本"消息
+                
+                if (updateInfo != null && updateInfo.IsUpdateRequired())
+                {
+                    // 检查是否为用户跳过的版本
+                    var skippedVersion = _configManager.Config.Update?.SkippedVersion ?? "";
+                    if (!string.IsNullOrEmpty(skippedVersion) && skippedVersion == updateInfo.Version)
+                    {
+                        LogManager.Instance.Info($"版本 {updateInfo.Version} 已被用户跳过，不显示更新提示");
+                        return;
+                    }
+                    
+                    // 在UI线程上显示更新通知对话框
+                    if (InvokeRequired)
+                    {
+                        Invoke(new Action(() => ShowUpdateNotification(updateInfo)));
+                    }
+                    else
+                    {
+                        ShowUpdateNotification(updateInfo);
+                    }
+                }
+                
+                // 更新最后检查时间
+                if (_configManager.Config.Update != null)
+                {
+                    _configManager.Config.Update.LastCheckTime = DateTime.Now;
+                    await _configManager.SaveConfigAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("启动时检查更新失败", ex);
+                // 启动时检查更新失败不应该影响程序正常运行，所以只记录日志不显示错误
+            }
+        }
+
+        /// <summary>
+        /// 显示更新通知对话框
+        /// </summary>
+        private void ShowUpdateNotification(CTWebPlayer.UpdateInfo updateInfo)
+        {
+            try
+            {
+                LogManager.Instance.Info($"显示更新通知对话框，新版本：{updateInfo.Version}");
+                
+                bool dontShowAgain;
+                var choice = UpdateNotificationDialog.ShowUpdateNotification(this, updateInfo, out dontShowAgain);
+                
+                // 处理"不再显示"选项
+                if (dontShowAgain && _configManager.Config.Update != null)
+                {
+                    _configManager.Config.Update.CheckOnStartup = false;
+                    _ = _configManager.SaveConfigAsync();
+                    LogManager.Instance.Info("用户选择不再显示启动更新提示");
+                }
+                
+                switch (choice)
+                {
+                    case UpdateNotificationDialog.UpdateChoice.UpdateNow:
+                        LogManager.Instance.Info("用户选择立即更新");
+                        // 显示完整的更新窗口
+                        if (_updateForm == null || _updateForm.IsDisposed)
+                        {
+                            _updateForm = new UpdateForm(updateInfo);
+                            _updateForm.FormClosed += (s, args) =>
+                            {
+                                LogManager.Instance.Info("更新窗口已关闭");
+                            };
+                        }
+                        
+                        if (!_updateForm.Visible)
+                        {
+                            _updateForm.Show(this);
+                        }
+                        else
+                        {
+                            _updateForm.BringToFront();
+                            _updateForm.Focus();
+                        }
+                        break;
+                        
+                    case UpdateNotificationDialog.UpdateChoice.SkipVersion:
+                        LogManager.Instance.Info($"用户选择跳过版本 {updateInfo.Version}");
+                        // 保存跳过的版本号
+                        if (_configManager.Config.Update != null)
+                        {
+                            _configManager.Config.Update.SkippedVersion = updateInfo.Version;
+                            _ = _configManager.SaveConfigAsync();
+                        }
+                        break;
+                        
+                    case UpdateNotificationDialog.UpdateChoice.RemindLater:
+                        LogManager.Instance.Info("用户选择稍后提醒");
+                        // 不做任何操作，下次启动会再次检查
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Instance.Error("显示更新通知对话框时出错", ex);
             }
         }
 

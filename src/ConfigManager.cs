@@ -146,6 +146,12 @@ namespace ctwebplayer
                     LoginUrl = "/cn/login.html",
                     RegisterUrl = "https://game.erolabsshare.net/app/627a8937/Cherry_Tale",
                     CookieName = "erolabsnickname"
+                },
+                Update = new UpdateConfig
+                {
+                    CheckOnStartup = true,
+                    SkippedVersion = "",
+                    LastCheckTime = DateTime.MinValue
                 }
             };
         }
@@ -288,6 +294,11 @@ namespace ctwebplayer
         /// 登录配置
         /// </summary>
         public LoginConfig Login { get; set; } = new LoginConfig();
+
+        /// <summary>
+        /// 自动更新配置
+        /// </summary>
+        public UpdateConfig Update { get; set; } = new UpdateConfig();
     }
 
     /// <summary>
@@ -384,5 +395,31 @@ namespace ctwebplayer
         /// 检查的Cookie名称
         /// </summary>
         public string CookieName { get; set; } = "erolabsnickname";
+    }
+
+    /// <summary>
+    /// 自动更新配置
+    /// </summary>
+    public class UpdateConfig
+    {
+        /// <summary>
+        /// 是否在启动时检查更新
+        /// </summary>
+        public bool CheckOnStartup { get; set; } = true;
+
+        /// <summary>
+        /// 用户选择跳过的版本号
+        /// </summary>
+        public string SkippedVersion { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 上次检查更新的时间
+        /// </summary>
+        public DateTime LastCheckTime { get; set; } = DateTime.MinValue;
+
+        /// <summary>
+        /// 是否显示启动提示（第一次运行显示）
+        /// </summary>
+        public bool ShowStartupTip { get; set; } = true;
     }
 }
