@@ -20,7 +20,7 @@ namespace CTWebPlayer
         /// <summary>
         /// 修订号 - 向下兼容的问题修正时增加
         /// </summary>
-        public const int Patch = 0;
+        public const int Patch = 1;
 
         /// <summary>
         /// 预发布版本标识（如：alpha、beta、rc），正式版为空
@@ -73,7 +73,7 @@ namespace CTWebPlayer
         /// <summary>
         /// 获取版本发布日期
         /// </summary>
-        public static DateTime ReleaseDate => new DateTime(2025, 9, 16);
+        public static DateTime ReleaseDate => new DateTime(2025, 9, 17);
 
         /// <summary>
         /// 获取版本描述信息
