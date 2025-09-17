@@ -145,18 +145,51 @@ namespace CTWebPlayer
                 info.Version = info.Version.Substring(1);
             }
 
-            // 查找可执行文件资源
+            // 查找安装程序资源（而不是主程序）
+            // 优先查找安装程序（Setup/Installer），避免下载主程序exe
             if (releaseJson.assets != null)
             {
+                bool foundInstaller = false;
+                
+                // 第一遍：优先查找安装程序
                 foreach (var asset in releaseJson.assets)
                 {
                     string? assetName = asset.name?.ToString()?.ToLower();
-                    if (!string.IsNullOrEmpty(assetName) && assetName.EndsWith(".exe") && assetName.Contains("ctwebplayer"))
+                    if (!string.IsNullOrEmpty(assetName) && assetName.EndsWith(".exe"))
                     {
-                        info.DownloadUrl = asset.browser_download_url?.ToString() ?? string.Empty;
-                        info.FileName = asset.name?.ToString() ?? string.Empty;
-                        info.FileSize = asset.size ?? 0;
-                        break;
+                        // 查找包含 setup 或 installer 的文件名
+                        // 例如: CTWebPlayer-v1.2.0-Setup.exe
+                        if (assetName.Contains("setup") || assetName.Contains("installer"))
+                        {
+                            info.DownloadUrl = asset.browser_download_url?.ToString() ?? string.Empty;
+                            info.FileName = asset.name?.ToString() ?? string.Empty;
+                            info.FileSize = asset.size ?? 0;
+                            foundInstaller = true;
+                            break;
+                        }
+                    }
+                }
+                
+                // 第二遍：如果没有找到安装程序，查找其他exe文件（但跳过主程序）
+                if (!foundInstaller)
+                {
+                    foreach (var asset in releaseJson.assets)
+                    {
+                        string? assetName = asset.name?.ToString()?.ToLower();
+                        if (!string.IsNullOrEmpty(assetName) && assetName.EndsWith(".exe") && assetName.Contains("ctwebplayer"))
+                        {
+                            // 跳过明显的主程序文件（避免混淆）
+                            if (assetName == "ctwebplayer.exe")
+                            {
+                                // 这是主程序，不是安装程序，跳过
+                                continue;
+                            }
+                            
+                            info.DownloadUrl = asset.browser_download_url?.ToString() ?? string.Empty;
+                            info.FileName = asset.name?.ToString() ?? string.Empty;
+                            info.FileSize = asset.size ?? 0;
+                            break;
+                        }
                     }
                 }
             }

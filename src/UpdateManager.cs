@@ -16,7 +16,8 @@ namespace ctwebplayer
     {
         private const string GITHUB_API_URL = "https://api.github.com/repos/a11s/ctwebplayer/releases/latest";
         private const string USER_AGENT = "CTWebPlayer-UpdateChecker/1.0";
-        private const string UPDATE_TEMP_FILE = "ctwebplayer_update.exe";
+        // 修改：下载的是安装程序，而不是主程序
+        private const string UPDATE_TEMP_FILE = "CTWebPlayer_Setup_Update.exe";
         private const string UPDATE_BATCH_FILE = "update.bat";
         
         private readonly LogManager _logger;
@@ -248,14 +249,14 @@ namespace ctwebplayer
         }
 
         /// <summary>
-        /// 应用更新（重启程序）
+        /// 应用更新（启动安装程序）
         /// </summary>
-        /// <param name="updateFilePath">更新文件路径</param>
+        /// <param name="updateFilePath">安装程序文件路径</param>
         public void ApplyUpdate(string updateFilePath)
         {
             if (!File.Exists(updateFilePath))
             {
-                throw new FileNotFoundException("更新文件不存在", updateFilePath);
+                throw new FileNotFoundException("安装程序不存在", updateFilePath);
             }
 
             try
@@ -269,29 +270,24 @@ namespace ctwebplayer
                 {
                     throw new InvalidOperationException("无法获取当前程序目录");
                 }
-                string currentExeName = Path.GetFileName(currentExePath);
 
-                // 创建更新批处理脚本
+                // 修改：直接启动安装程序，而不是替换文件
+                // 安装程序会自动处理关闭旧程序、替换文件等操作
+                _logger.Info($"启动安装程序: {updateFilePath}");
+
+                // 创建更新批处理脚本（简化版）
                 string batchContent = $@"@echo off
-echo 正在更新 CTWebPlayer...
+echo 正在启动更新程序...
 echo.
 
 REM 等待主程序退出
 timeout /t 2 /nobreak > nul
 
-REM 备份当前程序
-if exist ""{currentExeName}.bak"" del ""{currentExeName}.bak""
-move ""{currentExeName}"" ""{currentExeName}.bak""
+REM 启动安装程序（静默模式）
+start """" ""{updateFilePath}"" /SILENT /DIR=""{currentDir}""
 
-REM 复制新文件
-copy /Y ""{updateFilePath}"" ""{currentExeName}""
-
-REM 启动新程序
-start """" ""{currentExeName}""
-
-REM 清理临时文件
+REM 清理批处理文件自身
 timeout /t 5 /nobreak > nul
-if exist ""{updateFilePath}"" del ""{updateFilePath}""
 if exist ""{UPDATE_BATCH_FILE}"" del ""{UPDATE_BATCH_FILE}""
 
 exit
@@ -312,8 +308,9 @@ exit
                 Process.Start(processInfo);
 
                 _logger.Info(LanguageManager.Instance.GetString("UpdateManager_BatchStarted"));
+                _logger.Info("安装程序将自动完成更新，程序即将退出...");
 
-                // 退出当前程序
+                // 退出当前程序，让安装程序接管
                 Application.Exit();
             }
             catch (Exception ex)

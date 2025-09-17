@@ -199,22 +199,67 @@ begin
   end;
 end;
 
-// 检查应用是否正在运行
+// 检查应用是否正在运行（排除安装程序自身）
 function IsAppRunning(const FileName: string): Boolean;
 var
   FWMIService: Variant;
   FSWbemLocator: Variant;
   FWbemObjectSet: Variant;
+  FWbemObject: Variant;
+  ProcessPath: String;
+  InstallerPath: String;
+  I: Integer;
+  ActualCount: Integer;
 begin
   Result := False;
+  ActualCount := 0;
+  InstallerPath := UpperCase(ExpandConstant('{srcexe}'));
+  
   try
     FSWbemLocator := CreateOleObject('WBEMScripting.SWBEMLocator');
     FWMIService := FSWbemLocator.ConnectServer('', 'root\CIMV2', '', '');
-    FWbemObjectSet := FWMIService.ExecQuery(Format('SELECT Name FROM Win32_Process WHERE Name="%s"', [FileName]));
-    Result := (FWbemObjectSet.Count > 0);
+    FWbemObjectSet := FWMIService.ExecQuery(Format('SELECT Name, ExecutablePath FROM Win32_Process WHERE Name="%s"', [FileName]));
+    
+    // 遍历所有匹配的进程
+    for I := 0 to FWbemObjectSet.Count - 1 do
+    begin
+      try
+        FWbemObject := FWbemObjectSet.ItemIndex(I);
+        ProcessPath := '';
+        
+        // 尝试获取进程路径
+        try
+          ProcessPath := FWbemObject.ExecutablePath;
+        except
+          // 如果获取路径失败，仍然计数这个进程
+          ProcessPath := '';
+        end;
+        
+        // 排除路径相同的进程（安装程序自身）
+        // 如果路径为空（可能是系统进程），则计入
+        // 如果路径不同于安装程序路径，则计入
+        if (ProcessPath = '') or (UpperCase(ProcessPath) <> InstallerPath) then
+        begin
+          Inc(ActualCount);
+        end;
+      except
+        // 忽略单个进程的错误
+      end;
+    end;
+    
+    Result := (ActualCount > 0);
   except
-    // 如果 WMI 失败，尝试使用 tasklist 命令
+    // 如果 WMI 失败，尝试使用 tasklist 命令（但无法排除安装程序）
     Result := CheckProcessByTasklist(FileName);
+    
+    // 如果检测到进程且安装程序名称与目标程序相同，显示警告
+    if Result and (CompareText(ExtractFileName(ExpandConstant('{srcexe}')), FileName) = 0) then
+    begin
+      Result := False; // 假设是误报
+      MsgBox('注意：检测到可能的命名冲突。' + #13#10 +
+             '如果程序确实在运行，请手动关闭后继续。',
+             mbInformation, MB_OK);
+    end;
   end;
 end;
 
@@ -363,8 +408,43 @@ end;
 function InitializeSetup(): Boolean;
 var
   ErrorCode: Integer;
+  InstallerPath: String;
+  InstallerName: String;
+  DebugMsg: String;
 begin
   Result := True;
+  
+  // 获取安装程序信息用于调试
+  InstallerPath := ExpandConstant('{srcexe}');
+  InstallerName := ExtractFileName(InstallerPath);
+  
+  // 调试：记录安装程序信息
+  DebugMsg := '安装程序调试信息：' + #13#10 +
+              '• 安装程序路径: ' + InstallerPath + #13#10 +
+              '• 安装程序名称: ' + InstallerName + #13#10 +
+              '• 目标程序名称: {#AppExeName}' + #13#10;
+              
+  // 检查是否存在命名冲突
+  if CompareText(InstallerName, '{#AppExeName}') = 0 then
+  begin
+    MsgBox('错误：安装程序名称与目标程序名称相同！' + #13#10 + #13#10 +
+           DebugMsg + #13#10 +
+           '请将安装程序重命名后再运行（例如：setup.exe）。',
+           mbError, MB_OK);
+    Result := False;
+    Exit;
+  end;
+  
+  // 检查安装程序是否在目标目录运行
+  if Pos(UpperCase(ExpandConstant('{autopf}\{#AppName}')), UpperCase(InstallerPath)) > 0 then
+  begin
+    MsgBox('错误：安装程序正在目标安装目录中运行！' + #13#10 + #13#10 +
+           DebugMsg + #13#10 +
+           '请将安装程序移动到其他位置（如桌面）后再运行。',
+           mbError, MB_OK);
+    Result := False;
+    Exit;
+  end;
   
   // 如果不是管理员权限，提示用户
   if not IsAdminLoggedOn() then
@@ -376,9 +456,20 @@ begin
               '是否以管理员权限重新启动安装程序？',
               mbConfirmation, MB_YESNO) = IDYES then
     begin
-      // 尝试以管理员权限重新启动
-      ShellExec('runas', ExpandConstant('{srcexe}'), '', '', SW_SHOW, ewNoWait, ErrorCode);
-      Result := False; // 终止当前安装
+      // 修复：使用 ewWaitUntilTerminated 确保原进程终止
+      if ShellExec('runas', InstallerPath, '', '', SW_SHOW, ewWaitUntilTerminated, ErrorCode) then
+      begin
+        // 成功启动提升权限的进程
+        Result := False; // 终止当前安装
+      end
+      else
+      begin
+        MsgBox('无法以管理员权限启动安装程序。' + #13#10 +
+               '错误代码: ' + IntToStr(ErrorCode) + #13#10 + #13#10 +
+               '请右键点击安装程序，选择"以管理员身份运行"。',
+               mbError, MB_OK);
+        Result := False;
+      end;
     end;
   end;
 end;
