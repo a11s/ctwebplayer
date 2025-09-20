@@ -991,11 +991,52 @@ namespace ctwebplayer
                 // 调试日志：检查iframe自动导航
                 LogManager.Instance.Info("NavigationCompleted: 检查是否需要iframe自动导航，URL=" + currentUrl);
                 
-                // 检查当前URL是否是目标URL
-                if (currentUrl.StartsWith("https://game.ero-labs.live/cn/cloud_game.html") ||
-                    currentUrl.StartsWith("https://mg.ero-labs.live/cn/cloud_game.html"))
+                // 动态构建URL匹配模式
+                bool shouldCheckIframe = false;
+                try
                 {
-                    LogManager.Instance.Info("NavigationCompleted: 检测到游戏URL，调用CheckAndNavigateToIframe");
+                    // 从baseURL中提取域名
+                    var baseUri = new Uri(_configManager.Config.BaseURL);
+                    var baseDomain = baseUri.Host;
+                    
+                    // 提取主域名（去掉子域名如mg.）
+                    string mainDomain = baseDomain;
+                    if (baseDomain.StartsWith("mg.") || baseDomain.StartsWith("game."))
+                    {
+                        mainDomain = baseDomain.Substring(baseDomain.IndexOf('.') + 1);
+                    }
+                    
+                    LogManager.Instance.Info($"NavigationCompleted: 使用域名 {mainDomain} 进行匹配");
+                    
+                    // 检查当前URL是否匹配模式：(game|mg).域名/任意路径/cloud_game.html
+                    if (!string.IsNullOrEmpty(mainDomain))
+                    {
+                        // 构建匹配模式
+                        var pattern1 = $"https://game.{mainDomain}";
+                        var pattern2 = $"https://mg.{mainDomain}";
+                        
+                        // 检查是否包含cloud_game.html
+                        if ((currentUrl.StartsWith(pattern1) || currentUrl.StartsWith(pattern2)) &&
+                            currentUrl.Contains("cloud_game.html"))
+                        {
+                            shouldCheckIframe = true;
+                            LogManager.Instance.Info($"NavigationCompleted: 检测到游戏URL（匹配域名 {mainDomain}），调用CheckAndNavigateToIframe");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogManager.Instance.Warning($"NavigationCompleted: 解析baseURL时出错：{ex.Message}，尝试使用备用匹配");
+                    // 备用方案：检查是否包含cloud_game.html
+                    if (currentUrl.Contains("cloud_game.html"))
+                    {
+                        shouldCheckIframe = true;
+                        LogManager.Instance.Info("NavigationCompleted: 使用备用匹配，检测到cloud_game.html");
+                    }
+                }
+                
+                if (shouldCheckIframe)
+                {
                     await CheckAndNavigateToIframe();
                 }
                 else
@@ -1112,14 +1153,18 @@ namespace ctwebplayer
         {
             try
             {
-                LogManager.Instance.Info("开始检查自动导航iframe功能");
+                LogManager.Instance.Info("==== 开始检查自动导航iframe功能 ====");
+                LogManager.Instance.Info($"当前页面URL: {webView2.Source?.ToString() ?? "null"}");
+                LogManager.Instance.Info($"配置的BaseURL: {_configManager.Config.BaseURL}");
                 
                 // 检查是否启用了自动导航功能
                 if (!_configManager.Config.EnableAutoIframeNavigation)
                 {
-                    LogManager.Instance.Info("自动导航到iframe功能已禁用");
+                    LogManager.Instance.Info("自动导航到iframe功能已禁用（EnableAutoIframeNavigation=false）");
                     return;
                 }
+                
+                LogManager.Instance.Info("自动导航功能已启用，继续执行...");
                 
                 // 等待一小段时间确保页面完全加载
                 await Task.Delay(500);

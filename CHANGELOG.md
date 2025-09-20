@@ -4,6 +4,37 @@
 
 本项目遵循 [语义化版本](https://semver.org/spec/v2.0.0.html) 规范。
 
+## [1.2.2] - 2025-09-21
+
+### ✨ 新功能
+- **启动时自动检查更新**
+  - 程序启动时自动检查 GitHub 上的最新版本
+  - 发现新版本时显示更新通知对话框
+  - 更新通知对话框支持多语言
+  - 用户可选择立即更新或稍后提醒
+
+- **Cookie 编辑功能**
+  - 新增 Cookie 编辑对话框
+  - 支持编辑 Cookie 的名称、值、域名、路径等属性
+  - 提供更灵活的 Cookie 管理能力
+
+- **控制台日志功能**
+  - 新增 JavaScript 控制台日志记录
+  - 捕获网页中的 console.log 输出
+  - 便于调试和问题排查
+
+### 🐛 修复
+- **自动更新相关修复**
+  - 修复自动更新过程中的多个 bug
+  - 改进更新流程的稳定性
+  - 优化更新失败时的错误处理
+
+### 🚀 优化
+- **代码质量改进**
+  - 修复了多个编译警告
+  - 优化了代码结构
+  - 改进了异常处理机制
+
 ## [1.2.1] - 2025-09-17
 
 ### 🔧 改进
@@ -132,6 +163,7 @@
 
 ---
 
+[1.2.2]: https://github.com/a11s/ctwebplayer/releases/tag/v1.2.2
 [1.2.1]: https://github.com/a11s/ctwebplayer/releases/tag/v1.2.1
 [1.2.0]: https://github.com/a11s/ctwebplayer/releases/tag/v1.2.0
 [1.1.0]: https://github.com/a11s/ctwebplayer/releases/tag/v1.1.0
